@@ -2,7 +2,7 @@
 
 #### Team name: `Fluffy Turtles`
 #### Date: `September 2nd 2021`
-#### GitHub Repository: `https://github.com/amyghotra/codenames`
+#### GitHub Repository: [`https://github.com/amyghotra/codenames`](https://github.com/amyghotra/codenames)
 
 ## GOALS
 > What are our team goals for this project? 
@@ -10,16 +10,16 @@
 
 ```
 MVP: Replicate codenames 1:1 (fully functioning)
-Learn React (Front end), Django (Back end), SQL, C++ (maybe :))
+Learn React (Front end), Django (Back end), PostgreSQL, CSS, C++ (maybe :))
 ```
 
 ## EXPECTATIONS
 > What do we expect of one another in regard to attendance at meetings, participation, frequency of communication, the quality of work, etc.?
 
 ```
-Meetings: Thursdays 1:10-3:00
-Participation: Everyone contributing to learning DJango and some React
-Frequency of Communication: Discord 
+Meetings: set in stone: Thursdays 1:10-3:00 (other days/times tbd depending on our schedules/availabilities)
+Participation: Everyone contributing to the project while also learning Django and/or React
+Frequency of Communication: Discord
 Quality of work: Do our best for each sprint. Ask for help if needed.
 ```
 
@@ -28,10 +28,10 @@ Quality of work: Do our best for each sprint. Ask for help if needed.
 > What are our expectations for conduct among team members?
 
 ```
-1) Ask for help
+1) Ask for help if you are stuck
 2) Do you best :)
 3) Follow weekly guidelines
-4) No funny business, treat everyone with RESPECT 
+4) No funny business, treat everyone with RESPECT
 ```
 
 ## CONSEQUENCES
