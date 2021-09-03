@@ -10,11 +10,14 @@ September 3, 2021
 - Kevin Xie
 - Amy Ghotra
 
+## Wireframes
+Figma file [here](https://www.figma.com/file/R78tXWoVIj3EFh37z35Bg3/Codenames-Wireframe?node-id=0%3A1)
+
 ## Introduction
 Our project is a web application version of the card game Codenames. 
 In this game, there are two teams, Red and Blue, each of which has two types of players: Spymasters and Operatives.
 There are also a set of cards with words on them. Some of the cards are associated with the Red team, others to the Blue team, 
-some aren't associated with either (neutral cards), and there is a single Assassain card.
+some aren't associated with either ("Bystanders"; neutral cards), and there is a single Assassain card.
 Spymasters are aware of the classifications of the cards, while Operatives do not. The Spymaster must provide their Operatives with a single-word clue,
 when it is their team's turn, that will help their teammember identify a card associated with their respective team.
 The first team to get all of their cards wins. A team can also win if the opposing team player chose the Assassain card when it was their turn.
@@ -28,10 +31,23 @@ Upon landing on our site the user will be presented with three options:
 
 Following this users will be prompted to pick a screen name, team (red or blue), and role (spymaster or operative). After this the user is added to a game room.
 
-Once there are enough players in the game room, the round will commence. The computer will randomly determine which team will play first. 
+Once there are enough players in the game room, the round will commence. The computer will randomly generate a set of 25 cards from a much larger set of words, and then determine which team will play first. 
 
-The Spymaster of the chosen team will provide the Operative from their team with a single-word clue to help them figure out which card belongs to their team. 
-The Spymaster can also specify the number of cards their clue applies to. If the team member guesses correctly, 
+The Spymaster sees a grid with 25 cards on it. The cards are color-coded based on classification / who they bleong to. This allows the Spymaster to correcty identify their team's card and give relevant/correct clues.
+
+Operatives see a grid of 25 neutral-colored cards. They do not know the classification of any of the cards until they or someone else takes a guess and the card classifications are revealed.
+
+The Spymaster of the chosen team will provide the Operative from their team with a single-word clue to help them figure out which card belongs to their team. The Spymaster can also specify the number of cards their clue applies to-- this is also the number of guesses that a player is allowed, and if this is 0 or infinity, it means the player has an unlimited number of guesses.
+
+After Operatves receive a clue, Operatives select a certain number of cards from the set which they think correlate to the given clue-- they can also select cards which they think they missed in previous rounds (if they have guesses available).
+
+If an Operative guesses correctly, they can guess again, but must do so without a clue. They can also choose to pass their turn.
+
+If an Operative selects a Bystander, nothing happens. 
+
+If an Operative selects another team's card, that card is revealed for the other team, and the curren team's turn passes.
+
+If an Operative selects the Assassain card, the game ends and the opposing team wins. 
 
 
 
