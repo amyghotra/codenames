@@ -43,11 +43,11 @@ The Spymaster can also specify the number of cards their clue applies to. If the
 | 09/20   | FRONTEND: Learning React and Creating web pages<br />BACKEND: get familiar with Django syntax and create + normalize DB tables |
 | 09/27   | FRONTEND: Start implementing the frontend/UI of the application (landing page, connecting buttons, user info page<br /> BACKEND: start creating object models and start implementing the tables       |
 | 10/04   | FRONTEND: Implementation of UI for actual game (cards, point keeping, etc.)<br /> BACKEND: Cont. work on obj models; Host backend somewhere (maybe DigitalOcean)      |
-| 10/18   | Connect frontend and backend       |
-| 10/25   | / MVP Presentation and Update / Troubleshoot / Fix bugs        |
-| 11/01   | Finish MVP        |
-| 11/08   | Add to MVP        |
-| 11/15   | Text        |
+| 10/18   | Make frontend interactive and make it seem as though it is actually playable <br /> Stretch Goal: Fully connect frontend and backend     |
+| 10/25   | Finish MVP <br /> work on MVP Presentation <br /> Update / Troubleshoot / Fix bugs        |
+| 11/01   | MVP Presentation Day       |
+| 11/08   | Connect frontend and backend       |
+| 11/15   | Connect frontend and backend <br /> Make UI changes to make game look more presentable       |
 | 11/22    | Text        |
 | 11/29   | Text        |
 | 12/06    | Text        |
