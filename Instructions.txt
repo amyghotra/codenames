@@ -1,0 +1,8 @@
+1) Create a designated folder somewhere for this project.
+2) Go into the folder you just created
+3) type 'git init'
+4) type 'git clone https://github.com/amyghotra/codenames.git'
+    - it should make a copy of amys repo into the folder you just made.
+5) Once you have the copy of the repo, 'cd codenames'
+6) type 'npm install'
+7) now to start react just type 'npm start'
