@@ -3,6 +3,7 @@
     background: rgba(255, 255, 255, .2);
     border-radius: 25px;
     margin: auto;
+    height: fit-content;
     width: 300px;
     display: flex;
     flex-direction: column;
