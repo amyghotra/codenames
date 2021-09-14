@@ -32,6 +32,7 @@ html, body{
     background-repeat: no-repeat;
     background-size: cover;
     height: 100%;
+    border: 5px solid black;
 }
 
 .Codenames-title{
