@@ -10,9 +10,9 @@ function Landing() {
             <body className="box">
             <button class="btn1">Create Room</button>
             <br></br>
-            <button class="btn1">Enter code</button>
+            <button class="btn1">Enter Code</button>
             <br></br>
-            <button class="btn1">How to play</button>
+            <button class="btn1">How To Play</button>
             </body>
         </div>
     )
