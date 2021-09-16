@@ -12,12 +12,17 @@ class App extends Component {
     this.state = {
 
     }
+
+    
   }
 
   componentDidMount() {
-    axios.get('http://127.0.0.1:8000/room').then(res => {
-      console.log(res);
-    }); 
+    this.getRequest();
+  }
+
+  async getRequest() {
+    let response = await axios.get('http://127.0.0.1:8000/room/');
+    console.log(response);
   }
 
   render() {

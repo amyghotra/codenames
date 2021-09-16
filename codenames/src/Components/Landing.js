@@ -6,14 +6,14 @@ function Landing() {
     return (
         <div className="Landing">
     
-            <h1 class="Codenames-title">Codenames</h1>
-            <body className="box">
-            <button class="btn1">Create Room</button>
-            <br></br>
-            <button class="btn1">Enter Code</button>
-            <br></br>
-            <button class="btn1">How To Play</button>
-            </body>
+            <h1 className="Codenames-title">Codenames</h1>
+            <div className="box">
+                <button className="btn1">Create Room</button>
+                <br></br>
+                <button className="btn1">Enter Code</button>
+                <br></br>
+                <button className="btn1">How To Play</button>
+            </div>
         </div>
     )
 }
