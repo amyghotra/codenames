@@ -1,0 +1,24 @@
+.game{
+    background-image: url(../Images/game.png);
+    display: flex;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    
+}
+
+.gameCode{
+    background: rgba(255, 255, 255, .2);
+    border-radius: 25px;
+    margin-left: 1600px;
+    height: fit-content;
+    width: 250px;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    border: 4px solid rgb(255, 255, 255);
+    padding: 30px;
+    color:white;
+
+}
+

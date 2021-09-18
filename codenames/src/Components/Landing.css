@@ -1,4 +1,11 @@
 
+.game-title{
+    margin: 10px;
+    color:rgb(248, 248, 248);
+    writing-mode: vertical-lr;
+    text-orientation:upright;
+}
+
 .box{
     background: rgba(255, 255, 255, .2);
     border-radius: 25px;
@@ -10,6 +17,7 @@
     align-items: center;
     border: 4px solid rgb(255, 255, 255);
     padding: 30px;
+    
 }
 
 .btn1{
@@ -26,15 +34,49 @@
 html, body{
     margin: 0;
     height: 100%;
+    
 }
 
 .Landing{
     background-image: url(../Images/landing.jpg);
+    display:flex;
     background-repeat: no-repeat;
     background-size: cover;
     height: 100%;
+    text-align: 50%;
+    
 }
 
-.Codenames-title{
-    color:white
+.explanation{
+    color:rgb(255, 255, 255);
+    text-align: justify;
+    
+}
+
+.popUp{
+    background: rgba(255, 255, 255, .2);
+    border-radius: 25px;
+    margin: auto;
+    height: fit-content;
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 4px solid rgb(255, 255, 255);
+    padding: 30px;
+    
+}
+
+.howTo{
+    color: black;
+}
+
+.btn-close{
+    margin-left: 900px;
+    background-color:black;
+    width: 25px;
+    height: 25px;
+    background: white;
+    border-radius: 10px;
+
 }
