@@ -12,13 +12,13 @@ class LandingPage extends React.Component {
                     <h1 class="mb-1">Codenames</h1>
 
                     <h3 class="mb-5"><em>A Fun Game to Play</em></h3>
-                    
+
                     <div class = "border-box">
                     <a class="btn btn-primary btn-xl" href="/createroom">Create A Room</a>
                     <br></br>
-                    <a class="btn btn-primary btn-xl" href="/createroom">Enter Code</a>
+                    <a class="btn btn-primary btn-xl" href="/entercode">Enter Code</a>
                     <br></br>
-                    <a class="btn btn-primary btn-xl" href="/createroom">How To Play</a>
+                    <a class="btn btn-primary btn-xl" href="/howto">How To Play</a>
                     </div>
                 </div>
             </header>

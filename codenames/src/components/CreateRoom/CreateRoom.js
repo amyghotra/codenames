@@ -8,7 +8,7 @@ class CreateRoom extends React.Component {
         return (
             <div className="Create">
     
-            <h1 class="Codenames-title">Codenames</h1>
+            <h1 class="Codenames-title">Create A Room</h1>
         </div>
         );
     }
