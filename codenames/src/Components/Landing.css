@@ -45,10 +45,13 @@ html, body{
     display:flex;
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center center;
     height: 100%;
-    text-align: 50%;
+    width: 100%;
+    text-align: left;
     
 }
+
 
 .explanation{
     color:rgb(255, 255, 255);
