@@ -6,15 +6,12 @@ function UserInfo(){
         <div className="userInfo">
             <h6 className="gameCode"> Game Code: 00000 </h6>
             <form className="box-userInfo">
-                <label className="prompt">Enter Nickname</label><br/>
-                <input className="Nickname" type="text" placeholder="Nickname" spellCheck="false"></input>
-            </form>
-            <br/>
-            <form className="box-userInfo">
+                <label className="prompt">Enter nickname</label><br/>
+                <input className="nickname" type="text" placeholder="Nickname" spellCheck="false"></input><br/>
                 <label className="prompt">Choose a team</label><br/>
-                
+                <input className="red" type="button"></input><br/>
+                <input className="blue" type="button"></input><br/>
             </form>
-    
         </div>
     )
 }
