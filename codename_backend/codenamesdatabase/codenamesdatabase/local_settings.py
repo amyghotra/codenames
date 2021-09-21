@@ -9,7 +9,6 @@ DATABASES = {
         'ENGINE': 'mysql.connector.django',
         'NAME': 'codenames_database',
         'USER': 'root',
-        'PASSWORD': 'Genjimada1!',
         'HOST': '127.0.0.1',
         'PORT': '4001',
         'OPTIONS': {
