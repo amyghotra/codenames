@@ -10,9 +10,9 @@ DATABASES = {
         'NAME': 'codenames_database',
         'USER': 'root',
         # Hidden Password 
-        'PASSWORD': 'put your password here',
+        'PASSWORD': 'P@ssw0rd',
         'HOST': '127.0.0.1',
-        'PORT': '4001',
+        'PORT': '3306',
         'OPTIONS': {
             'autocommit': True
         }
