@@ -28,11 +28,10 @@ html, body{
 }
 
 .Landing{
-    background-image: url(../src/Images/landing.jpg);
+    background-image: url(../../src/Images/landing.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     height: 100%;
-    border: 5px solid black;
 }
 
 .Codenames-title{
