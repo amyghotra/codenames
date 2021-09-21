@@ -1,0 +1,62 @@
+body, html {
+    width: 100%;
+    height: 100%;
+}
+.masthead {
+    min-height: 30rem;
+    position: relative;
+    display: table;
+    width: 100%;
+    height: auto;
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+    background-image: url(../../Images/landing.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-color: transparent;
+}
+.masthead h1, .masthead .h1 {
+    font-size: 4rem;
+    margin: 0;
+    padding: 0;
+}
+.mb-1 {
+    margin-bottom: 0.25rem !important;
+    color: white;
+}
+h1 {
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 1.17em;
+    font-weight: bold;
+    color: white;
+}
+
+.btn-xl {
+    padding: 1.25rem 2.5rem;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color:gray;
+    border-color: black;
+    margin: 15px;
+}
+.align-items-center {
+    align-items: center !important;
+}
+
+.border-box{
+    display: block;
+    border: 4px solid rgb(255, 255, 255);
+    border-radius: 25px;
+}
