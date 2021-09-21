@@ -10,7 +10,7 @@ DATABASES = {
         'NAME': 'codenames_database',
         'USER': 'root',
         # Hidden Password 
-        'PASSWORD': 'Genjimada1!',
+        'PASSWORD': 'put your password here',
         'HOST': '127.0.0.1',
         'PORT': '4001',
         'OPTIONS': {
