@@ -1,38 +1,19 @@
-import React, { Component } from 'react';
-// import axios from 'axios';
+import './App.css'
+import Landing from './Components/LandingPage/Landing'
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Game from './Components/GamePage/Game'
+import UserInfo from './Components/UserInfoPage/UserInfo'
 
-import './App.css';
-import Landing from './Components/Landing.js';
-
-
-class App extends Component {
-  constructor() {
-    super()
-
-    this.state = {
-
-    }
-
-    
-  }
-
-  // componentDidMount() {
-  //   this.getRequest();
-  // }
-
-  // async getRequest() {
-  //   let response = await axios.get('http://127.0.0.1:8000/room/');
-  //   console.log(response);
-  // }
-
-  render() {
-    return (
-      <div className="App">
-        
-        <Landing />
-      </div>
-    );
-  }
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/Game" component={Game}/>
+        <Route exact path="/UserInfo" component={UserInfo}/>
+        <Route exact path="/" component={Landing}/>
+      </Switch>
+    </Router>  
+  )
 }
 
 export default App
