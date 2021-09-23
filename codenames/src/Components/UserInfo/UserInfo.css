@@ -1,0 +1,124 @@
+.userInfo{
+    background-image: url(../../Images/userinfo.jpg);
+    display: table;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+html, body{ /* Add this to fill out the page without using px */
+    margin: 0;
+    height: 100%; 
+}
+
+.gameCode{
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    margin-left: 80%;
+    height: fit-content;
+    width: 250px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 4px solid rgb(255, 255, 255);
+    padding: 30px;
+    color:white;
+
+}
+
+.box-userInfo-left{
+    background:white;
+    border-radius: 10px;
+    margin: auto;
+    height: 250px; /* Changed from fit-content */
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    border: 4px solid rgb(255, 255, 255);
+    align-items: center;
+    padding: 30px;
+    float: left; /* Put on left side of form */
+    margin-left: 10%; /* Add a margin of blank space to the left side, using percentage of the page */
+}
+
+.box-userInfo-right{
+    background:white;
+    border-radius: 10px;
+    margin: auto;
+    height: 250px; /* Changed from fit-content */
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    border: 4px solid rgb(255, 255, 255);
+    align-items: center;
+    padding: 30px;
+    float: right; /* Put on right side of form */
+    margin-right: 10%; /* Add margin of blank space to right side, using percentage of the page */
+}
+
+.container {
+    margin-top: 10%; /* Add some space between elements */
+    text-align: center;
+    align-items: center;
+}
+
+.startBtn{
+    text-decoration: none;
+    position: absolute;
+    bottom: 20%;
+    left: 47%; /* Puts 47% of screen to the left of the start of the button. Not sure if this truly centers it */
+    padding: 10px 20px;
+    font-size: 1.25rem;
+    border-radius: 10px;
+    background-color: rgba(129, 128, 128, 0.5);
+    color: rgb(255, 255, 255);
+}
+
+.prompt{
+    display: table-cell;
+    font-size:1.2em;
+    font-weight: bold;
+}
+
+::placeholder{
+    color:white;
+}
+
+.nickname{
+    display: table-cell;
+    text-decoration: none;
+    padding: 10px 20px;
+    width: 69%;
+    font-size: 1.25rem;
+    border-radius: 10px;
+    background-color: rgb(194, 194, 194);
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+.red{
+    display: inline;
+    text-decoration: none;
+    padding: 10px 20px;
+    width: 50%;
+    font-size: 1.25rem;
+    border-radius: 10px;
+    background-color: rgb(253, 63, 63);
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+.blue{
+    display: inline;
+    text-decoration: none;
+    padding: 10px 20px;
+    width: 50%;
+    font-size: 1.25rem;
+    border-radius: 10px;
+    background-color: rgb(87, 143, 248);
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
