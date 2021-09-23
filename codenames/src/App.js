@@ -2,7 +2,7 @@ import './App.css'
 import Landing from './Components/LandingPage/Landing'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Game from './Components/GamePage/Game'
-import UserInfo from './Components/UserInfoPage/UserInfo'
+import UserInfo from './Components/UserInfo/UserInfo'
 
 function App() {
   return (
