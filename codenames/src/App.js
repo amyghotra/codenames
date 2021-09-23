@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 // import axios from 'axios';
 
 import './App.css';
-import Landing from './Components/Landing.js';
+//import Landing from './Components/Landing.js';
+import UserInfo from './Components/UserInfo/UserInfo'; // Dan added
 
 
 class App extends Component {
@@ -28,8 +29,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        
-        <Landing />
+        {/*  <UserInfo /> */}
+        <UserInfo />
+       {/* <Landing /> Dan added */}
       </div>
     );
   }
