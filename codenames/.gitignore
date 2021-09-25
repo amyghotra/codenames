@@ -4,8 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-../codename_backend/codenamesdatabase/codenamesdatabase/local_settings.py
-../codename_backend/codenamesdatabase/codenamesdatabase/settings.py
 
 # testing
 /coverage
