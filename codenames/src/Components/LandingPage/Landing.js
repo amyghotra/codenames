@@ -1,18 +1,19 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import './Landing.css'
 // import {useState} from 'react'
 // import {useHistory} from 'react-router-dom'
 import {GrClose} from 'react-icons/gr'
+import axios from 'axios';
 
 
 
 class Landing extends Component {
-    constructor(){
+    constructor() {
         super()
         this.state = {
+            data: '',
             howToIsOpen: false
         }
-        
     }
 
     setHowToIsOpen = () => {
@@ -23,21 +24,31 @@ class Landing extends Component {
         })
     }
 
-    render(){
+    componentDidMount = () => {
+        axios.get(`http://127.0.0.1:8000/codenames/`).then(res => {
+            console.log(res.data);
+            this.setState({ data: res.data });
+        })
+    }
+    // const history = useHistory();
 
-        
-        
-        return (
+    // const urlChange = () =>{ 
+    //     let path = `UserInfo`; 
+    //     history.push(path);
+    // }
     
+    render() {
+        return (
+
             <div className="Landing" >
                 <h4 className="game-title">CODENAMES</h4>
-                {!this.state.howToIsOpen ? 
+                { !this.state.howToIsOpen ? 
                         <div className="box">
-                            <button class="btn1" >Create Room</button>
+                            <button className="btn1" >Create Room</button>
                             <br></br>
-                            <button class="btn1" >Enter code</button>
+                            <button className="btn1" >Enter code</button>
                             <br></br>
-                            <button class="btn1" onClick={this.setHowToIsOpen}> How to play</button>
+                            <button className="btn1" onClick={this.setHowToIsOpen}> How to play</button>
                             
                         </div>
                         : 
@@ -64,8 +75,6 @@ class Landing extends Component {
             </div>
         )
     }
-
-
 }
 
 export default Landing
