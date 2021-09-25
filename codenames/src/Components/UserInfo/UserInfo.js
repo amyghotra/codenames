@@ -1,7 +1,14 @@
 import React from 'react'
 import './UserInfo.css'
+import {useHistory} from 'react-router-dom'
 
 function UserInfo(){
+    const history = useHistory();
+    const urlChange = () =>{ 
+        let path = `game`; 
+        history.push(path);
+    }
+
     return(
         <div className="userInfo">
             <br />
@@ -16,7 +23,7 @@ function UserInfo(){
                     <input className="red" type="button"></input><br/>
                     <input className="blue" type="button"></input><br/>
                 </div>
-                <button className="startBtn">Start!</button>
+                <button className="startBtn" onClick={urlChange}>Start!</button>
             </form>
         </div>
     )
