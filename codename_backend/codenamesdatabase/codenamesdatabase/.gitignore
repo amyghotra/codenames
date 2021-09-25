@@ -1,2 +1,2 @@
-*.local_settings.py
-*.settings.py
+local_settings.py
+settings.py
