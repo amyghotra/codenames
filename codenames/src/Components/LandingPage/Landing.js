@@ -17,21 +17,16 @@ class Landing extends Component {
     }
 
     setHowToIsOpen = () => {
-        if (this.state.howToIsOpen === false) {
-            this.setState({
-                howToIsOpen: true
-            })
-        }
-        else if (this.state.howToIsOpen === true) {
-            this.setState({
-                howToIsOpen: false
-            })
-        }
+        this.setState(prevState => {
+            return{
+                howToIsOpen: !prevState.howToIsOpen
+            }
+        })
     }
 
     componentDidMount = () => {
         axios.get(`http://127.0.0.1:8000/codenames/`).then(res => {
-            console.log(res);
+            console.log(res.data);
             this.setState({ data: res.data });
         })
     }
@@ -47,7 +42,7 @@ class Landing extends Component {
 
             <div className="Landing" >
                 <h4 className="game-title">CODENAMES</h4>
-                { this.state.howToIsOpen === false ? 
+                { !this.state.howToIsOpen ? 
                         <div className="box">
                             <button className="btn1" >Create Room</button>
                             <br></br>
