@@ -28,10 +28,6 @@ html, body{ /* Add this to fill out the page without using px */
     color:white;
 }
 
-.container{
-    display: flex;
-    float: left;
-}
 
 .teamInfo{
     margin-left: 10px;
