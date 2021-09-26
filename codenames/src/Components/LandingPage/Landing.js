@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import './Landing.css'
 // import {useState} from 'react'
-// import {useHistory} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import {GrClose} from 'react-icons/gr'
 import axios from 'axios';
+// import UserInfo from '../UserInfo/UserInfo';
 
 
 
@@ -12,7 +13,10 @@ class Landing extends Component {
         super()
         this.state = {
             data: '',
-            howToIsOpen: false
+            howToIsOpen: false,
+            inputValue: '',
+            roomMatched: false,
+            redirect: false
         }
     }
 
@@ -30,13 +34,42 @@ class Landing extends Component {
             this.setState({ data: res.data });
         })
     }
-    // const history = useHistory();
 
-    // const urlChange = () =>{ 
-    //     let path = `UserInfo`; 
-    //     history.push(path);
-    // }
-    
+    handleChange = (event) => {
+        this.setState({
+            inputValue: event.target.value
+        })
+        console.log(event.target.value)
+    }
+
+
+    submitInput = () => {
+        for(let i = 0; i < this.state.data.length; i++) {
+            if(this.state.data[i].room_key === this.state.inputValue) {
+                this.setState(prevState => {
+                    return {
+                        roomMatched: !prevState.roomMatched
+                    }
+                })
+                this.setState({
+                    redirect: true
+                })
+            }
+        }
+    }
+
+    renderRedirect = () => {
+        console.log(this.state.roomMatched, this.state.inputValue)
+        if (this.state.redirect && this.state.roomMatched === true) {
+            return <Redirect to={{
+                        pathname: '/userinfo',
+                        state: {
+                            room_key: this.state.inputValue
+                        }    
+                    }} />
+        }
+    }
+ 
     render() {
         return (
 
@@ -44,10 +77,21 @@ class Landing extends Component {
                 <h4 className="game-title">CODENAMES</h4>
                 { !this.state.howToIsOpen ? 
                         <div className="box">
+
                             <button className="btn1" >Create Room</button>
+
                             <br></br>
-                            <button className="btn1" >Enter code</button>
+
+                            <div className="input-group mb-3">
+                                <input type="text" className="form-control" placeholder="Room Key" aria-label="Room Key" aria-describedby="basic-addon2" value={this.state.inputValue} onChange={this.handleChange}/>
+                                <div className="input-group-append">
+                                    {this.renderRedirect()}
+                                    <button className="btn btn-outline-secondary" type="button" onClick={this.submitInput}>Button</button>
+                                </div>
+                            </div>
+
                             <br></br>
+
                             <button className="btn1" onClick={this.setHowToIsOpen}> How to play</button>
                             
                         </div>
