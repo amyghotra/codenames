@@ -20,6 +20,7 @@ class Landing extends Component {
         }
     }
 
+
     setHowToIsOpen = () => {
         this.setState(prevState => {
             return{
@@ -59,12 +60,12 @@ class Landing extends Component {
             // console.log(this.state.roomMatched)
             
         }
-        if(this.state.roomMatched === true){       
-            console.log(this.state.inputValue)
-        }
-        else{
-            console.log('Try Again')
-        }
+        // if(this.state.roomMatched === true){       
+        //     console.log(this.state.inputValue)
+        // }
+        // else{
+        //     console.log('Try Again')
+        // }
     }
 
     renderRedirect = () => {
@@ -88,7 +89,7 @@ class Landing extends Component {
                 {!this.state.howToIsOpen ? 
                         <div className="box">
 
-                            <button className="btn1" >Create Room</button>
+                            <button className="btn1" onClick={this.createRoom}>Create Room</button>
 
                             <br></br>
 
