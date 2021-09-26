@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import './Landing.css'
 // import {useState} from 'react'
-// import {useHistory} from 'react-router-dom'
 import {GrClose} from 'react-icons/gr'
 import axios from 'axios';
 
@@ -11,7 +10,7 @@ class Landing extends Component {
     constructor() {
         super()
         this.state = {
-            data: '',
+            room: '',
             howToIsOpen: false
         }
     }
@@ -26,27 +25,61 @@ class Landing extends Component {
 
     componentDidMount = () => {
         axios.get(`http://127.0.0.1:8000/codenames/`).then(res => {
-            console.log(res.data);
-            this.setState({ data: res.data });
+            console.log(res.data)
+
+            this.setState({room: res.data[0].room_key})
         })
     }
-    // const history = useHistory();
-
-    // const urlChange = () =>{ 
-    //     let path = `UserInfo`; 
-    //     history.push(path);
-    // }
     
-    render() {
-        return (
+    handleChange = () => { 
+        let roomData = this.state.room
+        console.log(roomData)
 
+        
+        // conditional statement if room id is valid to input ?
+        if(roomData){
+            return{
+                roomData
+                // send to userinfo page :
+                
+            }
+        }
+        else{
+            // else console log('try again')
+            console.log('Try Again')
+        }
+    }
+    
+    onChange = (props) => { 
+        let roomData = this.state.room
+        // console.log(roomData)
+
+        
+        // conditional statement if room id is valid to input ?
+        if(roomData === props){
+            return{
+                roomData
+                // send to userinfo page :
+                
+            }
+        }
+        else{
+            // else console log('try again')
+            console.log('Try Again')
+        }
+    }
+    render() {
+
+    
+        return (
             <div className="Landing" >
                 <h4 className="game-title">CODENAMES</h4>
-                { !this.state.howToIsOpen ? 
+                {!this.state.howToIsOpen ? 
                         <div className="box">
-                            <button className="btn1" >Create Room</button>
+                            <button className="btn1" onClick={this.handleChange}>Create Room</button>
                             <br></br>
-                            <button className="btn1" >Enter code</button>
+                            {/* <input className="btn2" type="text" placeholder="Enter Code" spellCheck="false" onClick={this.handleChange}></input> */}
+                            <button className="btn1" onClick={this.onChange}>Enter code</button>
                             <br></br>
                             <button className="btn1" onClick={this.setHowToIsOpen}> How to play</button>
                             
