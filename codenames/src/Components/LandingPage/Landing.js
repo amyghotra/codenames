@@ -12,7 +12,9 @@ class Landing extends Component {
         super()
         this.state = {
             data: '',
-            howToIsOpen: false
+            howToIsOpen: false,
+            inputValue: '',
+            roomMatched: false,
         }
     }
 
@@ -30,6 +32,23 @@ class Landing extends Component {
             this.setState({ data: res.data });
         })
     }
+
+    handleChange = (event) => {
+        this.setState({
+            inputValue: event.target.value
+        })
+        console.log(event.target.value)
+    }
+
+    submitInput = () => {
+        for(let i = 0; i < this.state.data.length; i++) {
+            if(this.state.data[i].room_key === this.state.inputValue) {
+                return (
+                    console.log('it works')
+                )
+            }
+        }
+    }
     // const history = useHistory();
 
     // const urlChange = () =>{ 
@@ -44,10 +63,20 @@ class Landing extends Component {
                 <h4 className="game-title">CODENAMES</h4>
                 { !this.state.howToIsOpen ? 
                         <div className="box">
+
                             <button className="btn1" >Create Room</button>
+
                             <br></br>
-                            <button className="btn1" >Enter code</button>
+
+                            <div className="input-group mb-3">
+                                <input type="text" className="form-control" placeholder="Room Key" aria-label="Room Key" aria-describedby="basic-addon2" value={this.state.inputValue} onChange={this.handleChange}/>
+                                <div className="input-group-append">
+                                    <button className="btn btn-outline-secondary" type="button" onClick={this.submitInput}>Button</button>
+                                </div>
+                            </div>
+
                             <br></br>
+
                             <button className="btn1" onClick={this.setHowToIsOpen}> How to play</button>
                             
                         </div>
