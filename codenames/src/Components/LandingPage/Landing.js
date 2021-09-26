@@ -10,8 +10,10 @@ class Landing extends Component {
     constructor() {
         super()
         this.state = {
-            room: '',
-            howToIsOpen: false
+            howToIsOpen: false,
+            data: '',
+            inputValue: '',
+            roomMatched: false,
         }
     }
 
@@ -27,47 +29,37 @@ class Landing extends Component {
         axios.get(`http://127.0.0.1:8000/codenames/`).then(res => {
             console.log(res.data)
 
-            this.setState({room: res.data[0].room_key})
+            this.setState({data: res.data})
         })
     }
-    
-    handleChange = () => { 
-        let roomData = this.state.room
-        console.log(roomData)
 
-        
-        // conditional statement if room id is valid to input ?
-        if(roomData){
-            return{
-                roomData
-                // send to userinfo page :
-                
+    handleChange = (event) => {
+        this.setState({
+            inputValue: event.target.value
+        })
+        // console.log(event.target.value)
+    }
+
+    submitInput = () => {
+        for(let i = 0; i < this.state.data.length; i++) {
+            if(this.state.data[i].room_key === this.state.inputValue) {
+                this.setState({
+                    roomMatched: true
+                    
+                })
             }
+            // console.log(this.state.roomMatched)
+            
+        }
+        if(this.state.roomMatched === true){       
+            console.log(this.state.inputValue)
         }
         else{
-            // else console log('try again')
             console.log('Try Again')
         }
     }
-    
-    onChange = (props) => { 
-        let roomData = this.state.room
-        // console.log(roomData)
-
         
-        // conditional statement if room id is valid to input ?
-        if(roomData === props){
-            return{
-                roomData
-                // send to userinfo page :
-                
-            }
-        }
-        else{
-            // else console log('try again')
-            console.log('Try Again')
-        }
-    }
+    
     render() {
 
     
@@ -76,11 +68,20 @@ class Landing extends Component {
                 <h4 className="game-title">CODENAMES</h4>
                 {!this.state.howToIsOpen ? 
                         <div className="box">
-                            <button className="btn1" onClick={this.handleChange}>Create Room</button>
+
+                            <button className="btn1" >Create Room</button>
+
                             <br></br>
-                            {/* <input className="btn2" type="text" placeholder="Enter Code" spellCheck="false" onClick={this.handleChange}></input> */}
-                            <button className="btn1" onClick={this.onChange}>Enter code</button>
+
+                            <div className="input-group mb-3">
+                                <input type="text" className="form-control" placeholder="Room Key" aria-label="Room Key" aria-describedby="basic-addon2" value={this.state.inputValue} onChange={this.handleChange}/>
+                                <div className="input-group-append">
+                                    <button className="btn btn-outline-secondary" type="button" onClick={this.submitInput}>Button</button>
+                                </div>
+                            </div>
+
                             <br></br>
+
                             <button className="btn1" onClick={this.setHowToIsOpen}> How to play</button>
                             
                         </div>
