@@ -38,9 +38,9 @@ class Landing extends Component {
 
     generateRoomKey = () => {
         let randomRoomKey = '';
-        let characters = 'abcdefghijklmnopqrstuvwxyz';
-        for(let i = 0; i < 8; i++) {
-            randomRoomKey += characters.charAt(Math.floor(Math.random() * 26));
+        let characters = '0123456789';
+        for(let i = 0; i < 5; i++) {
+            randomRoomKey += characters.charAt(Math.floor(Math.random() * 10));
         }
         let sameKey = false;
         for(let i = 0; i < this.state.data.length; i++) {
