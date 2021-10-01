@@ -22,8 +22,8 @@ class RoomList(APIView):
 
 class UserInfoList(APIView):
     def get(self, request):
-        room = UserInfo.objects.all()
-        serializer = UserInfoSerializer(room, many=True)
+        userInfo = UserInfo.objects.all()
+        serializer = UserInfoSerializer(userInfo, many=True)
         return Response(serializer.data)
 
     def post(self, request):
