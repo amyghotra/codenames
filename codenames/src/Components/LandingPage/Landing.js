@@ -95,7 +95,6 @@ class Landing extends Component {
     }
 
     renderRedirect = () => {
-        console.log(this.state.roomMatched, this.state.inputValue)
         if (this.state.redirect && this.state.roomMatched === true) {
             return <Redirect to={{
                         pathname: '/userinfo',
@@ -121,7 +120,6 @@ class Landing extends Component {
                             <div className="input-group mb-3">
                                 <input type="text" className="form-control" placeholder="Room Key" aria-label="Room Key" aria-describedby="basic-addon2" value={this.state.inputValue} onChange={this.handleChange}/>
                                 <div className="input-group-append">
-                                    {/* {this.renderRedirect()} */}
                                     <button className="btn btn-outline-secondary" type="button" onClick={this.submitInput}>Button</button>
                                 </div>
                             </div>
