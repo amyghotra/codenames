@@ -32,8 +32,8 @@ class Landing extends Component {
 
     componentDidMount = () => {
         axios.get('http://127.0.0.1:8000/codenames/').then(res => {
-            console.log(res.data);
-            this.setState({ data: res.data });
+            console.log(res.data)
+            this.setState({ data: res.data })
         })
     }
 
@@ -107,15 +107,6 @@ class Landing extends Component {
         }
     }
 
-    createRoom = () => {
-        let randomRoom = '';
-        let values = '0123456789';
-        for(let i = 0; i < 8; i++){
-            randomRoom += values.charAt(Math.floor(Math.random() * 10));
-        }
-        console.log(randomRoom)
-    }
- 
     render() {
 
     
@@ -130,7 +121,13 @@ class Landing extends Component {
                             <br></br>
 
                             <div className="input-group mb-3">
-                                <input type="text" className="form-control" placeholder="Room Key" aria-label="Room Key" aria-describedby="basic-addon2" value={this.state.inputValue} onChange={this.handleChange}/>
+                                <input type="text" 
+                                className="form-control" 
+                                placeholder="Room Key" 
+                                aria-label="Room Key" 
+                                aria-describedby="basic-addon2" 
+                                value={this.state.inputValue} 
+                                onChange={this.handleChange}/>
                                 <div className="input-group-append">
                                     {/* {this.renderRedirect()} */}
                                     <button className="btn btn-outline-secondary" type="button" onClick={this.submitInput}>Button</button>
