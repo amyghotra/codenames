@@ -57,15 +57,7 @@ class Landing extends Component {
                     redirect: true
                 })
             }
-            // console.log(this.state.roomMatched)
-            
         }
-        // if(this.state.roomMatched === true){       
-        //     console.log(this.state.inputValue)
-        // }
-        // else{
-        //     console.log('Try Again')
-        // }
     }
 
     renderRedirect = () => {
@@ -79,6 +71,15 @@ class Landing extends Component {
                     }} />
         }
     }
+
+    createRoom = () => {
+        let randomRoom = '';
+        let values = '0123456789';
+        for(let i = 0; i < 8; i++){
+            randomRoom += values.charAt(Math.floor(Math.random() * 10));
+        }
+        console.log(randomRoom)
+    }
  
     render() {
 
@@ -89,7 +90,7 @@ class Landing extends Component {
                 {!this.state.howToIsOpen ? 
                         <div className="box">
 
-                            <button className="btn1" onClick={this.createRoom}>Create Room</button>
+                            <button className="btn1" onClick={this.createRoom} >Create Room</button>
 
                             <br></br>
 
