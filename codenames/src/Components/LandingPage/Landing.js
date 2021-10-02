@@ -16,7 +16,8 @@ class Landing extends Component {
             data: '',
             inputValue: '',
             roomMatched: false,
-            redirect: false
+            redirect: false,
+            roomKey: ''
         }
     }
 
@@ -30,11 +31,45 @@ class Landing extends Component {
     }
 
     componentDidMount = () => {
-        axios.get(`http://127.0.0.1:8000/codenames/`).then(res => {
-            console.log(res.data)
-
-            this.setState({data: res.data})
+        axios.get('http://127.0.0.1:8000/codenames/').then(res => {
+            console.log(res.data);
+            this.setState({ data: res.data });
         })
+    }
+
+    generateRoomKey = () => {
+        let randomRoomKey = '';
+        let characters = '0123456789';
+        for(let i = 0; i < 5; i++) {
+            randomRoomKey += characters.charAt(Math.floor(Math.random() * 10));
+        }
+        let sameKey = false;
+        for(let i = 0; i < this.state.data.length; i++) {
+            if(this.state.data[i] === randomRoomKey) {
+                sameKey = true;
+            }
+        }
+        if(sameKey === true) {
+            this.generateRoomKey();
+        }
+        else {
+            this.submitRoomKey(randomRoomKey);
+        }    
+    }
+
+    submitRoomKey = (randomRoomKey) => {
+        axios.post('http://127.0.0.1:8000/codenames/', {room_key: randomRoomKey}    )
+            .then(response => {
+                console.log(response)
+                this.setState({
+                    roomMatched: true,
+                    inputValue: randomRoomKey,
+                    redirect: true
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            }) 
     }
 
     handleChange = (event) => {
@@ -89,15 +124,15 @@ class Landing extends Component {
                 <h4 className="game-title">CODENAMES</h4>
                 {!this.state.howToIsOpen ? 
                         <div className="box">
-
-                            <button className="btn1" onClick={this.createRoom} >Create Room</button>
+                            {this.renderRedirect()}
+                            <button className="btn1" onClick={this.generateRoomKey}>Create Room</button>
 
                             <br></br>
 
                             <div className="input-group mb-3">
                                 <input type="text" className="form-control" placeholder="Room Key" aria-label="Room Key" aria-describedby="basic-addon2" value={this.state.inputValue} onChange={this.handleChange}/>
                                 <div className="input-group-append">
-                                    {this.renderRedirect()}
+                                    {/* {this.renderRedirect()} */}
                                     <button className="btn btn-outline-secondary" type="button" onClick={this.submitInput}>Button</button>
                                 </div>
                             </div>
