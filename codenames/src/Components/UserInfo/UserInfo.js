@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import axios from 'axios'
+import axios from 'axios'
 import {Redirect} from 'react-router-dom'
 import './UserInfo.css'
 
@@ -10,30 +10,21 @@ class UserInfo extends Component {
         this.state = {
             room_key: '',
             nickname: '',
-            red_team: false,
-            blue_team: false,
+            team: '',
             spymaster: false,
             operator: false,
             redirect: false
         }
     }
 
-    // componentDidMount = () => {
-    //     axios.get('http://127.0.0.1:8000/codenames/userInfo').then(res => {
-    //         console.log('this is the room key', this.props.location.state.room_key)
-    //         this.setState({
-    //             room_key: this.props.location.state.room_key
-    //         })
-    //     })
-    // }
+    componentDidMount = () => {
+        console.log(this.props.location.state.room_key)
+        this.setState({
+            room_key: this.props.location.state.room_key
+        })
+    }
 
 
-    // componentDidMount = () => {
-    //     console.log('this is the room key', this.props.location.state.room_key)
-    //     this.setState({
-    //         room_key: this.props.location.state.room_key
-    //     })
-    // }
 
     handleChange = (event) => {
         this.setState({
@@ -43,34 +34,38 @@ class UserInfo extends Component {
 
     setRed = () => {
         this.setState({
-            red_team: true,
-            blue_team: false
+            team: 'R'
         })
-        console.log(this.red_team, this.blue_team)
     }
 
     setBlue = () => {
         this.setState({
-            blue_team: true,
-            red_team: false
+            team: 'B'
         })
-        console.log(this.red_team, this.blue_team)
     }
 
+   
     submitUserInfo = () => {
-        // console.log(this.setBlue)
-        this.setState({
-            redirect: true
-        })
-        console.log((this.state.redirect)? "true": "false")
-        if(this.state.redirect === true){
-            return <Redirect to={{
-                pathname: '/game'
-            }} />
-
+        
+        if(this.state.room_key !== null && this.state.nickname !== null && this.state.team !== null) {
+            axios.post('http://127.0.0.1:8000/codenames/userInfo/', {
+                room_key:this.props.location.state.room_key,
+                nickname: this.state.nickname, 
+                team: this.state.team})
+                .then(repsonse => {
+                    console.log(repsonse)
+                    this.setState({
+                        redirect: true
+                    })
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         }
+
     }
-        // axios.post('http://127.0.0.1:8000/codenames/userInfo', {} )
+
+
 
     // submitRoomKey = (randomRoomKey) => {
     //     axios.post('http://127.0.0.1:8000/codenames/userInfo', {room_key: randomRoomKey}    )
@@ -102,20 +97,16 @@ class UserInfo extends Component {
     //     }
     // }
 
-    // renderRedirect = () => {
-    //     console.log(this.state.roomMatched, this.state.inputValue)
-    //     if (this.state.redirect && this.state.roomMatched === true) {
-    //         return <Redirect to={{
-    //                     pathname: '/game',
-    //                     state: {
-    //                         room_key: this.state.inputValue
-    //                     }    
-    //                 }} />
-    //     }
-    // }
+    renderRedirect = () => {
+        if(this.state.redirect){
+            console.log(this.state.nickname)
+            return <Redirect to='/game'/>
+        }
+    }
     
     render() {
-        const text = this.state.red_team ? "Red team" : "Blue Team"
+        
+        // const text = this.state.blue_team ? "blue team" : "red Team"
         return(
             <div className="userInfo">
                 <br />
@@ -138,7 +129,7 @@ class UserInfo extends Component {
                     <div className="box-userInfo-right">
                         <label className="prompt">Choose a team</label><br/>
                         <input className="red" type="button" onClick={this.setRed}></input><br/>
-                        <p>{text}</p>
+                        {/* <p>{text}</p> */}
                         <input className="blue" type="button" onClick={this.setBlue}></input><br/>
                         
                     </div>

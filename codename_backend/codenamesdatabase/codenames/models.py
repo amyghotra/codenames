@@ -6,7 +6,7 @@ class Room(models.Model):
 
 
 class UserInfo(models.Model):
-    Room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    room_key= models.ForeignKey(Room, on_delete=models.CASCADE)
     TEAM = (
         ('R', 'Red'),
         ('B', 'Blue'),
