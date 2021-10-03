@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 // import axios from 'axios'
 import './Game.css'
+// import Row from './Row/Row'
 
 class Game extends Component{
     constructor() {

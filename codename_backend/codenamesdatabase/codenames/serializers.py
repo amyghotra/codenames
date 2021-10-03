@@ -12,8 +12,3 @@ class UserInfoSerializer(serializers.ModelSerializer):
         model = UserInfo
         fields = ['id', 'room_key', 'nickname', 'team', 'task']
 
-
-class GameSerializer(serializers.ModelSerializer):
-    class meta:
-        model = Game
-        fields = ['id', 'room_key', ]

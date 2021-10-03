@@ -27,7 +27,6 @@ class card extends Component{
                     <input type="checkbox" onClick={this.setToggle}> </input>
                     <h6>word</h6>
                 </label>
-                
             </div>
         )
     }
