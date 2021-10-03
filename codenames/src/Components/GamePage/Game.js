@@ -8,7 +8,10 @@ class Game extends Component{
         this.state = {
             room_key: '',
             nickname: '',
-            team: ''
+            team: '',
+            task: '',
+            red_score: 0,
+            blue_score: 0
         }
     }
 
@@ -16,7 +19,8 @@ class Game extends Component{
         this.setState({
             room_key: this.props.location.state.room_key,
             nickname: this.props.location.state.nickname,
-            team: this.props.location.state.team
+            team: this.props.location.state.team,
+            task: this.props.location.state.task
         })
             
     }
