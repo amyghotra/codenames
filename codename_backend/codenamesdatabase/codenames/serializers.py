@@ -10,4 +10,4 @@ class RoomSerializer(serializers.ModelSerializer):
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
-        fields = ['id', 'nickname', 'team']
+        fields = ['id', 'room_key', 'nickname', 'team']

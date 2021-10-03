@@ -17,8 +17,7 @@ class UserInfo extends Component {
         }
     }
 
-    componentDidMount = () => {
-        console.log(this.props.location.state.room_key)
+    componentDidMount = () => {     
         this.setState({
             room_key: this.props.location.state.room_key
         })
@@ -46,25 +45,41 @@ class UserInfo extends Component {
 
    
     submitUserInfo = () => {
+        console.log(this.state.room_key)
         
         if(this.state.room_key !== null && this.state.nickname !== null && this.state.team !== null) {
-            axios.post('http://127.0.0.1:8000/codenames/userInfo/', {
+            axios.post('http://127.0.0.1:8000/codenames/userInfo', {
                 room_key:this.props.location.state.room_key,
                 nickname: this.state.nickname, 
-                team: this.state.team})
-                .then(repsonse => {
-                    console.log(repsonse)
-                    this.setState({
-                        redirect: true
-                    })
+                team: this.state.team
+            })
+            .then(repsonse => {
+                console.log(repsonse)
+                this.setState({
+                    redirect: true
                 })
-                .catch(error => {
-                    console.log(error)
-                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
         }
 
     }
 
+    renderRedirect = () => {
+        if(this.state.redirect){
+            console.log(this.state.nickname)
+            return <Redirect to={{
+                pathname: '/game',
+                state: {
+                    room_key: this.state.room_key,
+                    nickname: this.state.nickname,
+                    team: this.state.team
+
+                }
+            }}/>
+        }
+    }
 
 
     // submitRoomKey = (randomRoomKey) => {
@@ -97,12 +112,6 @@ class UserInfo extends Component {
     //     }
     // }
 
-    renderRedirect = () => {
-        if(this.state.redirect){
-            console.log(this.state.nickname)
-            return <Redirect to='/game'/>
-        }
-    }
     
     render() {
         
@@ -133,7 +142,8 @@ class UserInfo extends Component {
                         <input className="blue" type="button" onClick={this.setBlue}></input><br/>
                         
                     </div>
-                    <button className="startBtn" onClick={this.submitUserInfo}>Start!</button>
+                    {this.renderRedirect()}
+                    <button className="startBtn" type="button" onClick={this.submitUserInfo}>Start!</button>
                 </form>
             </div>
         )

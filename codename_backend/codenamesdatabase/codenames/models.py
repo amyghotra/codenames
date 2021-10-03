@@ -6,7 +6,7 @@ class Room(models.Model):
 
 
 class UserInfo(models.Model):
-    room_key= models.ForeignKey(Room, on_delete=models.CASCADE)
+    room_key = models.CharField(max_length=5)
     TEAM = (
         ('R', 'Red'),
         ('B', 'Blue'),
