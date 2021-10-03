@@ -1,7 +1,5 @@
-/* Not used in Game.js but I'm keeping this file for now in case it's needed */
-
 .game{
-    background-image: url(../../Images/game.png);
+    background-image: url(../../../Images/game.png);
     display: table;
     background-repeat: no-repeat;
     background-size: cover;
@@ -59,7 +57,7 @@ html, body{ /* Add this to fill out the page without using px */
     color: black;
     font-size: 22px;
     font-weight: bold;
-    font-family: "FreeMono", monospace; /* Changed from Prosto One, I'm not sure if css supports that font? */
+    font-family: "FreeMono", monospace; /* Changed from Prosto One */
     float: left;
 }
 

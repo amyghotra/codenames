@@ -1,12 +1,27 @@
-import React from 'react'
+import React, {Component} from 'react'
 import './Game.css'
+import SpymastersGame from './Spymasters/SpymastersGame'
+import OperativesGame from './Operatives/OperativesGame'
 
-function Game(){
-    return(
-        <div className="game">
-            <h6 className="gameCode"> Game Code: 00000 </h6>
-        </div>
-    )
+class Game extends Component {
+    constructor() {
+        super()
+        this.state = {
+            spymaster: true
+        }
+    }
+    render() {
+        if (this.state.spymaster) {
+            return (
+                <SpymastersGame />
+            )
+        }
+        else {
+            return (
+                <OperativesGame />
+            )
+        }
+    }
 }
 
 export default Game
