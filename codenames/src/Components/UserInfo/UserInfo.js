@@ -11,8 +11,7 @@ class UserInfo extends Component {
             room_key: '',
             nickname: '',
             team: '',
-            spymaster: false,
-            operator: false,
+            task: '',
             redirect: false
         }
     }
@@ -47,11 +46,12 @@ class UserInfo extends Component {
     submitUserInfo = () => {
         console.log(this.state.room_key)
         
-        if(this.state.room_key !== null && this.state.nickname !== null && this.state.team !== null) {
+        if(this.state.room_key !== null && this.state.nickname !== null && this.state.team !== null && this.state.task !== null) {
             axios.post('http://127.0.0.1:8000/codenames/userInfo', {
                 room_key:this.props.location.state.room_key,
                 nickname: this.state.nickname, 
-                team: this.state.team
+                team: this.state.team,
+                task: this.state.task
             })
             .then(repsonse => {
                 console.log(repsonse)
@@ -74,44 +74,25 @@ class UserInfo extends Component {
                 state: {
                     room_key: this.state.room_key,
                     nickname: this.state.nickname,
-                    team: this.state.team
+                    team: this.state.team,
+                    task: this.state.task
 
                 }
             }}/>
         }
     }
 
+    setSpy = () => {
+        this.setState({
+            task: 'S'
+        })
+    }
 
-    // submitRoomKey = (randomRoomKey) => {
-    //     axios.post('http://127.0.0.1:8000/codenames/userInfo', {room_key: randomRoomKey}    )
-    //         .then(response => {
-    //             console.log(response)
-    //             this.setState({
-    //                 roomMatched: true,
-    //                 inputValue: randomRoomKey,
-    //                 redirect: true
-    //             })
-    //         })
-    //         .catch(error => {
-    //             console.log(error)
-    //         }) 
-    // }
-
-    // submitInput = () => {
-    //     for(let i = 0; i < this.state.data.length; i++) {
-    //         if(this.state.data[i].room_key === this.state.inputValue) {
-    //             this.setState(prevState => {
-    //                 return {
-    //                     roomMatched: !prevState.roomMatched
-    //                 }
-    //             })
-    //             this.setState({
-    //                 redirect: true
-    //             })
-    //         }
-    //     }
-    // }
-
+    setOper = () => {
+        this.setState({
+            task: 'O'
+        })
+    }
     
     render() {
         
@@ -131,9 +112,9 @@ class UserInfo extends Component {
                         placeholder="Nickname" 
                         spellCheck="false" 
                         onChange={this.handleChange}/><br/>
-                        {/* <label className="prompt">job</label><br/>
-                        <input className="red" type="button" placeholder="spymaster"></input><br/>
-                        <input className="blue" type="button" placeholder="operator"></input><br/> */}
+                        <label className="prompt">Select task</label><br/>
+                        <button className="task" type="button" onClick={this.setSpy}>spymaster</button><br/>
+                        <button className="task" type="button" onClick={this.setOper}>operator</button>
                     </div>
                     <div className="box-userInfo-right">
                         <label className="prompt">Choose a team</label><br/>
