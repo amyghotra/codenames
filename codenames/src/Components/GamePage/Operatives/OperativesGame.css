@@ -1,4 +1,4 @@
-.game{
+#game{
     background-image: url(../../../Images/game.png);
     display: table;
     background-repeat: no-repeat;
@@ -150,7 +150,7 @@ html, body{ /* Add this to fill out the page without using px */
 
 .card-deck{
     height: 90%;
-    background-color: rgb(228, 235, 190);
+    /*background-color: rgb(228, 235, 190);*/
     border-radius: 10px;
     width: 105%;
 }

@@ -25,15 +25,29 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     }
     // For changing state when elements are changed on the page by user
     handleChange(event) {
-        const {name, value, type, checked} = event.target
+        //const {name, value, type, checked} = event.target
         // if the type just grabbed from the event is a checkbox, set the name of the event, 
         // which is named after an element in the state - so the element in the state - to 
         // the boolean checked, otherwise set [name], in state, to the value grabbed. 
-        type === "checkbox" ? this.setState({ [name]: checked }) : this.setState({ [name]: value })
+        //type === "checkbox" ? this.setState({ [name]: checked }) : this.setState({ [name]: value })
+        const value = event.target.value;
+        this.setState({
+            spymasterClueWord: value,
+        });
+        //console.log(this.state.spymasterClueWord);
+        
     }
+
     // For handling the players' submitting their guesses / word picks
     handleGuessSubmit(event) {
-        
+        event.preventDefault();
+
+        let numTemp = this.state.spymasterClueCount ;
+        this.setState({spymasterClueCount: numTemp});
+        console.log(this.state.spymasterClueWord);
+        console.log(this.state.spymasterClueCount);
+
+        this.forceUpdate();
     }
     incrementClueCount() {
 		this.setState(prevState => { // Update with inline function
@@ -377,14 +391,14 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <form>
+                                        <form onSubmit={this.handleSubmit}>
                                             <div className="spymasterClue">
                                             <input 
                                             type="text" 
-                                            value={this.state.spymasterClueWord} 
                                             name="clueWord" 
-                                            placeholder="Type clue here" 
+                                            placeholder ="Type clue here" 
                                             onChange={this.handleChange} 
+                                            value={this.state.spymasterClueWord} 
                                             />
                                             <div className="counter">
                                                 {/* type = "button" to NOT make it submit the form */}

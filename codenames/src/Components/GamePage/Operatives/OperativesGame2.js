@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import './OperativesGame.css'
 
-class OperativesGame extends Component{ // Still not 100% sure whether to change this to a class, or to just useState
+class OperativesGame2 extends Component{ // Still not 100% sure whether to change this to a class, or to just useState
    
     constructor() {
         super()
@@ -143,7 +143,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             <div class="col">
                                                 <div class="card-deck"> 
                                                 <div className="card-style">                         
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
                                                                                       
                                                         <input 
                                                         className = "checkboxStructure"
@@ -161,7 +161,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             <div class="col">
                                                 <div class="card-deck">
                                                     <div className="card-style">       
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleSetColor}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -178,7 +178,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -194,7 +194,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body">
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
                                                     
                                                         <input 
                                                         className = "checkboxStructure"
@@ -210,7 +210,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body">
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
                                                         
                                                         <input 
                                                         className = "checkboxStructure"
@@ -231,7 +231,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                         <div class="row">
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -247,7 +247,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body">
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -263,7 +263,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body">
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -279,7 +279,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body">
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -295,7 +295,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body">
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -316,7 +316,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                         <div class="row">
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -332,7 +332,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -348,7 +348,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -364,7 +364,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body">
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -380,7 +380,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -401,7 +401,8 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                         <div class="row">
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
+
                                                         <input 
                                                         className = "checkboxStructure"
 							                            type = "checkbox"
@@ -416,7 +417,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -431,7 +432,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -447,7 +448,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -463,7 +464,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -484,7 +485,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                         <div class="row">
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -500,7 +501,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -516,7 +517,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -532,7 +533,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body">
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -548,7 +549,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                             </div>
                                             <div class="col">
                                                 <div class="card-deck">
-                                                    <div class="card-body" >
+                                                    <div class="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -584,4 +585,4 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
     }
 }
 
-export default OperativesGame
+export default OperativesGame2
