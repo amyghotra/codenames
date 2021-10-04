@@ -19,6 +19,7 @@ class Game extends Component {
             team: this.props.location.state.team
         })
     }
+    
 
     render() {
         return(
