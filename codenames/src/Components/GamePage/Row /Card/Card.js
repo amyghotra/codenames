@@ -5,10 +5,19 @@ class card extends Component{
     constructor(){
         super()
         this.state = {
+            word='',
             toggle: false,
             team: '',
             assassin: false,
         }
+    }
+
+    componentDidMount = () => {
+        this.setState({
+            word: this.props.location.state.word,
+            team: this.props.location.state.team,
+            
+        })
     }
 
     setToggle = () => {

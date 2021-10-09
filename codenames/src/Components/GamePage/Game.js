@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 // import axios from 'axios'
 import './Game.css'
-// import Row from './Row/Row'
 
 class Game extends Component{
     constructor() {
@@ -41,21 +40,21 @@ class Game extends Component{
                                         <div className="redTeam">
                                             <h6 className="teamTitle"> Red Team</h6>
                                             <h6 className="teamContent"> Spymasters:</h6>
-                                            <li className="bulletContent">username</li>
-                                            <li className="bulletContent">username</li>
+                                            <li className="bulletContent">{this.state.nickname}</li>
+                                            <li className="bulletContent">{this.state.nickname}</li>
                                             <h6 className="teamContent"> Operatives:</h6>
-                                            <li className="bulletContent">username</li>
-                                            <li className="bulletContent">username</li>
+                                            <li className="bulletContent">{this.state.nickname}</li>
+                                            <li className="bulletContent">{this.state.nickname}</li>
                                         </div>
     
                                         <div className="blueTeam">
                                             <h6 className="teamTitle" >Blue Team</h6>
                                             <h6 className="teamContent"> Spymasters:</h6>
-                                            <li className="bulletContent">username</li>
-                                            <li className="bulletContent">username</li>
+                                            <li className="bulletContent">{this.state.nickname}</li>
+                                            <li className="bulletContent">{this.state.nickname}</li>
                                             <h6 className="teamContent"> Operatives:</h6>
-                                            <li className="bulletContent">username</li>
-                                            <li className="bulletContent">username</li>
+                                            <li className="bulletContent">{this.state.nickname}</li>
+                                            <li className="bulletContent">{this.state.nickname}</li>
                                         </div>
                                     </div>
                                 </div>
@@ -71,6 +70,7 @@ class Game extends Component{
                                         <div className="col-md-12">
     
                                             {/* Row One */}
+                                            <Row/>
                                             <div className="row">
                                                 <div className="col">
                                                     <div className="card-deck">

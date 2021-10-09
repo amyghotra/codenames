@@ -19,3 +19,5 @@ class UserInfo(models.Model):
     )
     task = models.CharField(max_length=1, choices=TASK)
 
+# class Game(models.Model):
+#     room_key = models.CharField(max_length=5)
