@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import './OperativesGame.css'
 
 class OperativesGame extends Component{ // Still not 100% sure whether to change this to a class, or to just useState
+   
     constructor() {
         super()
         this.state = {
@@ -9,23 +10,40 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
             redScore: 0,
             blueScore: 0,
 
+            cardRow1Colors: ['red', 'red', 'black', 'neutral', 'neutral'],
+            cardRow2Colors: ['red', 'blue', 'neutral', 'neutral', 'blue'],
+            cardRow3Colors: ['neutral','neutral', 'blue', 'red', 'neutral'],
+            cardRow4Colors: ['neutral', 'neutral', 'blue', 'neutral', 'blue'],
+            cardRow5Colors: ['blue', 'red', 'neutral', 'neutral', 'red'],
+
             cardRow1Checks: [false, false, false, false, false], // Maybe try to get check states into 5 arrays instead?
             cardRow2Checks: [false, false, false, false, false],
             cardRow3Checks: [false, false, false, false, false],
             cardRow4Checks: [false, false, false, false, false],
             cardRow5Checks: [false, false, false, false, false], 
 
-            cardRow1Words: [], // Store words into arrays from props / database
+            cardRow1Words: [], // Store words into arrays from props / database / backend
             cardRow2Words: [],
             cardRow3Words: [],
             cardRow4Words: [],
-            cardRow5Words: []
+            cardRow5Words: [],
+
+            cardRow1Revealed: [false, false, false, false, false], // !!! Only applied to first row so far
+            cardRow2Revealed: [false, false, false, false, false],
+            cardRow3Revealed: [false, false, false, false, false],
+            cardRow4Revealed: [false, false, false, false, false],
+            cardRow5Revealed: [false, false, false, false, false]
         }
+
+        
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleGuessSubmit.bind(this)
-        this.incrementClueCount = this.incrementClueCount.bind(this)
-        this.decrementClueCount = this.decrementClueCount.bind(this)
     }
+
+    componentDidMount() {
+
+    }
+
     // For changing state when elements are changed on the page by user
     handleChange(event) {
         const {name, value, type, checked} = event.target
@@ -33,36 +51,32 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
         // which is named after an element in the state - so the element in the state - to 
         // the boolean checked, otherwise set [name], in state, to the value grabbed. 
         type === "checkbox" ? this.setState({ [name]: checked }) : this.setState({ [name]: value })
-    }
-    // For handling the players' submitting their guesses / word picks
-    handleGuessSubmit(event) {
+
+        
+        //const temp = this.state.cardColorArray[row][col]
+        //const colorHolder = parseInt(temp, 10);
+        //this.setState({cardColor: colorHolder})
+        //const cardColor= this.state.cardColor
+        //this.setState({cardColor:this.setColor()})
         
     }
-    incrementClueCount() {
-		this.setState(prevState => { // Update with inline function
-			return {
-				spymasterClueCount: prevState.spymasterClueCount + 1
-			}
-		})
-	}
-	decrementClueCount() {
-		this.setState(prevState => {
-			return {
-				spymasterClueCount: prevState.spymasterClueCount - 1
-			}
-		})
-	}
+
+    // For handling the players' submitting their guesses / word picks
+    handleGuessSubmit(event){
+        //event.preventDefault();
+        //this.forceUpdate();
+    }
 
     render() {
     return(
-        <div className="game">
+        <div id="game">
             <br />
             <h6 className="gameCode"> Game Code: 00000 </h6>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-4">
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="row">
+                            <div className="col-md-4">
                                 <div className="gameScores">
                                     <div className="redTeam">
                                         <div>
@@ -95,98 +109,121 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                     </div>
                                 </div>
                             </div>
-                            <form class="col-md-7"> {/* Incorporate a form here so that all checkboxes can be submitted? */}
-                                <div class="row">
-                                    <div class="col-md-12">
+                            <form className="col-md-7" onSubmit={this.handleGuessSubmit}> {/* Incorporate a form here so that all checkboxes can be submitted? */}
+                                <div className="row">
+                                    <div className="col-md-12">
                                         <div className="clueBody">
                                             <h5 className="clue">Clue: 1 Card(s) CURRENCY</h5>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
+                                <div className="row">
+                                    <div className="col-md-12">
 
                                         {/* Row One */}
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="card-deck"> 
-                                                <div className="card-style">                         
-                                                    <div class="card-body">
-                                                                                      
-                                                        <input 
+                                        <div className="row">
+                                            <div className="col">
+                                                <div className={ !this.state.cardRow1Revealed[0] ? // If already revealed,
+                                                "card-deck-neutral" : // Hide true color
+                                                "card-deck-" + this.state.cardRow1Colors[0] // Else display true color
+                                                }>                  
+                                                    <div className="card-body">
+
+                                                        {this.state.cardRow1Revealed[0] ? // If card revealed,
+                                                        < br /> : // Don't show checkbox (br changes the spacing, fix?)
+                                                        <input // Else display checkbox
                                                         className = "checkboxStructure"
 							                            type = "checkbox"
-							                            name = "cardRow1Checks" // Named the same exact way as it is in state  
+							                            name = "cardRow1Checks" // Named the same exact way as it is in state 
 							                            checked = {this.state.cardRow1Checks[0]}
 							                            onChange={this.handleChange}
-                                                        />
-                                                        
-                                                        <h5 class="card-text">Soldier</h5>
+                                                        />}
+                                                                                                                
+                                                        <h5 className="card-text">Soldier</h5>
                                                     </div>
                                                 </div>
-                                                </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className={ !this.state.cardRow1Revealed[1] ? 
+                                                "card-deck-neutral" : 
+                                                "card-deck-" + this.state.cardRow1Colors[1] 
+                                                }>     
+                                                    <div className="card-body">
 
+                                                        {this.state.cardRow1Revealed[0] ? // If card revealed,
+                                                        < br /> :
                                                         <input 
                                                         className = "checkboxStructure"
 							                            type = "checkbox"
 							                            name = "cardRow1Checks"
 							                            checked = {this.state.cardRow1Checks[1]}
 							                            onChange={this.handleChange}
-                                                        />
+                                                        />}
 
-                                                        <h5 class="card-text">Barbeque</h5>
+                                                        <h5 className="card-text">Barbeque</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
-
+                                            <div className="col">
+                                                <div className={ !this.state.cardRow1Revealed[2] ? 
+                                                "card-deck-neutral" : 
+                                                "card-deck-" + this.state.cardRow1Colors[2] 
+                                                }>
+                                                    <div className="card-body">
+                                                        
+                                                        {this.state.cardRow1Revealed[2] ? // If card revealed,
+                                                        < br /> :
                                                         <input 
                                                         className = "checkboxStructure"
 							                            type = "checkbox"
 							                            name = "cardRow1Checks"
 							                            checked = {this.state.cardRow1Checks[2]}
 							                            onChange={this.handleChange}
-                                                        />
+                                                        />}
 
-                                                        <h5 class="card-text">Truck</h5>
+                                                        <h5 className="card-text">Truck</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className={ !this.state.cardRow1Revealed[3] ? 
+                                                "card-deck-neutral" : 
+                                                "card-deck-" + this.state.cardRow1Colors[3] 
+                                                }>
+                                                    <div className="card-body">
                                                     
+                                                        {this.state.cardRow1Revealed[3] ? // If card revealed,
+                                                        < br /> :
                                                         <input 
                                                         className = "checkboxStructure"
 							                            type = "checkbox"
 							                            name = "cardRow1Checks"
 							                            checked = {this.state.cardRow1Checks[3]}
 							                            onChange={this.handleChange}
-                                                        /> 
+                                                        />} 
 
-                                                        <h5 class="card-text">Parade</h5>
+                                                        <h5 className="card-text">Parade</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className={ !this.state.cardRow1Revealed[4] ? 
+                                                "card-deck-neutral" : 
+                                                "card-deck-" + this.state.cardRow1Colors[4] 
+                                                }>
+                                                    <div className="card-body">
                                                         
+                                                        {this.state.cardRow1Revealed[4] ? // If card revealed,
+                                                        < br /> :
                                                         <input 
                                                         className = "checkboxStructure"
 							                            type = "checkbox"
 							                            name = "cardRow1Checks"
 							                            checked = {this.state.cardRow1Checks[4]}
 							                            onChange={this.handleChange}
-                                                        />
+                                                        />}
 
-                                                        <h5 class="card-text">India</h5>
+                                                        <h5 className="card-text">India</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -194,10 +231,10 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                         <br />
                                         
                                         {/* Row Two */}
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                        <div className="row">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -207,13 +244,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Agent</h5>
+                                                        <h5 className="card-text">Agent</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -223,13 +260,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Dollar</h5>
+                                                        <h5 className="card-text">Dollar</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -239,13 +276,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Band</h5>
+                                                        <h5 className="card-text">Band</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -255,13 +292,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Corn</h5>
+                                                        <h5 className="card-text">Corn</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -271,7 +308,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Scarecrow</h5>
+                                                        <h5 className="card-text">Scarecrow</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -279,10 +316,10 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                         <br />
                                         
                                         {/* Row Three */}
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                        <div className="row">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -292,13 +329,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Dash</h5>
+                                                        <h5 className="card-text">Dash</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -308,13 +345,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Hawk</h5>
+                                                        <h5 className="card-text">Hawk</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -324,13 +361,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Beam</h5>
+                                                        <h5 className="card-text">Beam</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -340,13 +377,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Disease</h5>
+                                                        <h5 className="card-text">Disease</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -356,7 +393,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Tablet</h5>
+                                                        <h5 className="card-text">Tablet</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -364,10 +401,10 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                         <br />
 
                                         {/* Row Four */}
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                        <div className="row">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -377,13 +414,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Pasta</h5>
+                                                        <h5 className="card-text">Pasta</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -392,13 +429,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            checked = {this.state.cardRow4Checks[1]}
 							                            onChange={this.handleChange}
                                                         />
-                                                        <h5 class="card-text">Tea</h5>
+                                                        <h5 className="card-text">Tea</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -408,13 +445,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Troll</h5>
+                                                        <h5 className="card-text">Troll</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -424,13 +461,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Radio</h5>
+                                                        <h5 className="card-text">Radio</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -440,7 +477,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Violet</h5>
+                                                        <h5 className="card-text">Violet</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -448,10 +485,10 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                         <br />
 
                                         {/* Row Five */}
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                        <div className="row">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -461,13 +498,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Press</h5>
+                                                        <h5 className="card-text">Press</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -477,13 +514,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Glacier</h5>
+                                                        <h5 className="card-text">Glacier</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -493,13 +530,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Salt</h5>
+                                                        <h5 className="card-text">Salt</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -509,13 +546,13 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Bride</h5>
+                                                        <h5 className="card-text">Bride</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body" style={{backgroundColor: this.state.cardColor}} onChange={this.handleChange}>
 
                                                         <input 
                                                         className = "checkboxStructure"
@@ -525,7 +562,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
 							                            onChange={this.handleChange}
                                                         />
 
-                                                        <h5 class="card-text">Delta</h5>
+                                                        <h5 className="card-text">Delta</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -534,9 +571,9 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                 </div>
                                 <br />
                                 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="d-flex justify-content-end">
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="d-flex justify-content-end">
                                             <button className="btn" onSubmit={this.handleGuessSubmit}>Submit Guesses</button> {/*  onSubmit / onClick ? */}
                                         </div>
                                     </div>
