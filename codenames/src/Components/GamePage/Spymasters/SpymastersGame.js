@@ -5,6 +5,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     constructor() {
         super()
         this.state = {
+            room_key: '00000',
 
             spymasterClueWord: "",
             spymasterClueCount: 0,
@@ -23,6 +24,12 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         this.incrementClueCount = this.incrementClueCount.bind(this)
         this.decrementClueCount = this.decrementClueCount.bind(this)
     }
+    componentDidMount = () => {
+        this.setState = ({
+            room_key: this.props.room_key
+        })
+    }
+
     // For changing state when elements are changed on the page by user
     handleChange(event) {
         const {name, value, type, checked} = event.target
@@ -54,12 +61,12 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     return(
         <div className="game">
             <br />
-            <h6 className="gameCode"> Game Code: 00000 </h6>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-4">
+            <h6 className="gameCode"> {this.props.room_key} </h6>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="row">
+                            <div className="col-md-4">
                                 <div className="gameScores">
                                     <div className="redTeam">
                                         <div>
@@ -92,61 +99,61 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-7"> {/* Changed back to div from a form */}
-                                <div class="row">
-                                    <div class="col-md-12">
+                            <div className="col-md-7"> {/* Changed back to div from a form */}
+                                <div className="row">
+                                    <div className="col-md-12">
 
                                         {/* Row One */}
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="card-deck"> 
+                                        <div className="row">
+                                            <div className="col">
+                                                <div className="card-deck"> 
                                                 <div className="card-style">                         
-                                                    <div class="card-body">
+                                                    <div className="card-body">
                                                                                       
                                                         <br /> {/* !!! Replaced all checkboxes with breaks */}
                                                         
-                                                        <h5 class="card-text">Soldier</h5>
+                                                        <h5 className="card-text">Soldier</h5>
                                                     </div>
                                                 </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Barbeque</h5>
+                                                        <h5 className="card-text">Barbeque</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Truck</h5>
+                                                        <h5 className="card-text">Truck</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
                                                     
                                                         <br />
 
-                                                        <h5 class="card-text">Parade</h5>
+                                                        <h5 className="card-text">Parade</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
                                                         
                                                         <br />
 
-                                                        <h5 class="card-text">India</h5>
+                                                        <h5 className="card-text">India</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -154,54 +161,54 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                         <br />
                                         
                                         {/* Row Two */}
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                        <div className="row">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Agent</h5>
+                                                        <h5 className="card-text">Agent</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Dollar</h5>
+                                                        <h5 className="card-text">Dollar</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Band</h5>
+                                                        <h5 className="card-text">Band</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Corn</h5>
+                                                        <h5 className="card-text">Corn</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Scarecrow</h5>
+                                                        <h5 className="card-text">Scarecrow</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -209,54 +216,54 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                         <br />
                                         
                                         {/* Row Three */}
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                        <div className="row">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Dash</h5>
+                                                        <h5 className="card-text">Dash</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Hawk</h5>
+                                                        <h5 className="card-text">Hawk</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Beam</h5>
+                                                        <h5 className="card-text">Beam</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Disease</h5>
+                                                        <h5 className="card-text">Disease</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Tablet</h5>
+                                                        <h5 className="card-text">Tablet</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -264,54 +271,54 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                         <br />
 
                                         {/* Row Four */}
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                        <div className="row">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Pasta</h5>
+                                                        <h5 className="card-text">Pasta</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Tea</h5>
+                                                        <h5 className="card-text">Tea</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Troll</h5>
+                                                        <h5 className="card-text">Troll</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Radio</h5>
+                                                        <h5 className="card-text">Radio</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Violet</h5>
+                                                        <h5 className="card-text">Violet</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -319,54 +326,54 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                         <br />
 
                                         {/* Row Five */}
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                        <div className="row">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Press</h5>
+                                                        <h5 className="card-text">Press</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Glacier</h5>
+                                                        <h5 className="card-text">Glacier</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Salt</h5>
+                                                        <h5 className="card-text">Salt</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Bride</h5>
+                                                        <h5 className="card-text">Bride</h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="card-deck">
-                                                    <div class="card-body">
+                                            <div className="col">
+                                                <div className="card-deck">
+                                                    <div className="card-body">
 
                                                         <br />
 
-                                                        <h5 class="card-text">Delta</h5>
+                                                        <h5 className="card-text">Delta</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -375,8 +382,8 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                 </div>
                                 <br />
                                 
-                                <div class="row">
-                                    <div class="col-md-12">
+                                <div className="row">
+                                    <div className="col-md-12">
                                         <form>
                                             <div className="spymasterClue">
                                             <input 

@@ -31,11 +31,15 @@ class Game extends Component {
                 {
                     this.state.spymaster ?
                     
-                    <SpymastersGame />
+                    <SpymastersGame 
+                        room_key = {this.state.room_key}
+                    />
 
                     : 
 
-                    <OperativesGame />
+                    <OperativesGame 
+                        room_key = {this.state.room_key}
+                    />
                 }
             </div>
         )
