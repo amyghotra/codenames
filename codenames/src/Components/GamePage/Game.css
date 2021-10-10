@@ -1,3 +1,5 @@
+/* Not used in Game.js but I'm keeping this file for now in case it's needed */
+
 .game{
     background-image: url(../../Images/game.png);
     display: table;
@@ -13,6 +15,10 @@ html, body{ /* Add this to fill out the page without using px */
     height: 100%; 
 }
 
+.checkboxStructure{
+    float: right; /* Get checkbox all the way to the right of the card */
+    margin-left: 100%; /* Take up all the space on the left so the word cannot fit next to the box */
+}
 
 .gameCode{
     background: rgba(255, 255, 255, .2);
@@ -28,30 +34,43 @@ html, body{ /* Add this to fill out the page without using px */
     color:white;
 }
 
-
 .teamInfo{
     margin-left: 10px;
 }
 
 .redTeam{
-    background: rgb(247, 54, 54);
+    background: rgb(253, 63, 63); /* Copied rbg values from UserInfo page */
     width: 210px;
     height: fit-content;
     border-radius: 15px;
+    padding: 0.5%;
 }
 .blueTeam{
-    background: rgb(54, 106, 247);
+    background: rgb(87, 143, 248); /* Copied rbg values from UserInfo page */
     width: 210px;
     height: fit-content;
     border-radius: 15px;
+    padding: 0.5%;
 }
 
 .teamTitle{
     margin-left: 10px;
-    margin-top: 15px;
+    margin-top: 10px;
     color: black;
-    font-size: 18px;
-    font-family: 'Prosto One';
+    font-size: 22px;
+    font-weight: bold;
+    font-family: "FreeMono", monospace; /* Changed from Prosto One, I'm not sure if css supports that font? */
+    float: left;
+}
+
+.teamScore{
+    margin-right: 25px;
+    margin-top: 10px;
+    color: black;
+    font-size: 22px;
+    font-weight: bold;
+    font-family: "FreeMono", monospace;
+    float: right;
 }
 
 .teamContent{
@@ -59,7 +78,7 @@ html, body{ /* Add this to fill out the page without using px */
     margin-top: 5px;
     color: black;
     font-size: 14px;
-    font-family: 'Prosto One';
+    font-family: "FreeMono", monospace;
 }
 
 .bulletContent{
@@ -67,32 +86,84 @@ html, body{ /* Add this to fill out the page without using px */
     margin-top: 2px;
     color: black;
     font-size: 14px;
-    font-family: 'Prosto One';
+    font-family: "FreeMono", monospace;
 }
 
 .clueBody{
     background-color: white;
     width:fit-content;
     border-radius: 5px;
-    margin-bottom: 40px;
+    margin-bottom: 25px;
 }
 
 .clue{
-    padding: 5px;
+    padding: 20px;
+    color: black;
+}
+
+.spymasterClue{
+    width: 80%;
+    height: 100%;
+    border: 15px black;
+    position: relative;
+    background-color: rgba(255,255,255);
+}
+
+.spymasterClue input {
+    float: left;
+    width: 80%;
+    height: 100%;
+    position: relative;
+    padding: 0px 16px;
+    border-radius: 5px;
+    color: black;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
+    background-color: transparent;
+}
+
+.counter{
+    background-color: gray;
+    float: right;
+    width: 20%;
+    height: 100%;
+}
+
+.counter h6{
+    font-size: 20px;
+    text-align: left;
+}
+.counter button{
+    float: right;
 }
 
 /*Cards Styling*/
+
+/*.card-style{ /* Not used yet still in progress, trying to get that stylish inner border like in figma 
+    position: relative;
+    background: rgba(255, 255, 255, .0);
+    border: 3px solid rgb(186, 196, 129);
+    border-radius: 12px;
+    height: 30%;
+    width: 80%;
+    margin: 10%;
+} */
+
 .card-deck{
-    height: 75%;
-    background-color:beige;
-    border-radius: 5px;
+    height: 90%;
+    background-color: rgb(228, 235, 190);
+    border-radius: 10px;
+    width: 105%;
 }
 
 .card-text{
     text-align: left;
+    font-family: "FreeMono", monospace;
 }
 
 .btn{
-    background-color: rgb(196, 196, 117);
+    background-color: rgb(196, 205, 117);
     color:black;
+    border: 4px solid rgb(228, 235, 190);
 }

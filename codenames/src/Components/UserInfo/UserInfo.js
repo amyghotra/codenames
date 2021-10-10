@@ -78,19 +78,10 @@ class UserInfo extends Component {
                 <br />
                 <h6 className="gameCode"> Game Code: {this.state.room_key} </h6>
                 <form className="container">
-                <div className="box-userInfo-left">
+                    <div className="box-userInfo-left">
                         <label className="prompt">Enter nickname</label><br/><br/>
-                        <input 
-                        className="nickname" 
-                        value={this.state.nickname}
-                        name= "nickname"
-                        type="text" 
-                        placeholder="Nickname" 
-                        spellCheck="false" 
-                        onChange={this.handleChange}/><br/>
-                        {/* <label className="prompt">job</label><br/>
-                        <input className="red" type="button" placeholder="spymaster"></input><br/>
-                        <input className="blue" type="button" placeholder="operator"></input><br/> */}
+                        <input className="nickname" value={this.state.nickname} name= "nickname" type="text" placeholder="Nickname" spellCheck="false" onChange={this.handleChange}/>
+                        <br/>
                     </div>
                     <div className="box-userInfo-right">
                         <label className="prompt">Choose a team</label><br/>
