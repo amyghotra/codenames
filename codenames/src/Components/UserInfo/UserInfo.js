@@ -13,6 +13,7 @@ class UserInfo extends Component {
             team: '',
             task: '',
             redirect: false
+
         }
     }
 
@@ -21,8 +22,6 @@ class UserInfo extends Component {
             room_key: this.props.location.state.room_key
         })
     }
-
-
 
     handleChange = (event) => {
         this.setState({
@@ -55,6 +54,7 @@ class UserInfo extends Component {
             })
             .then(repsonse => {
                 console.log(repsonse)
+
                 this.setState({
                     redirect: true
                 })
@@ -63,6 +63,7 @@ class UserInfo extends Component {
                 console.log(error)
             })
         }
+
 
     }
 
@@ -93,6 +94,7 @@ class UserInfo extends Component {
             task: 'O'
         })
     }
+
     
     render() {
         
@@ -115,6 +117,7 @@ class UserInfo extends Component {
                         <label className="prompt">Select task</label><br/>
                         <button className="task" type="button" onClick={this.setSpy}>spymaster</button><br/>
                         <button className="task" type="button" onClick={this.setOper}>operator</button>
+
                     </div>
                     <div className="box-userInfo-right">
                         <label className="prompt">Choose a team</label><br/>
@@ -125,6 +128,7 @@ class UserInfo extends Component {
                     </div>
                     {this.renderRedirect()}
                     <button className="startBtn" type="button" onClick={this.submitUserInfo}>Start!</button>
+
                 </form>
             </div>
         )

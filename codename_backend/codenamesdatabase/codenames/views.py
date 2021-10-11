@@ -27,7 +27,17 @@ class UserInfoList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        # print('this is the request ', request.data, ' this is self ', self)
+        room_key = request.data.get('connected_room_key')
+        room_key_id = ''
+        for i in Room.objects.all(): 
+            if str(room_key) == str(i.room_key):
+                room_key_id = i.id
+                request.data.update({'connected_room_key': room_key_id})
+
         serializer = UserInfoSerializer(data=request.data)
+
+        # print(serializer.initial_data, 'deez nutz', request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
