@@ -47,7 +47,7 @@ class UserInfo extends Component {
         
         if(this.state.room_key !== null && this.state.nickname !== null && this.state.team !== null && this.state.task !== null) {
             axios.post('http://127.0.0.1:8000/codenames/userInfo', {
-                room_key:this.props.location.state.room_key,
+                connected_room_key:this.props.location.state.room_key,
                 nickname: this.state.nickname, 
                 team: this.state.team,
                 task: this.state.task

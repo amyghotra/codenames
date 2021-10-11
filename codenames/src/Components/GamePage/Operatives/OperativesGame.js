@@ -64,7 +64,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
     return(
         <div className="game">
             <br />
-            <h6 className="gameCode"> {this.props.room_key} </h6>
+            <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-12">
