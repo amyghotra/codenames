@@ -70,7 +70,7 @@ class Game extends Component{
                                         <div className="col-md-12">
     
                                             {/* Row One */}
-                                            {/* <Row/> */}
+                            
                                             <div className="row">
                                                 <div className="col">
                                                     <div className="card-deck">
