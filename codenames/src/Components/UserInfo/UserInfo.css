@@ -33,7 +33,7 @@ html, body{ /* Add this to fill out the page without using px */
     background:white;
     border-radius: 10px;
     margin: auto;
-    height: 250px; /* Changed from fit-content */
+    height: fit-content; /* Changed from fit-content */
     width: 300px;
     display: flex;
     flex-direction: column;
@@ -122,3 +122,16 @@ html, body{ /* Add this to fill out the page without using px */
     color: rgb(255, 255, 255);
     text-align: center;
 }
+
+.task{
+    display: table-cell;
+    text-decoration: none;
+    padding: 10px 20px;
+    width: 69%;
+    font-size: 1.25rem;
+    border-radius: 10px;
+    background-color: rgb(194, 194, 194);
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
