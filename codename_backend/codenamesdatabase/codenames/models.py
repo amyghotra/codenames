@@ -1,15 +1,21 @@
 from django.db import models
+import uuid
 
 # Create your models here.
 class Room(models.Model):
-    room_key = models.CharField(max_length=5)
+    room_key = models.CharField(max_length=5, unique=True)
 
+    def __str__(self):
+        return self.room_key
 
 class UserInfo(models.Model):
-    room_key = models.CharField(max_length=5)
+    connected_room_key = models.ForeignKey(Room, on_delete=models.CASCADE, default=None)
     TEAM = (
         ('R', 'Red'),
         ('B', 'Blue'),
     )
     nickname = models.CharField(max_length=12)
     team = models.CharField(max_length=1, choices=TEAM)
+
+    def __str__(self):
+        return str(self.nickname) + " from " + str(self.connected_room_key)
