@@ -32,3 +32,16 @@ class Game(models.Model):
     def __str__(self):
         return "This game in happening in room " + str(self.connected_room_key)
 
+class RedTeam(models.Model):
+    red_team_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    red_team_score = models.IntegerField(default=0)
+    game_id = models.ForeignKey('Game',on_delete=models.CASCADE, related_name='redTeamInfo')
+
+    def __str__(self):
+        return self.red_team_id + " " + self.red_team_score + " " + self.game_id
+
+class BlueTeam(models.Model):
+    blue_team_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    blue_team_score = models.IntegerField()
+    game_id  = models.ForeignKey('Game',on_delete=models.CASCADE, related_name='blue_team_info')
+

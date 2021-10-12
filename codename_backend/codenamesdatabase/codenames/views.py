@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Room, UserInfo, Game
-from .serializers import RoomSerializer, UserInfoSerializer, GameSerializer
+from .models import Room, UserInfo, Game, RedTeam, BlueTeam
+from .serializers import RoomSerializer, UserInfoSerializer, GameSerializer, RedTeamSerializer, BlueTeamSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -59,7 +59,35 @@ class GameList(APIView):
                 request.data.update({'connected_room_key': room_key_id})
 
         serializer = GameSerializer(data=request.data)
-        
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RedTeamList(APIView):
+
+    def get(self, request):
+        redteam = RedTeam.objects.all()
+        serializer = RedTeamSerializer(redteam, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = RedTeamSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class BlueTeamList(APIView):
+
+    def get(self, request):
+        blueteam = BlueTeam.objects.all()
+        serializer = BlueTeamSerializer(blueteam, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = BlueTeamSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
