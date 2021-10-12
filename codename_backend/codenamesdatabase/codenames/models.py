@@ -16,6 +16,19 @@ class UserInfo(models.Model):
     )
     nickname = models.CharField(max_length=12)
     team = models.CharField(max_length=1, choices=TEAM)
+    TASK = (
+        ('S', 'Spymaster'),
+        ('O', 'Operator')
+    )
+    task = models.CharField(max_length=1, choices=TASK)
 
     def __str__(self):
         return str(self.nickname) + " from " + str(self.connected_room_key)
+
+class Game(models.Model):
+    game_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    connected_room_key = models.ForeignKey(Room, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        return "This game in happening in room " + str(self.connected_room_key)
+

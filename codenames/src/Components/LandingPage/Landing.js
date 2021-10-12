@@ -12,14 +12,15 @@ class Landing extends Component {
     constructor() {
         super()
         this.state = {
-            data: '',
             howToIsOpen: false,
+            data: '',
             inputValue: '',
             roomMatched: false,
             redirect: false,
             roomKey: ''
         }
     }
+
 
     setHowToIsOpen = () => {
         this.setState(prevState => {
@@ -31,8 +32,8 @@ class Landing extends Component {
 
     componentDidMount = () => {
         axios.get('http://127.0.0.1:8000/codenames/').then(res => {
-            console.log(res.data);
-            this.setState({ data: res.data });
+            console.log(res.data)
+            this.setState({ data: res.data })
         })
     }
 
@@ -75,7 +76,7 @@ class Landing extends Component {
         this.setState({
             inputValue: event.target.value
         })
-        console.log(event.target.value)
+        // console.log(event.target.value)
     }
 
 
@@ -104,13 +105,14 @@ class Landing extends Component {
                     }} />
         }
     }
- 
-    render() {
-        return (
 
+    render() {
+
+    
+        return (
             <div className="Landing" >
                 <h4 className="game-title">CODENAMES</h4>
-                { !this.state.howToIsOpen ? 
+                {!this.state.howToIsOpen ? 
                         <div className="box">
                             {this.renderRedirect()}
                             <button className="btn1" onClick={this.generateRoomKey}>Create Room</button>
@@ -118,7 +120,13 @@ class Landing extends Component {
                             <br></br>
 
                             <div className="input-group mb-3">
-                                <input type="text" className="form-control" placeholder="Room Key" aria-label="Room Key" aria-describedby="basic-addon2" value={this.state.inputValue} onChange={this.handleChange}/>
+                                <input type="text" 
+                                className="form-control" 
+                                placeholder="Room Key" 
+                                aria-label="Room Key" 
+                                aria-describedby="basic-addon2" 
+                                value={this.state.inputValue} 
+                                onChange={this.handleChange}/>
                                 <div className="input-group-append">
                                     <button className="btn btn-outline-secondary" type="button" onClick={this.submitInput}>Button</button>
                                 </div>
