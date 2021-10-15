@@ -10,22 +10,26 @@ class Game extends Component {
         this.state = {
             spymaster: true,
             room_key: '',
+            roomid: '',
             nickname: '',
             team: '',
             task: '',
             red_score: 0,
-            blue_score: 0
+            blue_score: 0,
+            gameid: ''
         }
     }
 
     componentDidMount = () => {
-        console.log( 'this is the info from userinfo page', this.props.location.state.room_key, " ", this.props.location.state.nickname, " ", this.props.location.state.team)
         this.setState({
             room_key: this.props.location.state.room_key,
+            roomid: this.props.location.state.roomid,
             nickname: this.props.location.state.nickname,
             team: this.props.location.state.team,
-            task: this.props.location.state.task
+            task: this.props.location.state.task,
+            gameid: this.props.location.state.gameid
         })
+        console.log(this.props.location.state.gameid)
     }
     
 

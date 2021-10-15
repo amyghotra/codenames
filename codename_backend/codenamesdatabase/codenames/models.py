@@ -36,12 +36,16 @@ class RedTeam(models.Model):
     red_team_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     red_team_score = models.IntegerField(default=0)
     game_id = models.ForeignKey('Game',on_delete=models.CASCADE, related_name='redTeamInfo')
+    connected_room_key = models.ForeignKey(Room, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
-        return self.red_team_id + " " + self.red_team_score + " " + self.game_id
+        return str(self.red_team_id) + " " + str(self.red_team_score) + " " + str(self.game_id)
 
 class BlueTeam(models.Model):
     blue_team_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     blue_team_score = models.IntegerField()
     game_id  = models.ForeignKey('Game',on_delete=models.CASCADE, related_name='blue_team_info')
+    connected_room_key = models.ForeignKey(Room, on_delete=models.CASCADE, default=None)
 
+    def __str__(self):
+        return str(self.blue_team_id) + " " + str(self.blue_team_score) + " " + str(self.game_id)

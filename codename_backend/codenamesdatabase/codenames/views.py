@@ -73,6 +73,13 @@ class RedTeamList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        room_key = request.data.get('connected_room_key')
+        room_key_id = ''
+        for i in Room.objects.all():
+            if str(room_key) == str(i.room_key):
+                room_key_id = i.id
+                request.data.update({'connected_room_key': room_key_id})
+        
         serializer = RedTeamSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -87,6 +94,14 @@ class BlueTeamList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        room_key = request.data.get('connected_room_key')
+        room_key_id = ''
+        print(request.data)
+        for j in Room.objects.all():
+            if str(room_key) == str(j.room_key):
+                room_key_id = j.id
+                request.data.update({'connected_room_key': room_key_id})
+
         serializer = BlueTeamSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

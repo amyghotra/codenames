@@ -17,7 +17,8 @@ class Landing extends Component {
             inputValue: '',
             roomMatched: false,
             redirect: false,
-            roomKey: ''
+            roomKey: '',
+            roomid: ''
         }
     }
 
@@ -32,7 +33,6 @@ class Landing extends Component {
 
     componentDidMount = () => {
         axios.get('http://127.0.0.1:8000/codenames/').then(res => {
-            console.log(res.data)
             this.setState({ data: res.data })
         })
     }
@@ -60,11 +60,11 @@ class Landing extends Component {
     submitRoomKey = (randomRoomKey) => {
         axios.post('http://127.0.0.1:8000/codenames/', {room_key: randomRoomKey}    )
             .then(response => {
-                console.log(response)
                 this.setState({
                     roomMatched: true,
                     inputValue: randomRoomKey,
-                    redirect: true
+                    redirect: true,
+                    roomid: response.data.id
                 })
             })
             .catch(error => {
@@ -76,7 +76,6 @@ class Landing extends Component {
         this.setState({
             inputValue: event.target.value
         })
-        // console.log(event.target.value)
     }
 
 
@@ -85,7 +84,8 @@ class Landing extends Component {
             if(this.state.data[i].room_key === this.state.inputValue) {
                 this.setState(prevState => {
                     return {
-                        roomMatched: !prevState.roomMatched
+                        roomMatched: !prevState.roomMatched,
+                        roomid: this.state.data[i].id
                     }
                 })
                 this.setState({
@@ -100,7 +100,8 @@ class Landing extends Component {
             return <Redirect to={{
                         pathname: '/userinfo',
                         state: {
-                            room_key: this.state.inputValue
+                            room_key: this.state.inputValue,
+                            roomid: this.state.roomid
                         }    
                     }} />
         }
