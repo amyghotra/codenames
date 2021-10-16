@@ -8,7 +8,7 @@ class Game extends Component {
     constructor() {
         super()
         this.state = {
-            spymaster: true // changing to false will allow you to see the operatives view.
+            spymaster: false // changing to false will allow you to see the operatives view.
         }
     }
     render() {

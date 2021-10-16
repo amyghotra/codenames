@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import './SpymastersGame.css'
+import '../Game.css'
 
-class SpymastersGame extends Component{ // Still not 100% sure whether to change this to a class, or to just useState
+class SpymastersGame extends Component{
     constructor() {
         super()
         this.state = {

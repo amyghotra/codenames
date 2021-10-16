@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import './OperativesGame.css'
+import '../Game.css'
 
 class OperativesGame extends Component{ // Still not 100% sure whether to change this to a class, or to just useState
    
@@ -68,8 +68,15 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
     }
 
     render() {
+      /*  const board = [] // idea for trying to use a loop to get all of the cards rendered
+        for (let i = 0; i < 5; i++) {
+
+            for (let j = 0; j < 5; j++) {
+
+            }
+        } */
     return(
-        <div id="game">
+        <div className="game">
             <br />
             <h6 className="gameCode"> Game Code: 00000 </h6>
             <div className="container-fluid">
@@ -119,7 +126,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                 </div>
                                 <div className="row">
                                     <div className="col-md-12">
-
+                                        
                                         {/* Row One */}
                                         <div className="row">
                                             <div className="col">

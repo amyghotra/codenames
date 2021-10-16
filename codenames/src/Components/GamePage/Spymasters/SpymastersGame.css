@@ -1,3 +1,4 @@
+/* Not used, use Game.css instead for both spymaster and operatives */
 .game{
     background-image: url(../../../Images/game.png);
     display: table;
@@ -176,6 +177,32 @@ html, body{ /* Add this to fill out the page without using px */
 .card-deck-red{
     height: 90%;
     background-color: rgb(253, 63, 63);
+    border-radius: 10px;
+    width: 105%;
+}
+
+.card-deck-muted-neutral{
+    height: 90%;
+    background-color: rgb(228, 235, 190, 0.33);
+    border-radius: 10px;
+    width: 105%;
+}
+.card-deck-muted-black{
+    height: 90%;
+    background-color: rgb(0, 0, 0, 0.33);
+    color: white;
+    border-radius: 10px;
+    width: 105%;
+}
+.card-deck-muted-blue{
+    height: 90%;
+    background-color: rgb(87, 143, 248, 0.33);
+    border-radius: 10px;
+    width: 105%;
+}
+.card-deck-muted-red{
+    height: 90%;
+    background-color: rgba(253, 63, 63, 0.33);
     border-radius: 10px;
     width: 105%;
 }
