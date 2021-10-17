@@ -8,7 +8,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
             room_key: 0,
 
             redScore: 0,
-            blueScore: 0,
+                blueScore: 0,
 
             cardRow1Checks: [false, false, false, false, false], // Maybe try to get check states into 5 arrays instead?
             cardRow2Checks: [false, false, false, false, false],
@@ -31,6 +31,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
         this.setState = {
             room_key: this.props.room_key
         }
+        console.log('operaters :D')
     }
 
     // For changing state when elements are changed on the page by user

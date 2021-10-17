@@ -28,6 +28,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         this.setState = ({
             room_key: this.props.room_key
         })
+        console.log('SPY MASTER BABY!')
     }
 
     // For changing state when elements are changed on the page by user
