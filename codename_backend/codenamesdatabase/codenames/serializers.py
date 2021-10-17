@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Room, UserInfo, Game, RedTeam, BlueTeam, Players, RedWords, BlueWords, BystanderWords, AssassinWords
+from .models import Room, UserInfo, Game, RedTeam, BlueTeam, Players, RedWords, BlueWords, BystanderWords, AssassinWords, GameWords
 from rest_framework.response import Response
 from django.utils.crypto import get_random_string
 import random
@@ -7,40 +7,10 @@ import csv
 
 ###################################### WORDS #############################################
 
-def redWordsData(game, words):
-    for i in range(len(words)):
-        redWord = RedWords.objects.create(word=words[i], game_id=game)
-        redWord.save()
-        print(redWord.word)
-
-def blueWordsData(game, words):
-    for i in range(len(words)):
-        blueWord = BlueWords.objects.create(word=words[i], game_id=game)
-        blueWord.save()
-        # print(blueWord)
-
-def bystanderWordsData(game, words):
-    for i in range(len(words)):
-        bystanderWord = BystanderWords.objects.create(word=words[i], game_id=game)
-        bystanderWord.save()
-        # print(bystanderWord)
-
-def assassinWordsData(game, words):
-    assassinWord = AssassinWords.objects.create(word=words, game_id=game)
-    assassinWord.save()
-    # print(assassinWord)
-
-# def redTeamCreation(game):
-#     redTeam = RedTeam.objects.create(game=game)
-#     redTeam.save()
-
-# def blueTeamCreation(game):
-#     blueTeam = BlueTeam.objects.create(game=game)
-#     blueTeam.save()
-
 def getGameWords():
+    print("trying to get words for the game")
     allWords = set()
-    with open('/mnt/c/Users/micha/Codenames/codenames/codename_backend/codenamesdatabase/codenames/words.csv', newline='') as csvfile:
+    with open('/Users/amyghotra/Desktop/codenames/codename_backend/codenamesdatabase/words.csv', newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in spamreader:
             allWords.add(', '.join(row))
@@ -53,25 +23,49 @@ def getGameWords():
 
     return list(game_words)
 
+class RedWordsSerilizer(serializers.ModelSerializer):
+    class Meta:
+        model = RedWords
+        fields = "__all__"
+
+class BlueWordsSerilizer(serializers.ModelSerializer):
+    class Meta:
+        model = BlueWords
+        fields = "__all__"
+
+class BystanderWordsSerilizer(serializers.ModelSerializer):
+    class Meta:
+        model = BystanderWords
+        fields = "__all__"
+
+class AssassinWordsSerilizer(serializers.ModelSerializer):
+    class Meta:
+        model = AssassinWords
+        fields = "__all__"
+
 class GameSerializer(serializers.ModelSerializer):
+
+    redWords = RedWordsSerilizer(many=True, read_only=True)
+    blueWords = BlueWordsSerilizer(many=True, read_only=True)
+    bystanderWords = BystanderWordsSerilizer(many=True, read_only=True)
+    assassinWords = AssassinWordsSerilizer(many=True, read_only=True)
+
+    def create(self, validated_data):
+        words_data = getGameWords()
+        game = Game.objects.create(**validated_data)
+        for word in words_data[0:8]:
+            RedWords.objects.create(game_id=game, word=word)
+        for word in words_data[8:16]:
+            BlueWords.objects.create(game_id=game, word=word)
+        for word in words_data[16:24]:
+            BystanderWords.objects.create(game_id=game, word=word)
+        AssassinWords.objects.create(game_id=game, word=words_data[24])
+        return game
 
     class Meta:
         model = Game
-        fields = "__all__"
+        fields = ('game_id','connected_room_key','redWords','blueWords','bystanderWords','assassinWords')
 
-
-    def create(self, validated_data):
-        gameSession = Game.objects.create(**validated_data)
-        allWordsForGame = getGameWords()
-        redWordsData(gameSession, allWordsForGame[0:8])
-        blueWordsData(gameSession, allWordsForGame[8:16])
-        bystanderWordsData(gameSession, allWordsForGame[16:24])
-        assassinWordsData(gameSession, allWordsForGame[24])
-        print('game is in session! ', gameSession)
-        # redTeamCreation(game)
-        # blueTeamCreation(game)
-        gameSession.save() 
-        return gameSession
 
 ############################################# NON WORDS SERIALIZERS #################################################
 
