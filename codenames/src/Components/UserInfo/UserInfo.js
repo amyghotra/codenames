@@ -11,13 +11,15 @@ class UserInfo extends Component {
             room_key: '',
             roomid: '',
             nickname: '',
+            playerid: '',
             team: '',
             redteamid: '',
             blueteamid: '',
             task: '',
             redirect: false,
             gamesData: '',
-            gameid: 0
+            gameid: 0,
+            connected_room_key: '',
         }
     }
 
@@ -57,8 +59,10 @@ class UserInfo extends Component {
                 axios.post('http://127.0.0.1:8000/codenames/games', {
                     connected_room_key: roomid
                 }).then(res => {
+
                     this.setState({
-                        gameid: res.data.game_id
+                        gameid: res.data.game_id,
+                        connected_room_key: res.data.connected_room_key
                     })
                     this.renderTeamId(res.data.game_id)
                 })
@@ -69,7 +73,6 @@ class UserInfo extends Component {
     }
 
     renderTeamId = (gameid) => {
-        console.log(gameid)
         let redteamidexist = false; 
         let blueteamidexist = false;
 
@@ -77,10 +80,10 @@ class UserInfo extends Component {
             for(let i = 0; i < res.data.length; i++) {
                 if(res.data[i].game_id === gameid) {
                     redteamidexist = true;
-                    console.log(redteamidexist)
                     this.setState({
                         redteamid: res.data[i].red_team_id
                     })
+                    console.log(redteamidexist)
                 }
             }
         })
@@ -89,10 +92,10 @@ class UserInfo extends Component {
             for(let i = 0; i < res.data.length; i++) {
                 if(res.data[i].game_id === gameid) {
                     blueteamidexist = true;
-                    console.log(blueteamidexist)
                     this.setState({
                         blueteamid: res.data[i].blue_team_id
                     })
+                    console.log(blueteamidexist)
                 }
             }
         })
@@ -125,10 +128,12 @@ class UserInfo extends Component {
                 team: this.state.team,
                 task: this.state.task
             })
-            .then(repsonse => {
-                console.log('RESPONSE: ', repsonse)
+            .then(response => {
+                this.setState({
+                    playerid: response.data.id
+                })
                 for(let i = 0; i < this.state.gamesData.length; i++) {
-                    if (this.state.gamesData[i].connected_room_key === this.state.roomid) {
+                    if (this.state.gamesData[i].connected_room_key === this.state.roomid || this.state.connected_room_key === this.state.roomid) {
                         this.setState({
                             gameid: this.state.gamesData[i].game_id
                         })
@@ -163,9 +168,9 @@ class UserInfo extends Component {
             })
         }
 
-        // this.setState({
-        //     redirect: true
-        // })
+        this.setState({
+            redirect: true
+        })
     }
 
     renderRedirect = () => {
@@ -178,7 +183,8 @@ class UserInfo extends Component {
                     nickname: this.state.nickname,
                     team: this.state.team,
                     task: this.state.task,
-                    gameid: this.state.gameid
+                    gameid: this.state.gameid,
+                    playerid: this.state.playerid
                 }
             }}/>
         }
