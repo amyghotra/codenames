@@ -40,7 +40,7 @@ def assassinWordsData(game, words):
 
 def getGameWords():
     allWords = set()
-    with open('/mnt/c/Users/micha/Codenames/codenames/codename_backend/codenamesdatabase/codenames/words.csv', newline='') as csvfile:
+    with open('/Users/kersv/dev/codenames/codename_backend/codenamesdatabase/codenames/words.csv', newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in spamreader:
             allWords.add(', '.join(row))

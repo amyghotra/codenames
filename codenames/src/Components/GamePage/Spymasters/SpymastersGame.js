@@ -28,7 +28,8 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         this.setState = ({
             room_key: this.props.room_key
         })
-        console.log('SPY MASTER BABY!')
+        
+        console.log("Spymasters")
     }
 
     // For changing state when elements are changed on the page by user
@@ -62,6 +63,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     return(
         <div className="game">
             <br />
+            <h6>SPYMASTERS</h6>
             <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
             <div className="container-fluid">
                 <div className="row">

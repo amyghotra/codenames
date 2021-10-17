@@ -22,38 +22,36 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
             cardRow4Words: [],
             cardRow5Words: []
         }
-        this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleGuessSubmit.bind(this)
-        this.incrementClueCount = this.incrementClueCount.bind(this)
-        this.decrementClueCount = this.decrementClueCount.bind(this)
     }
     componentDidMount = () => {
         this.setState = {
             room_key: this.props.room_key
         }
-        console.log('operaters :D')
+        console.log('Operaters')
     }
 
     // For changing state when elements are changed on the page by user
-    handleChange(event) {
+    handleChange = (event) => {
         const {name, value, type, checked} = event.target
         // if the type just grabbed from the event is a checkbox, set the name of the event, 
         // which is named after an element in the state - so the element in the state - to 
         // the boolean checked, otherwise set [name], in state, to the value grabbed. 
         type === "checkbox" ? this.setState({ [name]: checked }) : this.setState({ [name]: value })
     }
+
     // For handling the players' submitting their guesses / word picks
-    handleGuessSubmit(event) {
+    handleGuessSubmit = (event) => {
         
     }
-    incrementClueCount() {
+
+    incrementClueCount = () => {
 		this.setState(prevState => { // Update with inline function
 			return {
 				spymasterClueCount: prevState.spymasterClueCount + 1
 			}
 		})
 	}
-	decrementClueCount() {
+	decrementClueCount = () => {
 		this.setState(prevState => {
 			return {
 				spymasterClueCount: prevState.spymasterClueCount - 1
@@ -65,6 +63,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
     return(
         <div className="game">
             <br />
+            <h6>OPERATORS</h6>
             <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
             <div className="container-fluid">
                 <div className="row">
