@@ -108,6 +108,20 @@ class RedWords(models.Model):
     def __str__(self):
         return str(self.word)
 
+class DoubleAgentWords(models.Model):
+    doubleagent_words_id = models.CharField(
+        primary_key=True,
+        max_length = 20,
+        blank=True,
+        editable=False,
+        default=words_number_default_function
+    )
+    game_id = models.ForeignKey('Game',on_delete=models.CASCADE, related_name='doubleAgentWords')
+    word = models.CharField(64, max_length=64)
+
+    def __str__(self):
+        return str(self.word)
+
 class BystanderWords(models.Model):
     bystander_words_id = models.CharField(
         primary_key=True,

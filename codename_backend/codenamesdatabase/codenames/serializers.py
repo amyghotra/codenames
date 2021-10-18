@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Room, UserInfo, Game, RedTeam, BlueTeam, Players, RedWords, BlueWords, BystanderWords, AssassinWords, GameWords
+from .models import Room, UserInfo, Game, RedTeam, BlueTeam, Players, RedWords, BlueWords, DoubleAgentWords, BystanderWords, AssassinWords, GameWords
 from rest_framework.response import Response
 from django.utils.crypto import get_random_string
 import random
@@ -22,22 +22,27 @@ def getGameWords():
 
     return list(game_words)
 
-class RedWordsSerilizer(serializers.ModelSerializer):
+class RedWordsSerializer(serializers.ModelSerializer):
     class Meta:
         model = RedWords
         fields = "__all__"
 
-class BlueWordsSerilizer(serializers.ModelSerializer):
+class BlueWordsSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlueWords
         fields = "__all__"
 
-class BystanderWordsSerilizer(serializers.ModelSerializer):
+class DoubleAgentWordsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoubleAgentWords
+        fields = "__all__"
+
+class BystanderWordsSerializer(serializers.ModelSerializer):
     class Meta:
         model = BystanderWords
         fields = "__all__"
 
-class AssassinWordsSerilizer(serializers.ModelSerializer):
+class AssassinWordsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssassinWords
         fields = "__all__"
@@ -53,13 +58,20 @@ class GameSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         words_data = getGameWords()
         game = Game.objects.create(**validated_data)
+
         for word in words_data[0:8]:
             GameWords.objects.create(game_id=game, word=word, category='R')
+
         for word in words_data[8:16]:
             GameWords.objects.create(game_id=game, word=word, category='B')
-        for word in words_data[16:24]:
+
+        GameWords.objects.create(game_id=game, word=words_data[16], category='D')
+
+        for word in words_data[17:24]:
             GameWords.objects.create(game_id=game, word=word, category='C')
+
         GameWords.objects.create(game_id=game, word=words_data[24], category='A')
+
         return game
 
     class Meta:
