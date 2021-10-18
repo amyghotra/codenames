@@ -136,6 +136,17 @@ class AssassinWords(models.Model):
     def __str__(self):
         return str(self.word)
 
-
+class GameWords(models.Model):
+    word_id = models.CharField(
+        primary_key=True,
+        max_length = 20,
+        blank=True,
+        editable=False,
+        default=words_number_default_function
+    )
+    game_id = models.ForeignKey('Game',on_delete=models.CASCADE, related_name='gameWords')
+    guessed = models.BooleanField(default=False)
+    word  = models.CharField(64, max_length=64)
+    category = models.CharField(64, max_length=2)
     
     

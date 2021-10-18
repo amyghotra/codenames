@@ -18,6 +18,7 @@ class UserInfo extends Component {
             task: '',
             redirect: false,
             gamesData: '',
+            gameWords: '',
             gameid: 0,
             connected_room_key: '',
         }
@@ -50,7 +51,8 @@ class UserInfo extends Component {
                 if(res.data[i].connected_room_key === roomid) {
                     roomidexist = true;
                     this.setState({
-                        gameid: res.data[i].game_id
+                        gameid: res.data[i].game_id,
+                        gameWords: res.data[i].gameWords
                     })
                     this.renderTeamId(res.data[i].game_id)
                 }
@@ -59,9 +61,9 @@ class UserInfo extends Component {
                 axios.post('http://127.0.0.1:8000/codenames/games', {
                     connected_room_key: roomid
                 }).then(res => {
-
                     this.setState({
                         gameid: res.data.game_id,
+                        gameWords: res.data.gameWords,
                         connected_room_key: res.data.connected_room_key
                     })
                     this.renderTeamId(res.data.game_id)
@@ -184,6 +186,7 @@ class UserInfo extends Component {
                     team: this.state.team,
                     task: this.state.task,
                     gameid: this.state.gameid,
+                    gameWords: this.state.gameWords,
                     playerid: this.state.playerid
                 }
             }}/>
