@@ -70,10 +70,11 @@ class Game extends Component {
             gameid: this.props.location.state.gameid,
             gameData: this.props.location.state.gameData,
             gameWords: this.props.location.state.gameWords,
-            playerid: this.props.location.state.playerid
+            playerid: this.props.location.state.playerid,
         })
 
         this.updateGameWords(this.props.location.state.gameid)
+
     }
     
     setDoubleAgent = () => {
@@ -88,7 +89,6 @@ class Game extends Component {
                 console.log(res)
                 this.updateGameWords(this.state.gameid)
             })
-        
     }
 
     updateGameWords = (gameid) => {
@@ -98,6 +98,7 @@ class Game extends Component {
             })
         
         })
+
         
     }
 
@@ -110,7 +111,7 @@ class Game extends Component {
                     this.state.task === 'S' ?
                     
                     <div>
-                        <button onClick={this.setDoubleAgent}>I WANT FIRST</button>
+                        <button onClick={this.setDoubleAgent}>I WANT FIRST</button> 
                         <SpymastersGame 
                             room_key = {this.state.room_key}
                             gameWords = {this.state.gameWords}

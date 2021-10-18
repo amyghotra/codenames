@@ -22,11 +22,29 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     componentDidMount = () => {
         this.setState = ({
             room_key: this.props.room_key,
-            gameWords: this.props.gameWords
+            gameWords: this.props.gameWords,
             
         })
-        console.log("DSFSFSFSFSFS", this.props.gameWords)
+        console.log("Game Words Array: ", this.props.gameWords)
     }
+
+    /*
+        states affected: 
+            gameWords
+        what it does: 
+            The first parameter for this method is gameWords before the update; so, testing 
+            whether it has changed is done here. If it has changed then it will update the 
+            gameWords to how the game component has them. 
+    */
+    componentDidUpdate = (event) =>{
+        if (event.gameWords !== this.props.gameWords) {
+            this.setState = ({
+                gameWords: this.props.gameWords,
+            })
+            console.log("Game Words Array: ", this.props.gameWords)
+          }
+    }
+
 
     // For changing state when elements are changed on the page by user
     handleChange(event) {
