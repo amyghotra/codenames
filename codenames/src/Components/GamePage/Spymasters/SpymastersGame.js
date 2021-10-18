@@ -3,12 +3,12 @@ import Row from "../Row/Row"
 import './SpymastersGame.css'
 
 class SpymastersGame extends Component{ // Still not 100% sure whether to change this to a class, or to just useState
-    constructor(props) {
-        super(props)
+    constructor() {
+        super()
         this.state = {
             room_key: '',
             task:'S',
-
+            gameWords: '',
             spymasterClueWord: "",
             spymasterClueCount: 0,
 
@@ -22,8 +22,10 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     componentDidMount = () => {
         this.setState = ({
             room_key: this.props.room_key,
+            gameWords: this.props.gameWords
             
         })
+        console.log("DSFSFSFSFSFS", this.props.gameWords)
     }
 
     // For changing state when elements are changed on the page by user

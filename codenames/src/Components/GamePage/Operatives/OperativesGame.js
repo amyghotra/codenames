@@ -4,12 +4,12 @@ import Row from "../Row/Row"
 import './OperativesGame.css'
 
 class OperativesGame extends Component{ // Still not 100% sure whether to change this to a class, or to just useState
-    constructor(props) {
-        super(props)
+    constructor() {
+        super()
         this.state = {
             room_key: '',
             task: 'O',
-
+            gameWords: '',
             redScore: 0,
             blueScore: 0,
             turn: true, // true = blue turn & false = red turn 
@@ -18,7 +18,8 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
     }
     componentDidMount = () => {
         this.setState = {
-            room_key: this.props.room_key
+            room_key: this.props.room_key,
+            gameWords: this.props.gameWords
         }
     }
 

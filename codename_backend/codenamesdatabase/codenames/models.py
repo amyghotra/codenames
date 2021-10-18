@@ -30,14 +30,9 @@ def number_default_function():
 
 class Game(models.Model):
     game_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    connected_room_key = models.CharField(
-        max_length = 5,
-        blank=True,
-        editable=False,
-        default=number_default_function
-    )
+    connected_room_key = models.ForeignKey(Room, on_delete=models.CASCADE, default=None)
 
-    def __str__(self):
+    def str(self):
         return "This game in happening in room: " + str(self.connected_room_key)
 
 class RedTeam(models.Model):
