@@ -62,7 +62,6 @@ class Game extends Component {
                 })
             }
         })
-        console.log(this.props.location.state.gameid)
         this.setState({
             room_key: this.props.location.state.room_key,
             roomid: this.props.location.state.roomid,
@@ -77,26 +76,18 @@ class Game extends Component {
     }
     
     setDoubleAgent = () => {
+        let doubleAgent = { ...this.state.doubleAgent};
+        doubleAgent.category = this.state.team;
+        console.log('update double: ',doubleAgent);
+        this.setState({
+            doubleAgent
+        })
 
-        let gameData = this.state.gameData;
-        console.log('game data: ', gameData);
-        let gameWords = gameData.gameWords
-        console.log('game words: ', gameWords);
-        let i = this.state.doubleAgentIndex;
-        console.log('double agent index: ', i);
-        let doubleAgent = {...gameWords[i]}
-        console.log('double agent: ', doubleAgent);
-        doubleAgent.category = 'R';
-        console.log('updated double agent: ', doubleAgent);
-        gameWords[i] = doubleAgent;
-        console.log('updated game words: ', gameWords);
-        gameData.gameWords = gameWords;
-        console.log('updated gameData: ', gameData);
-        this.setState({gameData, gameid: gameData.game_id})
-
-        // axios.put(`http://127.0.0.1:8000/codenames/games/${this.state.gameid}`, this.state.gameData).then(res => {
-        //     console.log(res)
-        // })
+        console.log('New Double Agent! ', this.state.doubleAgent)
+        axios.put(`http://127.0.0.1:8000/codenames/games/word/${this.state.doubleAgent.word_id}`, doubleAgent)
+            .then(res => {
+                console.log(res)
+            })
         
     }
 

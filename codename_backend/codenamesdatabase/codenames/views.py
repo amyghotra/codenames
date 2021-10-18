@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Room, UserInfo, Game, RedTeam, BlueTeam, Players
-from .serializers import RoomSerializer, UserInfoSerializer, GameSerializer, RedTeamSerializer, BlueTeamSerializer, PlayerSerializer
+from .models import Room, UserInfo, Game, GameWords, RedTeam, BlueTeam, Players
+from .serializers import RoomSerializer, UserInfoSerializer, GameSerializer, WordsSerializer, RedTeamSerializer, BlueTeamSerializer, PlayerSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
@@ -44,6 +44,57 @@ class UserInfoList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class WordsList(APIView):
+
+    def get(self, request):
+        words = GameWords.objects.all()
+        serializer = WordsSerializer(words, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = WordsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class WordsDetail(APIView):
+
+    def get_word(self, word_id):
+        try:
+            return GameWords.objects.get(word_id=word_id)
+        except GameWords.DoesNotExist:
+            raise Http404
+
+    def get(self, request, word_id):
+        word = self.get_word(word_id)
+        serializer = WordsSerializer(word)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self,request, word_id):
+        word = self.get_word(word_id)
+        serializer = WordsSerializer(word, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            print(serializer)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, word_id):
+        word = self.get_word(word_id)
+        serializer = WordsSerializer(word)
+        word.delete()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def patch(self, request, word_id):
+        word = self.get_word(word_id)
+        serializer = WordsSerializer(word, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
 class GameList(APIView):
 
     def get(self, request):
@@ -80,13 +131,12 @@ class GameDetail(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def put(self,request, game_id):
-        print('This is the game_id: ', game_id)
         game = self.get_game(game_id)
         serializer = GameSerializer(game, data=request.data)
-        print(serializer)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            print(serializer)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, game_id):
@@ -94,9 +144,6 @@ class GameDetail(APIView):
         serializer = GameSerializer(game)
         game.delete()
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    
-
 
 class RedTeamList(APIView):
 
