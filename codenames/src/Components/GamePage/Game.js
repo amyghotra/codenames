@@ -18,12 +18,12 @@ class Game extends Component {
             red_score: 0,
             blue_score: 0,
             gameid: '',
+            gameWords: '',
             playersdata: '',
         }
     }
 
     componentDidMount = () => {
-        console.log('component did mount ', this.props.location.state.playerid)
         axios.get('http://127.0.0.1:8000/codenames/players').then(res => {
             this.setState({
                 playersdata: res.data
@@ -55,8 +55,8 @@ class Game extends Component {
             team: this.props.location.state.team,
             task: this.props.location.state.task,
             gameid: this.props.location.state.gameid,
+            gameWords: this.props.location.state.gameWords,
             playerid: this.props.location.state.playerid
-
         })
     }
     
