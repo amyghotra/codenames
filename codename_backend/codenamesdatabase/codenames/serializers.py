@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Room, UserInfo, Game, RedTeam, BlueTeam, Players, RedWords, BlueWords, BystanderWords, AssassinWords, GameWords
+from .models import Room, UserInfo, Game, RedTeam, BlueTeam, Players, RedWords, BlueWords, DoubleAgentWords, BystanderWords, AssassinWords, GameWords
 from rest_framework.response import Response
 from django.utils.crypto import get_random_string
 import random
@@ -23,49 +23,61 @@ def getGameWords():
 
     return list(game_words)
 
-class RedWordsSerilizer(serializers.ModelSerializer):
+class RedWordsSerializer(serializers.ModelSerializer):
     class Meta:
         model = RedWords
         fields = "__all__"
 
-class BlueWordsSerilizer(serializers.ModelSerializer):
+class BlueWordsSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlueWords
         fields = "__all__"
 
-class BystanderWordsSerilizer(serializers.ModelSerializer):
+class DoubleAgentWordsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoubleAgentWords
+        fields = "__all__"
+
+class BystanderWordsSerializer(serializers.ModelSerializer):
     class Meta:
         model = BystanderWords
         fields = "__all__"
 
-class AssassinWordsSerilizer(serializers.ModelSerializer):
+class AssassinWordsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssassinWords
         fields = "__all__"
 
-class GameSerializer(serializers.ModelSerializer):
+class WordsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GameWords
+        fields = "__all__"
 
-    redWords = RedWordsSerilizer(many=True, read_only=True)
-    blueWords = BlueWordsSerilizer(many=True, read_only=True)
-    bystanderWords = BystanderWordsSerilizer(many=True, read_only=True)
-    assassinWords = AssassinWordsSerilizer(many=True, read_only=True)
+class GameSerializer(serializers.ModelSerializer):
+    gameWords = WordsSerializer(many=True, read_only=True)
 
     def create(self, validated_data):
         words_data = getGameWords()
         game = Game.objects.create(**validated_data)
+
         for word in words_data[0:8]:
-            RedWords.objects.create(game_id=game, word=word)
+            GameWords.objects.create(game_id=game, word=word, category='R')
+
         for word in words_data[8:16]:
-            BlueWords.objects.create(game_id=game, word=word)
-        for word in words_data[16:24]:
-            BystanderWords.objects.create(game_id=game, word=word)
-        AssassinWords.objects.create(game_id=game, word=words_data[24])
+            GameWords.objects.create(game_id=game, word=word, category='B')
+
+        GameWords.objects.create(game_id=game, word=words_data[16], category='D')
+
+        for word in words_data[17:24]:
+            GameWords.objects.create(game_id=game, word=word, category='C')
+
+        GameWords.objects.create(game_id=game, word=words_data[24], category='A')
+
         return game
 
     class Meta:
         model = Game
-        fields = ('game_id','connected_room_key','redWords','blueWords','bystanderWords','assassinWords')
-
+        fields = ['game_id', 'connected_room_key', 'gameWords']
 
 ############################################# NON WORDS SERIALIZERS #################################################
 

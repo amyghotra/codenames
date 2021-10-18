@@ -17,9 +17,12 @@ class UserInfo extends Component {
             blueteamid: '',
             task: '',
             redirect: false,
-            gamesData: '',
+            gameData: '',
+            gameWords: '',
             gameid: 0,
             connected_room_key: '',
+            redTeamExist: false,
+            blueTeamExist: false,
         }
     }
 
@@ -50,7 +53,8 @@ class UserInfo extends Component {
                 if(res.data[i].connected_room_key === roomid) {
                     roomidexist = true;
                     this.setState({
-                        gameid: res.data[i].game_id
+                        gameid: res.data[i].game_id,
+                        gameWords: res.data[i].gameWords
                     })
                     this.renderTeamId(res.data[i].game_id)
                 }
@@ -59,11 +63,14 @@ class UserInfo extends Component {
                 axios.post('http://127.0.0.1:8000/codenames/games', {
                     connected_room_key: roomid
                 }).then(res => {
-
+                    console.log('this is the game data: ', res.data);
                     this.setState({
                         gameid: res.data.game_id,
+                        gameData: res.data,
+                        gameWords: res.data.gameWords,
                         connected_room_key: res.data.connected_room_key
                     })
+                    console.log('WE JUST MADE THIS GAME ID: ', res.data.game_id);
                     this.renderTeamId(res.data.game_id)
                 })
             }
@@ -73,17 +80,16 @@ class UserInfo extends Component {
     }
 
     renderTeamId = (gameid) => {
-        let redteamidexist = false; 
-        let blueteamidexist = false;
+        console.log('double checking ', gameid);
 
         axios.get('http://127.0.0.1:8000/codenames/redTeam').then(res => {
             for(let i = 0; i < res.data.length; i++) {
                 if(res.data[i].game_id === gameid) {
-                    redteamidexist = true;
+                    console.log(res.data[i].game_id, ' COMPARED TO ', gameid)
                     this.setState({
-                        redteamid: res.data[i].red_team_id
+                        redteamid: res.data[i].red_team_id,
+                        redTeamExist: true
                     })
-                    console.log(redteamidexist)
                 }
             }
         })
@@ -91,11 +97,10 @@ class UserInfo extends Component {
         axios.get('http://127.0.0.1:8000/codenames/blueTeam').then(res => {
             for(let i = 0; i < res.data.length; i++) {
                 if(res.data[i].game_id === gameid) {
-                    blueteamidexist = true;
                     this.setState({
-                        blueteamid: res.data[i].blue_team_id
+                        blueteamid: res.data[i].blue_team_id,
+                        blueTeamExist: true
                     })
-                    console.log(blueteamidexist)
                 }
             }
         })
@@ -132,13 +137,6 @@ class UserInfo extends Component {
                 this.setState({
                     playerid: response.data.id
                 })
-                for(let i = 0; i < this.state.gamesData.length; i++) {
-                    if (this.state.gamesData[i].connected_room_key === this.state.roomid || this.state.connected_room_key === this.state.roomid) {
-                        this.setState({
-                            gameid: this.state.gamesData[i].game_id
-                        })
-                    }
-                }
                 this.createGame()
             })
             .catch(error => {
@@ -150,7 +148,7 @@ class UserInfo extends Component {
     }
 
     createGame = () => {
-        if (this.state.team === 'R') {
+        if (this.state.team === 'R' && this.state.redTeamExist === false) {
             axios.post('http://127.0.0.1:8000/codenames/redTeam', {
                 game_id: this.state.gameid,
                 connected_room_key: this.state.roomid
@@ -161,7 +159,7 @@ class UserInfo extends Component {
                 console.log(error)
             }) 
         }
-        else if (this.state.team === 'B') {
+        else if (this.state.team === 'B' && this.state.blueTeamExist === false) {
             axios.post('http://127.0.0.1:8000/codenames/blueTeam', {
                 game_id: this.state.gameid,
                 connected_room_key: this.state.roomid
@@ -184,6 +182,8 @@ class UserInfo extends Component {
                     team: this.state.team,
                     task: this.state.task,
                     gameid: this.state.gameid,
+                    gameData: this.state.gameData,
+                    gameWords: this.state.gameWords,
                     playerid: this.state.playerid
                 }
             }}/>

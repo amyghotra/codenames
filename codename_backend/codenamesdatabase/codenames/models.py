@@ -27,7 +27,7 @@ class UserInfo(models.Model):
 
 def number_default_function():
     return uuid.uuid4().hex[:5].upper()
-    
+
 class Game(models.Model):
     game_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     connected_room_key = models.CharField(
@@ -116,6 +116,20 @@ class RedWords(models.Model):
     def __str__(self):
         return str(self.word)
 
+class DoubleAgentWords(models.Model):
+    doubleagent_words_id = models.CharField(
+        primary_key=True,
+        max_length = 20,
+        blank=True,
+        editable=False,
+        default=words_number_default_function
+    )
+    game_id = models.ForeignKey('Game',on_delete=models.CASCADE, related_name='doubleAgentWords')
+    word = models.CharField(64, max_length=64)
+
+    def __str__(self):
+        return str(self.word)
+
 class BystanderWords(models.Model):
     bystander_words_id = models.CharField(
         primary_key=True,
@@ -145,7 +159,7 @@ class AssassinWords(models.Model):
         return str(self.word)
 
 class GameWords(models.Model):
-    words_id = models.CharField(
+    word_id = models.CharField(
         primary_key=True,
         max_length = 20,
         blank=True,
@@ -153,4 +167,8 @@ class GameWords(models.Model):
         default=words_number_default_function
     )
     game_id = models.ForeignKey('Game',on_delete=models.CASCADE, related_name='gameWords')
+    guessed = models.BooleanField(default=False)
+    word  = models.CharField(64, max_length=64)
+    category = models.CharField(64, max_length=2)
+    
     

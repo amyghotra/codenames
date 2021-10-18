@@ -24,8 +24,6 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             room_key: this.props.room_key,
             
         })
-        
-        console.log("task", this.state.task)
     }
 
     // For changing state when elements are changed on the page by user
