@@ -1,0 +1,18 @@
+.checkboxStructure{
+    float: right; /* Get checkbox all the way to the right of the card */
+    margin-left: 100%; /* Take up all the space on the left so the word cannot fit next to the box */
+}
+
+
+.card-text{
+    text-align: left;
+    font-family: "FreeMono", monospace;
+}
+
+.card-deck{
+    height: 105%;
+    background-color: rgb(228, 235, 190);
+    border-radius: 10px;
+    width: 105%;
+}
+

@@ -27,6 +27,7 @@ class UserInfo(models.Model):
 
 def number_default_function():
     return uuid.uuid4().hex[:5].upper()
+    
 class Game(models.Model):
     game_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     connected_room_key = models.CharField(

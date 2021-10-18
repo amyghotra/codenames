@@ -8,7 +8,4 @@ admin.site.register(Game)
 admin.site.register(RedTeam)
 admin.site.register(BlueTeam)
 admin.site.register(Players)
-<<<<<<< HEAD
-=======
 admin.site.register(GameWords)
->>>>>>> ebb49b92a93f899ab44d6ed67f8c67f286d48427
