@@ -25,7 +25,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             gameWords: this.props.gameWords,
             
         })
-        console.log("Game Words Array: ", this.props.gameWords)
+        console.log("Game Words Array before update: ", this.props.gameWords)
     }
 
     /*
@@ -41,7 +41,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             this.setState = ({
                 gameWords: this.props.gameWords,
             })
-            console.log("Game Words Array: ", this.props.gameWords)
+            console.log("Game Words Array after update: ", this.props.gameWords)
           }
     }
 

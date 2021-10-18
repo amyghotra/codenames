@@ -23,6 +23,7 @@ class Game extends Component {
             doubleAgent: '',
             doubleAgentIndex: '',
             playersdata: '',
+            agentClicked: false,
         }
     }
 
@@ -80,8 +81,11 @@ class Game extends Component {
     setDoubleAgent = () => {
         let doubleAgent = { ...this.state.doubleAgent}; 
         doubleAgent.category = this.state.team;
+        let agentClicked = this.state.agentClicked;
+        agentClicked = true;
         this.setState({
-            doubleAgent
+            doubleAgent,
+            agentClicked
         })
 
         axios.put(`http://127.0.0.1:8000/codenames/games/word/${this.state.doubleAgent.word_id}`, doubleAgent)
@@ -111,11 +115,25 @@ class Game extends Component {
                     this.state.task === 'S' ?
                     
                     <div>
-                        <button onClick={this.setDoubleAgent}>I WANT FIRST</button> 
-                        <SpymastersGame 
-                            room_key = {this.state.room_key}
-                            gameWords = {this.state.gameWords}
-                        />
+                        {
+                        this.state.agentClicked === false ?
+                        <div>
+                            <button onClick={this.setDoubleAgent}>I WANT FIRST</button> 
+                            <SpymastersGame 
+                                room_key = {this.state.room_key}
+                                gameWords = {this.state.gameWords}
+                            />
+                        </div>
+
+                        :
+
+                        <div>
+                            <SpymastersGame 
+                                    room_key = {this.state.room_key}
+                                    gameWords = {this.state.gameWords}
+                            />
+                        </div>
+                        }
                     </div>
                     : 
 
