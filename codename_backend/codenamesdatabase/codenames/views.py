@@ -4,7 +4,7 @@ from .serializers import RoomSerializer, UserInfoSerializer, GameSerializer, Red
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
-
+from django.http import Http404
 
 # Create your views here.
 class RoomList(APIView):
@@ -65,6 +65,38 @@ class GameList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GameDetail(APIView):
+
+    def get_game(self, game_id):
+        try:
+            return Game.objects.get(game_id=game_id)
+        except Game.DoesNotExist:
+            raise Http404
+
+    def get(self, request, game_id):
+        game = self.get_game(game_id)
+        serializer = GameSerializer(game)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self,request, game_id):
+        print('This is the game_id: ', game_id)
+        game = self.get_game(game_id)
+        serializer = GameSerializer(game, data=request.data)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, game_id):
+        game = self.get_game(game_id)
+        serializer = GameSerializer(game)
+        game.delete()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    
+
 
 class RedTeamList(APIView):
 
