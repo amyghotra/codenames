@@ -51,7 +51,6 @@ class Game extends Component {
             }
 
             if(playerExist === false) {
-                console.log('making game room with ', this.props.location.state.playerid)
                 axios.post('http://127.0.0.1:8000/codenames/players', {
                     operative_screen_name: this.props.location.state.nickname,
                     team: this.props.location.state.team,
@@ -78,18 +77,29 @@ class Game extends Component {
     setDoubleAgent = () => {
         let doubleAgent = { ...this.state.doubleAgent};
         doubleAgent.category = this.state.team;
-        console.log('update double: ',doubleAgent);
         this.setState({
             doubleAgent
         })
 
-        console.log('New Double Agent! ', this.state.doubleAgent)
         axios.put(`http://127.0.0.1:8000/codenames/games/word/${this.state.doubleAgent.word_id}`, doubleAgent)
             .then(res => {
                 console.log(res)
+                this.updateGameWords()
             })
         
     }
+
+    updateGameWords = () => {
+        axios.get(`http://127.0.0.1:8000/codenames/games/${this.state.gameid}`).then(res => {
+            this.setState({ 
+                gameWords: res.data.gameWords 
+            })
+        
+        })
+        
+    }
+
+    
 
     render() {
         return(
@@ -101,12 +111,14 @@ class Game extends Component {
                         <button onClick={this.setDoubleAgent}>I WANT FIRST</button>
                         <SpymastersGame 
                             room_key = {this.state.room_key}
+                            gameWords = {this.state.gameWords}
                         />
                     </div>
                     : 
 
                     <OperativesGame 
                         room_key = {this.state.room_key}
+                        gameWords = {this.state.gameWords}
                     />
                 }
             </div>
