@@ -25,11 +25,14 @@ class UserInfo(models.Model):
     def __str__(self):
         return str(self.nickname) + " from " + str(self.connected_room_key)
 
+def number_default_function():
+    return uuid.uuid4().hex[:5].upper()
+
 class Game(models.Model):
     game_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     connected_room_key = models.ForeignKey(Room, on_delete=models.CASCADE, default=None)
 
-    def __str__(self):
+    def str(self):
         return "This game in happening in room: " + str(self.connected_room_key)
 
 class RedTeam(models.Model):
@@ -104,6 +107,20 @@ class RedWords(models.Model):
     )
     game_id = models.ForeignKey('Game',on_delete=models.CASCADE, related_name='redWords')
     word = models.CharField(64,max_length=64)
+
+    def __str__(self):
+        return str(self.word)
+
+class DoubleAgentWords(models.Model):
+    doubleagent_words_id = models.CharField(
+        primary_key=True,
+        max_length = 20,
+        blank=True,
+        editable=False,
+        default=words_number_default_function
+    )
+    game_id = models.ForeignKey('Game',on_delete=models.CASCADE, related_name='doubleAgentWords')
+    word = models.CharField(64, max_length=64)
 
     def __str__(self):
         return str(self.word)
