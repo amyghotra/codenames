@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-/* Used by Spymaster and Operatives pages instead of each page having their own .css */
-=======
 /* Not used in Game.js but I'm keeping this file for now in case it's needed */
 
->>>>>>> 0bfdd6cd5cdad26f830d91afc0d14ccf270bfd2f
 .game{
     background-image: url(../../Images/game.png);
     display: table;
@@ -63,11 +59,7 @@ html, body{ /* Add this to fill out the page without using px */
     color: black;
     font-size: 22px;
     font-weight: bold;
-<<<<<<< HEAD
-    font-family: "FreeMono", monospace; /* Changed from Prosto One */
-=======
     font-family: "FreeMono", monospace; /* Changed from Prosto One, I'm not sure if css supports that font? */
->>>>>>> 0bfdd6cd5cdad26f830d91afc0d14ccf270bfd2f
     float: left;
 }
 
@@ -158,70 +150,12 @@ html, body{ /* Add this to fill out the page without using px */
     margin: 10%;
 } */
 
-<<<<<<< HEAD
-.card-deck{ /* Not used */
-=======
 .card-deck{
->>>>>>> 0bfdd6cd5cdad26f830d91afc0d14ccf270bfd2f
     height: 90%;
     background-color: rgb(228, 235, 190);
     border-radius: 10px;
     width: 105%;
 }
-<<<<<<< HEAD
-.card-deck-neutral{
-    height: 90%;
-    background-color: rgb(228, 235, 190);
-    border-radius: 10px;
-    width: 105%;
-}
-.card-deck-black{
-    height: 90%;
-    background-color: rgb(0, 0, 0);
-    color: white;
-    border-radius: 10px;
-    width: 105%;
-}
-.card-deck-blue{
-    height: 90%;
-    background-color: rgb(87, 143, 248);
-    border-radius: 10px;
-    width: 105%;
-}
-.card-deck-red{
-    height: 90%;
-    background-color: rgb(253, 63, 63);
-    border-radius: 10px;
-    width: 105%;
-}
-
-.card-deck-muted-neutral{
-    height: 90%;
-    background-color: rgb(228, 235, 190, 0.33);
-    border-radius: 10px;
-    width: 105%;
-}
-.card-deck-muted-black{
-    height: 90%;
-    background-color: rgb(0, 0, 0, 0.33);
-    color: white;
-    border-radius: 10px;
-    width: 105%;
-}
-.card-deck-muted-blue{
-    height: 90%;
-    background-color: rgb(87, 143, 248, 0.33);
-    border-radius: 10px;
-    width: 105%;
-}
-.card-deck-muted-red{
-    height: 90%;
-    background-color: rgba(253, 63, 63, 0.33);
-    border-radius: 10px;
-    width: 105%;
-}
-=======
->>>>>>> 0bfdd6cd5cdad26f830d91afc0d14ccf270bfd2f
 
 .card-text{
     text-align: left;

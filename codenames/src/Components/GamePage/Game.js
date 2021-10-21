@@ -1,35 +1,14 @@
 import React, {Component} from 'react'
 import './Game.css'
-<<<<<<< HEAD
-import SpymastersGame from './Spymasters/SpymastersGame'
-import OperativesGame from './Operatives/OperativesGame' 
-=======
 import axios from 'axios'
 import SpymastersGame from './Spymasters/SpymastersGame.js'
 import OperativesGame from './Operatives/OperativesGame.js'
->>>>>>> 0bfdd6cd5cdad26f830d91afc0d14ccf270bfd2f
 
 
 class Game extends Component {
     constructor() {
         super()
         this.state = {
-<<<<<<< HEAD
-            spymaster: false // changing to false will allow you to see the operatives view.
-        }
-    }
-    render() {
-        if (this.state.spymaster) {
-            return (
-                <SpymastersGame />
-            )
-        }
-        else {
-            return (
-                <OperativesGame />
-            )
-        }
-=======
             room_key: '',
             roomid: '',
             nickname: '',
@@ -165,7 +144,6 @@ class Game extends Component {
                 }
             </div>
         )
->>>>>>> 0bfdd6cd5cdad26f830d91afc0d14ccf270bfd2f
     }
 }
 
