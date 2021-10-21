@@ -75,7 +75,6 @@ class Game extends Component {
 
         this.updateGameWords(this.props.location.state.gameid)
     }
-    
     setDoubleAgent = () => {
         let doubleAgent = { ...this.state.doubleAgent}; 
         doubleAgent.category = this.state.team;
