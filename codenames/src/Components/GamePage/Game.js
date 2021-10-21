@@ -112,9 +112,10 @@ class Game extends Component {
                     <div>
                         <button onClick={this.setDoubleAgent}>I WANT FIRST</button>
                         <SpymastersGame 
-                            room_key = {this.state.room_key}
-                            gameWords = {this.state.gameWords}
+                        room_key = {this.state.room_key}
+                        gameWords = {this.state.gameWords}
                         />
+                        
                     </div>
                     : 
 

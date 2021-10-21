@@ -20,12 +20,15 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         
     }
     componentDidMount = () => {
-        this.setState = ({
-            room_key: this.props.room_key,
-            gameWords: this.props.gameWords
+        if(this.props.gameWords){
             
-        })
-        console.log("DSFSFSFSFSFS", this.props.gameWords)
+            this.setState = ({
+                room_key: this.props.location.state.room_key,
+                gameWords: this.props.location.state.room_key,
+                
+                
+            })
+        }
     }
 
     // For changing state when elements are changed on the page by user
