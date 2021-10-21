@@ -10,7 +10,11 @@ import csv
 def getGameWords():
     print("trying to get words for the game")
     allWords = set()
+<<<<<<< HEAD
     with open('/mnt/c/Users/rimsh/Desktop/CapstoneProject/codenames/codename_backend/codenamesdatabase/codenames/words.csv', newline='') as csvfile:
+=======
+    with open('/Users/school123/Dev/codenames/codename_backend/codenamesdatabase/codenames/words.csv', newline='') as csvfile:
+>>>>>>> 0bfdd6cd5cdad26f830d91afc0d14ccf270bfd2f
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in spamreader:
             allWords.add(', '.join(row))
