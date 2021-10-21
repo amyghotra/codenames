@@ -9,7 +9,7 @@ DATABASES = {
         'ENGINE': 'mysql.connector.django',
         'NAME': 'codenames_database',
         'USER': 'root',
-        # Hidden Password 
+        # Hidden Password s
         'PASSWORD': 'P@ssw0rd',
         'HOST': '127.0.0.1',
         'PORT': '3306',
