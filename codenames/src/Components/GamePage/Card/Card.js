@@ -9,8 +9,8 @@ class Card extends Component{
         this.state = {
             checked: false,
             task: '',
-            word: "TEMPWORD",
             team: '',
+            content: '',
             turn: true, // true = blue turn && false = red turn
         }
     }
@@ -18,12 +18,21 @@ class Card extends Component{
     componentDidMount = () => {
         this.setState({
             task: this.props.task,
-            word: this.state.word,
             team: this.state.team,
             turn: this.state.turn
             
         })
         // console.log("task : ", this.props.task)
+    }
+
+    componentDidUpdate = (event) => {
+        if (event.word !== this.props.word) {
+            this.setState(prevState => {
+                return {
+                    content: this.props.word
+                }
+            })
+        }
     }
 
     handleChange = () => {
@@ -51,13 +60,13 @@ class Card extends Component{
 						checked = {this.state.checked}
                         onClick={this.handleChange}/><br/>
 
-                <h5 className="card-text">{this.state.word}</h5><br/>
+                <h5 className="card-text">{this.state.content.word}</h5><br/>
                 </div>
                 </div>
                 :
                 <div>
                     <br/>
-                    <h5 className="card-text">{this.state.word}</h5>
+                    <h5 className="card-text">{this.state.content.word}</h5>
                     <br/>
                 </div>
                 }

@@ -130,12 +130,36 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                 <div className="row">
                                     <div className="col-md-12">
                                         
-                                      <Row task={this.state.task}/>  
-                                      <Row task={this.state.task}/>
-                                      <Row task={this.state.task}/>
-                                      <Row task={this.state.task}/>
-                                      <Row task={this.state.task}/>
-
+                                      <Row task={this.state.task} 
+                                           rowWords={[this.state.gameWords[0], 
+                                                      this.state.gameWords[1],
+                                                      this.state.gameWords[2],
+                                                      this.state.gameWords[3],
+                                                      this.state.gameWords[4]]}/>  
+                                      <Row task={this.state.task} 
+                                           rowWords={[this.state.gameWords[5], 
+                                                      this.state.gameWords[6],
+                                                      this.state.gameWords[7],
+                                                      this.state.gameWords[8],
+                                                      this.state.gameWords[9]]}/>
+                                      <Row task={this.state.task} 
+                                           rowWords={[this.state.gameWords[10], 
+                                                      this.state.gameWords[11],
+                                                      this.state.gameWords[12],
+                                                      this.state.gameWords[13],
+                                                      this.state.gameWords[14]]}/>
+                                      <Row task={this.state.task} 
+                                           rowWords={[this.state.gameWords[15], 
+                                                      this.state.gameWords[16],
+                                                      this.state.gameWords[17],
+                                                      this.state.gameWords[18],
+                                                      this.state.gameWords[19]]}/>
+                                      <Row task={this.state.task} 
+                                           rowWords={[this.state.gameWords[20], 
+                                                      this.state.gameWords[21],
+                                                      this.state.gameWords[22],
+                                                      this.state.gameWords[23],
+                                                      this.state.gameWords[24]]}/>
                                     </div>
                                 </div>
                                 <div className="row">
