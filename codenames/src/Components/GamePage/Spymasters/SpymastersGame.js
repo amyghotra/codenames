@@ -8,7 +8,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         this.state = {
             room_key: '',
             task:'S',
-            gameWords: '',
+            gameWords: [],
             spymasterClueWord: "",
             spymasterClueCount: 0,
 
@@ -25,7 +25,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         //     gameWords: this.props.gameWords,
             
         // })
-        // console.log("Game Words Array before update: ", this.props.gameWords)
+        console.log("Game Words Array before update: ", this.props.gameWords)
     }
 
     /*
@@ -37,13 +37,16 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             gameWords to how the game component has them. 
     */
     componentDidUpdate = (event) =>{
-        console.log('props: ', this.props.gameWords)
+        console.log(this.props.gameWords)
         if (event.gameWords !== this.props.gameWords) {
-            this.setState = ({
-                gameWords: this.props.gameWords,
+            this.setState(prevState => {
+                return {
+                    gameWords: this.props.gameWords,
+                    room_key: this.props.room_key
+                }
             })
             console.log("Game Words Array after update: ", this.props.gameWords)
-          }
+        }
     }
 
 
