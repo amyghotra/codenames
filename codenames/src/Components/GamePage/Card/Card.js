@@ -15,6 +15,8 @@ class Card extends Component{
 
             redteamid: '',
             blueteamid: '',
+
+            
         }
     }
     
@@ -44,6 +46,8 @@ class Card extends Component{
             turn: !this.state.turn
             
         })
+
+        this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
         console.log("turn : " , this.state.turn)
     }
 
@@ -69,7 +73,7 @@ class Card extends Component{
                 :
                 <div>
                     <br/>
-                    <h5 className="card-text">{this.state.content.word}</h5>
+                    <h5 className={`card-deck-${this.state.content.category}`} >{this.state.content.word}</h5>
                     <br/>
                 </div>
                 }

@@ -9,6 +9,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             room_key: '',
             task:'S',
             gameWords: '',
+            playersdata: '',
             spymasterClueWord: "",
             spymasterClueCount: 0,
 
@@ -17,18 +18,15 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
 
             redteamid: '',
             blueteamid: '',
+            redOperatives: [],
+            redSpymasters: [],
+            blueOperatives: [],
+            blueSpymasters: [],
+            renderPlayers: false,
 
             
         }
         
-    }
-    componentDidMount = () => {
-        // this.setState = ({
-        //     room_key: this.props.room_key,
-        //     gameWords: this.props.gameWords,
-            
-        // })
-        console.log("Game Words Array before update: ", this.props.gameWords)
     }
 
     /*
@@ -40,17 +38,27 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             gameWords to how the game component has them. 
     */
     componentDidUpdate = (event) =>{
-        console.log(this.props.gameWords)
+        
         if (event.gameWords !== this.props.gameWords) {
             this.setState(prevState => {
                 return {
                     gameWords: this.props.gameWords,
-                    room_key: this.props.room_key
+                    room_key: this.props.room_key,
+                    playersdata: this.props.playersdata,
                 }
-            })
-            console.log("Game Words Array after update: ", this.props.gameWords)
+            }, this.updatePlayers())
+            // if(this.props.playersdata && this.state.renderPlayers === false){
+            //     this.setState({
+            //         renderPlayers: true
+            //     })
+            //     this.updatePlayers()
+            // }
         }
+        
+        
     }
+
+   
 
 
     // For changing state when elements are changed on the page by user
@@ -84,7 +92,39 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         
     // }
 
+    updatePlayers = () => {
+        
+        for(let i = 0; i < this.props.playersdata.length; i++){
+
+            if(this.props.playersdata[i].role === "S"){
+                if(this.props.playersdata[i].team === "R"){
+                    this.state.redSpymasters.push(this.props.playersdata[i])
+                    
+                }
+                else if(this.props.playersdata[i].team === "B"){
+                    this.state.blueSpymasters.push(this.props.playersdata[i])
+                    
+                }
+            }
+            else if(this.props.playersdata[i].role === "O"){
+                if(this.props.playersdata[i].team === "R"){
+                    this.state.redOperatives.push(this.props.playersdata[i])
+                    
+                }
+                else if(this.props.playersdata[i].team === "B"){
+                    this.state.blueOperatives.push(this.props.playersdata[i])
+                    
+                }
+                
+            }
+            console.log(this.props.playersdata[i].operative_screen_name)
+            
+        }
+        
+    }
+
     render() {
+        
 
 
     return(
@@ -101,31 +141,36 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                     <div className="redTeam">
                                         <div>
                                             <h6 className="teamTitle">Red Team</h6>
-                                            <h7 className="teamScore">{this.state.redScore}</h7>
+                                            <h7 className="teamScore">{this.props.redPoints}</h7>
                                         </div>
                                         <br />
                                         <br />
                                         <h6 className="teamContent"> Spymasters:</h6>
-                                        <li className="bulletContent">username</li>
-                                        <li className="bulletContent">username</li>
+                                            {this.state.redSpymasters.map(player => (
+                                                <li className="bulletContent" key="{player}">{player.operative_screen_name}</li>
+                                            ))}
+                                        
                                         <h6 className="teamContent"> Operatives:</h6>
-                                        <li className="bulletContent">username</li>
-                                        <li className="bulletContent">username</li>
+                                            {this.state.redOperatives.map(player => (
+                                                <li className="bulletContent" key="{player}">{player.operative_screen_name}</li>
+                                            ))}
                                     </div>
                                     <br />
                                     <div className="blueTeam">
                                         <div>
                                             <h6 className="teamTitle">Blue Team</h6>
-                                            <h7 className="teamScore">{this.state.blueScore}</h7>
+                                            <h7 className="teamScore">{this.props.bluePoints}</h7>
                                         </div>
                                         <br />
                                         <br />
                                         <h6 className="teamContent"> Spymasters:</h6>
-                                        <li className="bulletContent">username</li>
-                                        <li className="bulletContent">username</li>
+                                            {this.state.blueSpymasters.map(player => (
+                                                <li className="bulletContent" key="{player}">{player.operative_screen_name}</li>
+                                            ))}
                                         <h6 className="teamContent"> Operatives:</h6>
-                                        <li className="bulletContent">username</li>
-                                        <li className="bulletContent">username</li>
+                                            {this.state.blueOperatives.map(player => (
+                                                <li className="bulletContent" key="{player}">{player.operative_screen_name}</li>
+                                            ))}
                                     </div>
                                 </div>
                             </div>
@@ -133,36 +178,41 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                 <div className="row">
                                     <div className="col-md-12">
                                         
-                                      <Row task={this.state.task} 
-                                           rowWords={[this.state.gameWords[0], 
+                                       <Row task={this.state.task} 
+                                            rowWords={[this.state.gameWords[0], 
                                                       this.state.gameWords[1],
                                                       this.state.gameWords[2],
                                                       this.state.gameWords[3],
-                                                      this.state.gameWords[4]]}/>  
-                                      <Row task={this.state.task} 
-                                           rowWords={[this.state.gameWords[5], 
+                                                      this.state.gameWords[4]]}
+                                            increaseTeamPoints = {this.props.increaseTeamPoints}/>  
+                                       <Row task={this.state.task} 
+                                            rowWords={[this.state.gameWords[5], 
                                                       this.state.gameWords[6],
                                                       this.state.gameWords[7],
                                                       this.state.gameWords[8],
-                                                      this.state.gameWords[9]]}/>
-                                      <Row task={this.state.task} 
-                                           rowWords={[this.state.gameWords[10], 
+                                                      this.state.gameWords[9]]}
+                                            increaseTeamPoints = {this.props.increaseTeamPoints}/>
+                                       <Row task={this.state.task} 
+                                            rowWords={[this.state.gameWords[10], 
                                                       this.state.gameWords[11],
                                                       this.state.gameWords[12],
                                                       this.state.gameWords[13],
-                                                      this.state.gameWords[14]]}/>
-                                      <Row task={this.state.task} 
-                                           rowWords={[this.state.gameWords[15], 
+                                                      this.state.gameWords[14]]}
+                                            increaseTeamPoints = {this.props.increaseTeamPoints}/>
+                                       <Row task={this.state.task} 
+                                            rowWords={[this.state.gameWords[15], 
                                                       this.state.gameWords[16],
                                                       this.state.gameWords[17],
                                                       this.state.gameWords[18],
-                                                      this.state.gameWords[19]]}/>
-                                      <Row task={this.state.task} 
-                                           rowWords={[this.state.gameWords[20], 
+                                                      this.state.gameWords[19]]}
+                                            increaseTeamPoints = {this.props.increaseTeamPoints}/>
+                                       <Row task={this.state.task} 
+                                            rowWords={[this.state.gameWords[20], 
                                                       this.state.gameWords[21],
                                                       this.state.gameWords[22],
                                                       this.state.gameWords[23],
-                                                      this.state.gameWords[24]]}/>
+                                                      this.state.gameWords[24]]}
+                                            increaseTeamPoints = {this.props.increaseTeamPoints}/>
                                     </div>
                                 </div>
                                 <div className="row">

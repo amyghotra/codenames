@@ -89,7 +89,7 @@ class UserInfo extends Component {
                     this.setState({
                         redteamid: res.data[i].red_team_id,
                         redTeamExist: true,
-                        blueTeamExist: true,
+                        
                     })
                 }
             }
@@ -101,7 +101,7 @@ class UserInfo extends Component {
                     this.setState({
                         blueteamid: res.data[i].blue_team_id,
                         blueTeamExist: true,
-                        redTeamExist: true,
+                        
                     })
                 }
             }
@@ -149,22 +149,35 @@ class UserInfo extends Component {
 
     }
 
-    createGame = () => {
-        if (this.state.team === 'R' && this.state.redTeamExist === false) {
-            axios.post('http://127.0.0.1:8000/codenames/redTeam', {
+
+    createGame = async () => {
+        if (this.state.redTeamExist === false) {
+
+            await axios.post('http://127.0.0.1:8000/codenames/redTeam', {
                 game_id: this.state.gameid,
                 connected_room_key: this.state.roomid
             }).then(response => {
-                console.log(response)
+                this.setState({
+                    redteamid: response.data.red_team_id
+                })
+                
             })
             .catch(error => {
                 console.log(error)
             }) 
         }
-        else if (this.state.team === 'B' && this.state.blueTeamExist === false) {
-            axios.post('http://127.0.0.1:8000/codenames/blueTeam', {
+        if (this.state.blueTeamExist === false) {
+            await axios.post('http://127.0.0.1:8000/codenames/blueTeam', {
                 game_id: this.state.gameid,
                 connected_room_key: this.state.roomid
+            }).then(response => {
+                this.setState({
+                    blueteamid: response.data.blue_team_id
+                })
+                
+            })
+            .catch(error => {
+                console.log(error)
             })
         }
 
@@ -187,6 +200,8 @@ class UserInfo extends Component {
                     gameData: this.state.gameData,
                     gameWords: this.state.gameWords,
                     playerid: this.state.playerid,
+                    redteamid: this.state.redteamid,
+                    blueteamid: this.state.blueteamid
                     
                 }
             }}/>

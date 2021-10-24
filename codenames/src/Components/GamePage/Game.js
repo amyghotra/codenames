@@ -27,11 +27,12 @@ class Game extends Component {
 
             redteamid: '',
             blueteamid: '',
+            
         }
     }
 
 
-    
+
 
     componentDidMount = () => {
         let gameWords = this.props.location.state.gameWords;
@@ -65,6 +66,10 @@ class Game extends Component {
                     room: this.props.location.state.room_key,
                     game_id: this.props.location.state.gameid,
                     user_id: this.props.location.state.playerid
+                }).then(response =>{
+                    this.setState({
+                        playersdata: [...this.state.playersdata, response.data]
+                    })
                 })
             }
         })
@@ -109,9 +114,45 @@ class Game extends Component {
             })
         
         })
-
-        
     }
+
+    increaseTeamPoints = (team, word) => {
+        let redPoints = this.state.red_score
+        let bluePoints = this.state.blue_score
+        if(team === 'R'){
+            console.log("IT RAN")
+            this.setState(prevState => {
+                return {
+                    red_score: prevState.red_score+1,
+                }
+            })
+            redPoints += 1
+            
+            axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
+                console.log(response.data)
+            })
+            axios.patch(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`, {red_team_score: redPoints}).then(response => {
+                console.log(response.data)
+            })
+        }
+        else if(team === 'B'){
+            this.setState(prevState => {
+                return {
+                    blue_score: prevState.blue_score+1,
+                }
+            })
+            bluePoints += 1
+            axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
+                console.log(response.data)
+            })
+            axios.patch(`http://127.0.0.1:8000/codenames/blueTeam/${this.state.blueteamid}`, {blue_team_score: bluePoints}).then(response => {
+                console.log(response.data)
+            })
+        }
+    }
+
+
+
 
     
 
@@ -129,6 +170,10 @@ class Game extends Component {
                             <SpymastersGame 
                                 room_key = {this.state.room_key}
                                 gameWords = {this.state.gameWords}
+                                increaseTeamPoints = {this.increaseTeamPoints}
+                                redPoints = {this.state.red_score}
+                                bluePoints = {this.state.blue_score}
+                                playersdata = {this.state.playersdata}
                             />
                         </div>
 
@@ -138,6 +183,10 @@ class Game extends Component {
                             <SpymastersGame 
                                     room_key = {this.state.room_key}
                                     gameWords = {this.state.gameWords}
+                                    increaseTeamPoints = {this.increaseTeamPoints}
+                                    redPoints = {this.state.red_score}
+                                    bluePoints = {this.state.blue_score}
+                                    playersdata = {this.state.playersdata}
                             />
                         </div>
                         }
@@ -147,6 +196,10 @@ class Game extends Component {
                     <OperativesGame 
                         room_key = {this.state.room_key}
                         gameWords = {this.state.gameWords}
+                        increaseTeamPoints = {this.increaseTeamPoints}
+                        redPoints = {this.state.red_score}
+                        bluePoints = {this.state.blue_score}
+                        playersdata = {this.state.playersdata}
                     />
                 }
             </div>
