@@ -44,9 +44,9 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                 return {
                     gameWords: this.props.gameWords,
                     room_key: this.props.room_key,
-                    playersdata: this.props.playersdata,
+                    
                 }
-            }, this.updatePlayers())
+            })
             // if(this.props.playersdata && this.state.renderPlayers === false){
             //     this.setState({
             //         renderPlayers: true
@@ -58,6 +58,16 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         
     }
 
+    componentWillReceiveProps = (players) => {
+        
+        this.setState({
+            playersdata: players.playersdata,
+            renderPlayers: true
+        })
+        this.updatePlayers(players.playersdata)
+
+        
+    }
    
 
 
@@ -92,33 +102,45 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         
     // }
 
-    updatePlayers = () => {
-        
-        for(let i = 0; i < this.props.playersdata.length; i++){
+    updatePlayers = (player) => {
+        if(this.state.renderPlayers === true){
 
-            if(this.props.playersdata[i].role === "S"){
-                if(this.props.playersdata[i].team === "R"){
-                    this.state.redSpymasters.push(this.props.playersdata[i])
-                    
+            for(let i = 0; i < player.length; i++){
+                
+                if(player[i].role === "S"){
+                    if(player[i].team === "R"){
+                        let redSpymasters = this.state.redSpymasters
+                        redSpymasters.push(player[i])
+                        this.setState({
+                            redSpymasters
+                        })
+                        
+                    }
+                    else if(player[i].team === "B"){
+                        this.setState({
+                            blueSpymasters: [...this.state.blueSpymasters, player[i]]
+                        })
+                        
+                    }
                 }
-                else if(this.props.playersdata[i].team === "B"){
-                    this.state.blueSpymasters.push(this.props.playersdata[i])
-                    
-                }
-            }
-            else if(this.props.playersdata[i].role === "O"){
-                if(this.props.playersdata[i].team === "R"){
-                    this.state.redOperatives.push(this.props.playersdata[i])
-                    
-                }
-                else if(this.props.playersdata[i].team === "B"){
-                    this.state.blueOperatives.push(this.props.playersdata[i])
+                else if(player[i].role === "O"){
+                    if(player[i].team === "R"){
+                        this.setState({
+                            redOperatives: [...this.state.redOperatives, player[i]]
+                        })
+                        
+                    }
+                    else if(player[i].team === "B"){
+                        this.setState({
+                            blueOperatives: [...this.state.blueOperatives, player[i]]
+                        })
+                        
+                    }
                     
                 }
                 
+                
             }
-            console.log(this.props.playersdata[i].operative_screen_name)
-            
         }
         
     }
@@ -140,6 +162,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                 <div className="gameScores">
                                     <div className="redTeam">
                                         <div>
+                                    
                                             <h6 className="teamTitle">Red Team</h6>
                                             <h7 className="teamScore">{this.props.redPoints}</h7>
                                         </div>
