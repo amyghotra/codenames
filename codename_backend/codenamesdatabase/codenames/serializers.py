@@ -26,7 +26,7 @@ def getGameWords():
 class RedWordsSerializer(serializers.ModelSerializer):
     class Meta:
         model = RedWords
-        fields = "__adoll__"
+        fields = "__all__"
 
 class BlueWordsSerializer(serializers.ModelSerializer):
     class Meta:
