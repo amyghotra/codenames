@@ -12,6 +12,9 @@ class Card extends Component{
             team: '',
             content: '',
             turn: true, // true = blue turn && false = red turn
+
+            redteamid: '',
+            blueteamid: '',
         }
     }
     

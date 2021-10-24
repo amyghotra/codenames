@@ -88,7 +88,8 @@ class UserInfo extends Component {
                     console.log(res.data[i].game_id, ' COMPARED TO ', gameid)
                     this.setState({
                         redteamid: res.data[i].red_team_id,
-                        redTeamExist: true
+                        redTeamExist: true,
+                        blueTeamExist: true,
                     })
                 }
             }
@@ -99,7 +100,8 @@ class UserInfo extends Component {
                 if(res.data[i].game_id === gameid) {
                     this.setState({
                         blueteamid: res.data[i].blue_team_id,
-                        blueTeamExist: true
+                        blueTeamExist: true,
+                        redTeamExist: true,
                     })
                 }
             }
@@ -184,7 +186,8 @@ class UserInfo extends Component {
                     gameid: this.state.gameid,
                     gameData: this.state.gameData,
                     gameWords: this.state.gameWords,
-                    playerid: this.state.playerid
+                    playerid: this.state.playerid,
+                    
                 }
             }}/>
         }

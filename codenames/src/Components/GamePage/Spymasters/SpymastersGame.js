@@ -8,12 +8,15 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         this.state = {
             room_key: '',
             task:'S',
-            gameWords: [],
+            gameWords: '',
             spymasterClueWord: "",
             spymasterClueCount: 0,
 
             redScore: 0,
             blueScore: 0,
+
+            redteamid: '',
+            blueteamid: '',
 
             
         }

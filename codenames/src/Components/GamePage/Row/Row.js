@@ -7,7 +7,9 @@ class Row extends Component{
         super(props)
         this.state = {
             task: '',
-            rowWords: ''
+            rowWords: '',
+            redteamid: '',
+            blueteamid: '',
         }
     }
     

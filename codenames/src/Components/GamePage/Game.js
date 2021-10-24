@@ -24,8 +24,14 @@ class Game extends Component {
             doubleAgentIndex: '',
             playersdata: '',
             agentClicked: false,
+
+            redteamid: '',
+            blueteamid: '',
         }
     }
+
+
+    
 
     componentDidMount = () => {
         let gameWords = this.props.location.state.gameWords;
@@ -72,6 +78,8 @@ class Game extends Component {
             gameData: this.props.location.state.gameData,
             gameWords: this.props.location.state.gameWords,
             playerid: this.props.location.state.playerid,
+            redteamid: this.props.location.state.redteamid,
+            blueteamid: this.props.location.state.blueteamid,
         })
 
         this.updateGameWords(this.props.location.state.gameid)

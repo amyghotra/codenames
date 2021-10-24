@@ -14,15 +14,29 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
             blueScore: 0,
             turn: true, // true = blue turn & false = red turn 
 
+            redteamid: '',
+            blueteamid: '',
+
         }
     }
     componentDidMount = () => {
-        this.setState = {
-            room_key: this.props.room_key,
-            gameWords: this.props.gameWords
+        //
+    }
+
+    componentDidUpdate = (event) =>{
+        console.log(this.props.gameWords)
+        if (event.gameWords !== this.props.gameWords) {
+            this.setState(prevState => {
+                return {
+                    gameWords: this.props.gameWords,
+                    room_key: this.props.room_key
+                }
+            })
+            console.log("Game Words Array after update: ", this.props.gameWords)
         }
     }
 
+    
     
 
     // For handling the players' submitting their guesses / word picks
@@ -101,11 +115,36 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                         </div>
                                     </div>
                                 </div>
-                                        <Row task={this.state.task}/>   
-                                        <Row task={this.state.task}/>
-                                        <Row task={this.state.task}/>
-                                        <Row task={this.state.task}/>
-                                        <Row task={this.state.task}/>
+                                <Row task={this.state.task} 
+                                           rowWords={[this.state.gameWords[0], 
+                                                      this.state.gameWords[1],
+                                                      this.state.gameWords[2],
+                                                      this.state.gameWords[3],
+                                                      this.state.gameWords[4]]}/>  
+                                      <Row task={this.state.task} 
+                                           rowWords={[this.state.gameWords[5], 
+                                                      this.state.gameWords[6],
+                                                      this.state.gameWords[7],
+                                                      this.state.gameWords[8],
+                                                      this.state.gameWords[9]]}/>
+                                      <Row task={this.state.task} 
+                                           rowWords={[this.state.gameWords[10], 
+                                                      this.state.gameWords[11],
+                                                      this.state.gameWords[12],
+                                                      this.state.gameWords[13],
+                                                      this.state.gameWords[14]]}/>
+                                      <Row task={this.state.task} 
+                                           rowWords={[this.state.gameWords[15], 
+                                                      this.state.gameWords[16],
+                                                      this.state.gameWords[17],
+                                                      this.state.gameWords[18],
+                                                      this.state.gameWords[19]]}/>
+                                      <Row task={this.state.task} 
+                                           rowWords={[this.state.gameWords[20], 
+                                                      this.state.gameWords[21],
+                                                      this.state.gameWords[22],
+                                                      this.state.gameWords[23],
+                                                      this.state.gameWords[24]]}/>
                                 
                                 <div className="row">
                                     <div className="col-md-12">
