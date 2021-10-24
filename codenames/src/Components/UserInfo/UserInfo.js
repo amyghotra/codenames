@@ -88,7 +88,7 @@ class UserInfo extends Component {
                     console.log(res.data[i].game_id, ' COMPARED TO ', gameid)
                     this.setState({
                         redteamid: res.data[i].red_team_id,
-                        redTeamExist: true
+                        redTeamExist: true  
                     })
                 }
             }
