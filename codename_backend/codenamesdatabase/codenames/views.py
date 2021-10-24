@@ -239,7 +239,7 @@ class BlueTeamDetail(APIView):
 
     def patch(self, request, blue_team_id):
         blue_team = self.get_blue_team(blue_team_id)
-        serializer = RedTeamSerializer(blue_team, data=request.data, partial=True)
+        serializer = BlueTeamSerializer(blue_team, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
