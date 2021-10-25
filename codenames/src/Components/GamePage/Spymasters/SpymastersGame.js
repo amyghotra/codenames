@@ -72,25 +72,6 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         }
     }
 
-    //This one doesnt print twice but when refreshed it deletes everything.
-
-    // componentWillReceiveProps = (players) => {
-    //     console.log("players.playersdata: ",players.playersdata)
-    //     console.log("this.props.playerdata: ",this.props.playersdata)
-    //     let playerss = players.playersdata
-    //     let prevPlayers = this.props.playersdata
-    //     if(playerss.length !== prevPlayers.length){
-    //     this.setState({
-    //         playersdata: players.playersdata,
-    //         //renderPlayers: true,
-    //     })
-    //     //console.log(players)
-
-    //     console.log("Checking how many times this will call the update players!")
-    //     this.updatePlayers(players.playersdata)
-    //     }
-    // }
-
     /*This one will call updatePlayers twice therefore adds it twice but will show normal when refreshed. 
         =>Fixed with the deleteRepeated() function    
     */
