@@ -120,7 +120,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                     <div className="redTeam">
                                         <div>
                                             <h6 className="teamTitle">Red Team</h6>
-                                            <h7 className="teamScore">{this.props.redPoints}</h7>
+                                            <h6 className="teamScore">{this.props.redPoints}</h6>
                                         </div>
                                         <br />
                                         <br />
@@ -135,7 +135,7 @@ class OperativesGame extends Component{ // Still not 100% sure whether to change
                                     <div className="blueTeam">
                                         <div>
                                             <h6 className="teamTitle">Blue Team</h6>
-                                            <h7 className="teamScore">{this.props.bluePoints}</h7>
+                                            <h6 className="teamScore">{this.props.bluePoints}</h6>
                                         </div>
                                         <br />
                                         <br />

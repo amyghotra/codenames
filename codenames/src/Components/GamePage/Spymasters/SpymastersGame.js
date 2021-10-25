@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import Row from "../Row/Row"
 import './SpymastersGame.css'
 
+
 class SpymastersGame extends Component{ // Still not 100% sure whether to change this to a class, or to just useState
     constructor() {
         super()
@@ -18,16 +19,23 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
 
             redteamid: '',
             blueteamid: '',
+
+            //Helper Variables
             redOperatives: [],
             redSpymasters: [],
             blueOperatives: [],
             blueSpymasters: [],
             renderPlayers: false,
 
-            
+            //Show Variables
+            showredOperatives: [],
+            showredSpymasters: [],
+            showblueOperatives: [],
+            showblueSpymasters: [],
         }
         
     }
+
 
     /*
         states affected: 
@@ -54,22 +62,29 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             //     this.updatePlayers()
             // }
         }
-        
-        
+
+        if(event.playersdata !== this.props.playersdata){
+            this.setState(prevState =>{
+                return{
+                    playersdata: this.props.playersdata
+                }
+            })
+        }
     }
 
+    /*This one will call updatePlayers twice therefore adds it twice but will show normal when refreshed. 
+        =>Fixed with the deleteRepeated() function    
+    */
     componentWillReceiveProps = (players) => {
-        
         this.setState({
             playersdata: players.playersdata,
-            renderPlayers: true
+            //renderPlayers: true,
         })
+        //console.log(players)
+
+        console.log("Checking how many times this will call the update players!")
         this.updatePlayers(players.playersdata)
-
-        
     }
-   
-
 
     // For changing state when elements are changed on the page by user
     handleChange(event) {
@@ -102,44 +117,140 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         
     // }
 
-    updatePlayers = (player) => {
-        if(this.state.renderPlayers === true){
+    /*Issues: Being called twice so it adds double the amount until you refresh the page.
+        =>Fixed with the deleteRepeated() function    
+    */
+    updatePlayers = (players) => {
+        //console.log('Update Players Called!');
+        let room_key = this.props.room_key;
+        //let players = this.props.playersdata;
+        console.log("Players data: ", players)
+        //if(this.state.renderPlayers === true){
 
-            for(let i = 0; i < player.length; i++){
-                
-                if(player[i].role === "S"){
-                    if(player[i].team === "R"){
+        for(let i = 0; i < players.length; i++){
+            //console.log("Current Player: ", players[i])
+            if(players[i].room === room_key){
+                if(players[i].role === "S" ){
+                    if(players[i].team === "R"){
+                        //console.log("It went here [Red Spy]: ", players[i])
                         let redSpymasters = this.state.redSpymasters
-                        redSpymasters.push(player[i])
+                        redSpymasters.push(players[i])
                         this.setState({
-                            redSpymasters
+                            redSpymasters,
                         })
                         
                     }
-                    else if(player[i].team === "B"){
+                    else if(players[i].team === "B"){
+                        //console.log("It went here [Blue Spy]: ", players[i])
+                        let blueSpymasters = this.state.blueSpymasters
+                        blueSpymasters.push(players[i])
                         this.setState({
-                            blueSpymasters: [...this.state.blueSpymasters, player[i]]
+                            blueSpymasters
                         })
                         
                     }
                 }
-                else if(player[i].role === "O"){
-                    if(player[i].team === "R"){
+                else if(players[i].role === "O"){
+                    if(players[i].team === "R"){
+                        //console.log("It went here [Red Op]: ", players[i])
+                        let redOperatives = this.state.redOperatives
+                        redOperatives.push(players[i])
                         this.setState({
-                            redOperatives: [...this.state.redOperatives, player[i]]
+                            redOperatives
                         })
                         
                     }
-                    else if(player[i].team === "B"){
+                    else if(players[i].team === "B"){
+                        //console.log("It went here [Blue Op]: ", players[i])
+                        let blueOperatives = this.state.blueOperatives
+                        blueOperatives.push(players[i])
                         this.setState({
-                            blueOperatives: [...this.state.blueOperatives, player[i]]
+                            blueOperatives
                         })
                         
                     }
                     
                 }
-                
-                
+            
+            }
+        }
+        //}
+
+        this.deleteRepeated()
+    }
+
+    //This fixes the issue of having repeated players on intial load. 
+    deleteRepeated = ()=> {
+        let redOperatives = this.state.redOperatives
+        let redSpymasters = this.state.redSpymasters
+        let blueOperatives = this.state.blueOperatives
+        let blueSpymasters = this.state.blueSpymasters
+        let showredOperatives = this.state.showredOperatives
+        let showredSpymasters = this.state.showredSpymasters
+        let showblueOperatives = this.state.showblueOperatives
+        let showblueSpymasters = this.state.showblueSpymasters
+
+        //Red Operatives
+        for (let i = 0; i < redOperatives.length; i++){
+            let repeated = false;
+            for (let j = 0; j < showredOperatives.length; j++){
+                if(redOperatives[i].player_id === showredOperatives[j].player_id){
+                    repeated = true
+                }
+            }
+            if (repeated === false){
+                showredOperatives.push(redOperatives[i])
+                this.setState({
+                    showredOperatives
+                })
+            }
+        }//end of for loop
+
+        //Red Spymasters
+        for (let i = 0; i < redSpymasters.length; i++){
+            let repeated = false;
+            for (let j = 0; j < showredSpymasters.length; j++){
+                if(redSpymasters[i].player_id === showredSpymasters[j].player_id){
+                    repeated = true
+                }
+            }
+            if (repeated === false){
+                showredSpymasters.push(redSpymasters[i])
+                this.setState({
+                    showredSpymasters
+                })
+            }
+        }
+
+        //Blue Operative
+        for (let i = 0; i < blueOperatives.length; i++){
+            let repeated = false;
+            for (let j = 0; j < showblueOperatives.length; j++){
+                if(redOperatives[i].player_id === showblueOperatives[j].player_id){
+                    repeated = true
+                }
+            }
+            if (repeated === false){
+                showblueOperatives.push(blueOperatives[i])
+                this.setState({
+                    showblueOperatives
+                })
+            }
+        }
+
+        //Blue Spymasters
+        for (let i = 0; i < blueSpymasters.length; i++){
+            let repeated = false;
+            for (let j = 0; j < showblueSpymasters.length; j++){
+                if(blueSpymasters[i].player_id === showblueSpymasters[j].player_id){
+                    repeated = true
+                }
+            }
+            if (repeated === false){
+                showblueSpymasters.push(blueSpymasters[i])
+                this.setState({
+                    showblueSpymasters
+                })
             }
         }
         
@@ -164,35 +275,36 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                         <div>
                                     
                                             <h6 className="teamTitle">Red Team</h6>
-                                            <h7 className="teamScore">{this.props.redPoints}</h7>
+                                            <h6 className="teamScore">{this.props.redPoints}</h6>
                                         </div>
                                         <br />
                                         <br />
                                         <h6 className="teamContent"> Spymasters:</h6>
-                                            {this.state.redSpymasters.map(player => (
-                                                <li className="bulletContent" key="{player}">{player.operative_screen_name}</li>
+                                            {this.state.showredSpymasters.map((player, index) => (
+                                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                                             ))}
+                                            {this.showRedSpymasters}
                                         
                                         <h6 className="teamContent"> Operatives:</h6>
-                                            {this.state.redOperatives.map(player => (
-                                                <li className="bulletContent" key="{player}">{player.operative_screen_name}</li>
+                                            {this.state.showredOperatives.map((player, index )=> (
+                                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                                             ))}
                                     </div>
                                     <br />
                                     <div className="blueTeam">
                                         <div>
                                             <h6 className="teamTitle">Blue Team</h6>
-                                            <h7 className="teamScore">{this.props.bluePoints}</h7>
+                                            <h6 className="teamScore">{this.props.bluePoints}</h6>
                                         </div>
                                         <br />
                                         <br />
                                         <h6 className="teamContent"> Spymasters:</h6>
-                                            {this.state.blueSpymasters.map(player => (
-                                                <li className="bulletContent" key="{player}">{player.operative_screen_name}</li>
+                                            {this.state.showblueSpymasters.map((player, index) => (
+                                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                                             ))}
                                         <h6 className="teamContent"> Operatives:</h6>
-                                            {this.state.blueOperatives.map(player => (
-                                                <li className="bulletContent" key="{player}">{player.operative_screen_name}</li>
+                                            {this.state.showblueOperatives.map((player, index)=> (
+                                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                                             ))}
                                     </div>
                                 </div>
