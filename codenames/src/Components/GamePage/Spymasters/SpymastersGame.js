@@ -91,7 +91,9 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     //     }
     // }
 
-    //This one will call updatePlayers twice therefore adds it twice but will show normal when refreshed. 
+    /*This one will call updatePlayers twice therefore adds it twice but will show normal when refreshed. 
+        =>Fixed with the deleteRepeated() function    
+    */
     componentWillReceiveProps = (players) => {
         this.setState({
             playersdata: players.playersdata,
@@ -102,20 +104,6 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         console.log("Checking how many times this will call the update players!")
         this.updatePlayers(players.playersdata)
     }
-
-    // static getDerivedStateFromProps(nextProps, state) {
-    //     const { playersdata } = nextProps;
-    //     return {
-    //       playersdata: playersdata,
-    //       // ... other derived state properties
-    //     };
-    // }
-
-    // static getDerivedStateFromProps(players, prevState) {
-    //     return {
-    //      playersdata: players.playersdata,
-    //     };
-    // }
 
     // For changing state when elements are changed on the page by user
     handleChange(event) {
@@ -148,7 +136,9 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         
     // }
 
-    //Issues: Being called twice so it adds double the amount until you refresh the page.
+    /*Issues: Being called twice so it adds double the amount until you refresh the page.
+        =>Fixed with the deleteRepeated() function    
+    */
     updatePlayers = (players) => {
         //console.log('Update Players Called!');
         let room_key = this.props.room_key;
@@ -208,6 +198,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         this.deleteRepeated()
     }
 
+    //This fixes the issue of having repeated players on intial load. 
     deleteRepeated = ()=> {
         let redOperatives = this.state.redOperatives
         let redSpymasters = this.state.redSpymasters
