@@ -28,13 +28,15 @@ class Game extends Component {
             redteamid: '',
             blueteamid: '',
             
+
+            
         }
     }
 
 
 
 
-    componentDidMount = () => {
+    componentDidMount = async () =>{
         let gameWords = this.props.location.state.gameWords;
         for(let i = 0; i < gameWords.length; i++) {
             if(gameWords[i].category === 'D') {
@@ -47,7 +49,7 @@ class Game extends Component {
 
 
 
-        axios.get('http://127.0.0.1:8000/codenames/players').then(res => {
+        await axios.get('http://127.0.0.1:8000/codenames/players').then(res => {
             this.setState({
                 playersdata: res.data
             })
@@ -150,9 +152,6 @@ class Game extends Component {
             })
         }
     }
-
-
-
 
     
 
