@@ -10,5 +10,6 @@ urlpatterns = [
     path('codenames/blueTeam', views.BlueTeamList.as_view()),
     path('codenames/players', views.PlayersList.as_view({'get': 'list'})),
     path('codenames/games/<str:game_id>', views.GameDetail.as_view()),
-    path('codenames/games/word/<str:word_id>', views.WordsDetail.as_view())
+    path('codenames/games/word/<str:word_id>', views.WordsDetail.as_view()),
+    path('<str:room_name>/', views.room, name='room'), # Added for channels
 ]
