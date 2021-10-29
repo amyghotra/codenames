@@ -9,13 +9,37 @@
     font-family: "FreeMono", monospace;
 }
 
-.card-deck{
-    height: 105%;
+.card-text-C{
+    text-align: left;
+    font-family: "FreeMono", monospace;
     background-color: rgb(228, 235, 190);
     border-radius: 10px;
-    width: 105%;
+    width: 100%;
 }
 
+.card-text-R{
+    text-align: left;
+    font-family: "FreeMono", monospace;
+    background-color: rgb(253, 63, 63);
+    border-radius: 10px;
+    width: 100%;
+}
+
+.card-text-B{
+    text-align: left;
+    font-family: "FreeMono", monospace;
+    background-color: rgb(87, 143, 248);
+    border-radius: 10px;
+    width: 100%;
+}
+
+.card-text-A{
+    text-align: left;
+    font-family: "FreeMono", monospace;
+    background-color: rgb(0, 0, 0);
+    border-radius: 10px;
+    width: 100%;
+}
 
 
 
@@ -23,56 +47,56 @@
     height: 90%;
     background-color: rgb(228, 235, 190);
     border-radius: 10px;
-    width: 105%;
+    width: 100%;
 }
 .card-deck-R{
     height: 90%;
     background-color: rgb(253, 63, 63);
     border-radius: 10px;
-    width: 105%;
+    width: 100%;
 }
 .card-deck-B{
     height: 90%;
     background-color: rgb(87, 143, 248);
     border-radius: 10px;
-    width: 105%;
+    width: 100%;
 }
 .card-deck-A{
     height: 90%;
     background-color: rgb(0, 0, 0);
     color: white;
     border-radius: 10px;
-    width: 105%;
+    width: 100%;
 }
 .card-deck-D{
     height: 90%;
     background-color: rgb(228, 235, 190);
     border-radius: 10px;
-    width: 105%;
+    width: 100%;
 }
 
 .card-deck-revealed-bystander{
     height: 90%;
     background-color: rgb(228, 235, 190, .33);
     border-radius: 10px;
-    width: 105%;
+    width: 100%;
 }
 .card-deck-revealed-blue{
     height: 90%;
     background-color: rgb(87, 143, 248, .33);
     border-radius: 10px;
-    width: 105%;
+    width: 100%;
 }
 .card-deck-revealed-red{
     height: 90%;
     background-color: rgb(253, 63, 63, .33);
     border-radius: 10px;
-    width: 105%;
+    width: 100%;
 }
 .card-deck-revealed-assassin{
     height: 90%;
     background-color: rgb(0, 0, 0, .33);
     color: white;
     border-radius: 10px;
-    width: 105%;
+    width: 100%;
 }

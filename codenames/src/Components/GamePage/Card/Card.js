@@ -44,11 +44,13 @@ class Card extends Component{
         this.setState({
             checked: true,
             turn: !this.state.turn
+
             
         })
 
         this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
-        console.log("turn : " , this.state.turn)
+        
+        
     }
 
     
@@ -66,8 +68,17 @@ class Card extends Component{
                         type = "checkbox"
 						checked = {this.state.checked}
                         onClick={this.handleChange}/><br/>
-
-                <h5 className="card-text">{this.state.content.word}</h5><br/>
+                <div>
+                {(!this.state.checked) ?
+                <div>
+                    <h5 className="card-text">{this.state.content.word}</h5><br/>
+                </div>
+                :
+                <div>
+                    <h5 className={`card-text-${this.state.content.category}`}>{this.state.content.word}</h5><br/>
+                </div>
+                }
+                </div>
                 </div>
                 </div>
                 :
