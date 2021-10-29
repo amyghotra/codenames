@@ -107,12 +107,13 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
 
             for(let i = 0; i < player.length; i++){
                 
+                
                 if(player[i].role === "S"){
                     if(player[i].team === "R"){
                         let redSpymasters = this.state.redSpymasters
                         redSpymasters.push(player[i])
                         this.setState({
-                            redSpymasters
+                            redSpymasters: [...this.state.redSpymasters, player[i]]
                         })
                         
                     }
