@@ -33,6 +33,7 @@ class Game extends Component {
         }
     }
 
+    
 
 
 
@@ -46,7 +47,6 @@ class Game extends Component {
                 })
             }
         }
-
 
 
         await axios.get('http://127.0.0.1:8000/codenames/players').then(res => {
@@ -151,11 +151,14 @@ class Game extends Component {
                 console.log(response.data)
             })
         }
+
     }
 
     
+    
 
     render() {
+        
         return(
             <div>
                 {

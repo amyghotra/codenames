@@ -165,6 +165,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             let repeated = false;
             for (let j = 0; j < showredSpymasters.length; j++) {
                 if (redSpymasters[i].player_id === showredSpymasters[j].player_id) {
+
                     repeated = true
                 }
             }
@@ -185,6 +186,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                 }
             }
             if (repeated === false) {
+
                 showblueOperatives.push(blueOperatives[i])
                 this.setState({
                     showblueOperatives
