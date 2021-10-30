@@ -24,10 +24,20 @@ class Game extends Component {
             doubleAgentIndex: '',
             playersdata: '',
             agentClicked: false,
+
+            redteamid: '',
+            blueteamid: '',
+            
+
+            
         }
     }
 
-    componentDidMount = () => {
+    
+
+
+
+    componentDidMount = async () =>{
         let gameWords = this.props.location.state.gameWords;
         for(let i = 0; i < gameWords.length; i++) {
             if(gameWords[i].category === 'D') {
@@ -39,8 +49,7 @@ class Game extends Component {
         }
 
 
-
-        axios.get('http://127.0.0.1:8000/codenames/players').then(res => {
+        await axios.get('http://127.0.0.1:8000/codenames/players').then(res => {
             this.setState({
                 playersdata: res.data
             })
@@ -59,6 +68,10 @@ class Game extends Component {
                     room: this.props.location.state.room_key,
                     game_id: this.props.location.state.gameid,
                     user_id: this.props.location.state.playerid
+                }).then(response =>{
+                    this.setState({
+                        playersdata: [...this.state.playersdata, response.data]
+                    })
                 })
             }
         })
@@ -72,12 +85,13 @@ class Game extends Component {
             gameData: this.props.location.state.gameData,
             gameWords: this.props.location.state.gameWords,
             playerid: this.props.location.state.playerid,
+            redteamid: this.props.location.state.redteamid,
+            blueteamid: this.props.location.state.blueteamid,
         })
 
         this.updateGameWords(this.props.location.state.gameid)
 
     }
-    
     setDoubleAgent = () => {
         let doubleAgent = { ...this.state.doubleAgent}; 
         doubleAgent.category = this.state.team;
@@ -102,13 +116,49 @@ class Game extends Component {
             })
         
         })
+    }
 
-        
+    increaseTeamPoints = (team, word) => {
+        let redPoints = this.state.red_score
+        let bluePoints = this.state.blue_score
+        if(team === 'R'){
+            console.log("IT RAN")
+            this.setState(prevState => {
+                return {
+                    red_score: prevState.red_score+1,
+                }
+            })
+            redPoints += 1
+            
+            axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
+                console.log(response.data)
+            })
+            axios.patch(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`, {red_team_score: redPoints}).then(response => {
+                console.log(response.data)
+            })
+        }
+        else if(team === 'B'){
+            this.setState(prevState => {
+                return {
+                    blue_score: prevState.blue_score+1,
+                }
+            })
+            bluePoints += 1
+            axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
+                console.log(response.data)
+            })
+            axios.patch(`http://127.0.0.1:8000/codenames/blueTeam/${this.state.blueteamid}`, {blue_team_score: bluePoints}).then(response => {
+                console.log(response.data)
+            })
+        }
+
     }
 
     
+    
 
     render() {
+        
         return(
             <div>
                 {
@@ -122,6 +172,11 @@ class Game extends Component {
                             <SpymastersGame 
                                 room_key = {this.state.room_key}
                                 gameWords = {this.state.gameWords}
+                                increaseTeamPoints = {this.increaseTeamPoints}
+                                redPoints = {this.state.red_score}
+                                bluePoints = {this.state.blue_score}
+                                playersdata = {this.state.playersdata}
+                                gameid = {this.state.gameid}
                             />
                         </div>
 
@@ -131,6 +186,11 @@ class Game extends Component {
                             <SpymastersGame 
                                     room_key = {this.state.room_key}
                                     gameWords = {this.state.gameWords}
+                                    increaseTeamPoints = {this.increaseTeamPoints}
+                                    redPoints = {this.state.red_score}
+                                    bluePoints = {this.state.blue_score}
+                                    playersdata = {this.state.playersdata}
+                                    gameid = {this.state.gameid}
                             />
                         </div>
                         }
@@ -140,6 +200,10 @@ class Game extends Component {
                     <OperativesGame 
                         room_key = {this.state.room_key}
                         gameWords = {this.state.gameWords}
+                        increaseTeamPoints = {this.increaseTeamPoints}
+                        redPoints = {this.state.red_score}
+                        bluePoints = {this.state.blue_score}
+                        playersdata = {this.state.playersdata}
                     />
                 }
             </div>

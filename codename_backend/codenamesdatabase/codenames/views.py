@@ -7,8 +7,6 @@ from rest_framework import status, viewsets
 from django.http import Http404
 
 # Create your views here.
-def room(request, room_name): # Added for django channels
-    return render(request, 'frontend/room.html')
 
 class RoomList(APIView):
 
@@ -162,6 +160,42 @@ class RedTeamList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class RedTeamDetail(APIView):
+
+    def get_red_team(self, red_team_id):
+        try:
+            return RedTeam.objects.get(red_team_id=red_team_id)
+        except RedTeam.DoesNotExist:
+            raise Http404
+
+    def get(self, request, red_team_id):
+        red_team = self.get_red_team(red_team_id)
+        serializer = RedTeamSerializer(red_team)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self,request, red_team_id):
+        red_team = self.get_red_team(red_team_id)
+        serializer = RedTeamSerializer(red_team, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            print(serializer)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, red_team_id):
+        red_team = self.get_red_team(red_team_id)
+        serializer = RedTeamSerializer(red_team)
+        red_team.delete()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def patch(self, request, red_team_id):
+        red_team = self.get_red_team(red_team_id)
+        serializer = RedTeamSerializer(red_team, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class BlueTeamList(APIView):
 
     def get(self, request):
@@ -174,6 +208,42 @@ class BlueTeamList(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class BlueTeamDetail(APIView):
+
+    def get_blue_team(self, blue_team_id):
+        try:
+            return BlueTeam.objects.get(blue_team_id=blue_team_id)
+        except BlueTeam.DoesNotExist:
+            raise Http404
+
+    def get(self, request, blue_team_id):
+        blue_team = self.get_blue_team(blue_team_id)
+        serializer = BlueTeamSerializer(blue_team)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self,request, blue_team_id):
+        blue_team = self.get_blue_team(blue_team_id)
+        serializer = BlueTeamSerializer(blue_team, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            print(serializer)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, blue_team_id):
+        blue_team = self.get_blue_team(blue_team_id)
+        serializer = BlueTeamSerializer(blue_team)
+        blue_team.delete()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def patch(self, request, blue_team_id):
+        blue_team = self.get_blue_team(blue_team_id)
+        serializer = BlueTeamSerializer(blue_team, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PlayersList(viewsets.ModelViewSet):
