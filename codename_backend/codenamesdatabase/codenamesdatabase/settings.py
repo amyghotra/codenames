@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'codenames.apps.CodenamesConfig',
     'corsheaders',
+    'channels', # Added channels
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,16 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'codenamesdatabase.urls'
+
+CHANNEL_LAYERS = { # ADDED for channels this whole section to settings, not sure if needed
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+} 
+
 
 TEMPLATES = [
     {
@@ -67,7 +78,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'codenamesdatabase.wsgi.application'
+WSGI_APPLICATION = 'codenamesdatabase.wsgi.application' # Not needed
+ASGI_APPLICATION = 'codenamesdatabase.asgi.application' # Added for channels
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
