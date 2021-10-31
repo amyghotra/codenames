@@ -156,8 +156,6 @@ class Game extends Component {
             })
         }
 
-        
-        
     }
 
     
