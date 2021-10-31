@@ -38,6 +38,12 @@ class Game extends Component {
 
 
     componentDidMount = async () =>{
+        localStorage.getItem('redScore', 'blueScore') && this.setState({
+            red_score: JSON.parse(localStorage.getItem('redScore')),
+            blue_score: JSON.parse(localStorage.getItem('blueScore'))
+        })
+        
+
         let gameWords = this.props.location.state.gameWords;
         for(let i = 0; i < gameWords.length; i++) {
             if(gameWords[i].category === 'D') {
@@ -92,6 +98,13 @@ class Game extends Component {
         this.updateGameWords(this.props.location.state.gameid)
 
     }
+
+    componentDidUpdate = () => {
+        localStorage.setItem('redScore', JSON.stringify(this.state.red_score));
+        localStorage.setItem('blueScore', JSON.stringify(this.state.blue_score));
+
+    }
+
     setDoubleAgent = () => {
         let doubleAgent = { ...this.state.doubleAgent}; 
         doubleAgent.category = this.state.team;
@@ -116,6 +129,8 @@ class Game extends Component {
             })
         
         })
+
+        
     }
 
     increaseTeamPoints = (team, word) => {
@@ -123,12 +138,15 @@ class Game extends Component {
         let bluePoints = this.state.blue_score
         if(team === 'R'){
             console.log("IT RAN")
+            
+
                 this.setState(prevState => {
                     return {
                         red_score: prevState.red_score+1,
                     }
                 })
                 redPoints += 1
+    
             
             axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
                 console.log(response.data)
@@ -138,13 +156,14 @@ class Game extends Component {
             })
         }
         else if(team === 'B'){
-
                 this.setState(prevState => {
                     return {
                         blue_score: prevState.blue_score+1,
                     }
                 })
                 bluePoints += 1
+            
+
     
             axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
                 console.log(response.data)

@@ -7,7 +7,7 @@ class Card extends Component{
     constructor(props) {
         super(props)
         this.state = {
-            checked: false,
+            checked: '',
             task: '',
             team: '',
             content: '',
@@ -20,7 +20,10 @@ class Card extends Component{
         }
     }
     
+    
+    
     componentDidMount = () => {
+        
         this.setState({
             task: this.props.task,
             team: this.state.team,
