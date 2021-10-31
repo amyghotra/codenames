@@ -123,12 +123,14 @@ class Game extends Component {
         let bluePoints = this.state.blue_score
         if(team === 'R'){
             console.log("IT RAN")
-            this.setState(prevState => {
-                return {
-                    red_score: prevState.red_score+1,
-                }
-            })
-            redPoints += 1
+            if(word.guessed === false){
+                this.setState(prevState => {
+                    return {
+                        red_score: prevState.red_score+1,
+                    }
+                })
+                redPoints += 1
+            }
             
             axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
                 console.log(response.data)
@@ -138,12 +140,14 @@ class Game extends Component {
             })
         }
         else if(team === 'B'){
-            this.setState(prevState => {
-                return {
-                    blue_score: prevState.blue_score+1,
-                }
-            })
-            bluePoints += 1
+            if(word.guessed === false){
+                this.setState(prevState => {
+                    return {
+                        blue_score: prevState.blue_score+1,
+                    }
+                })
+                bluePoints += 1
+            }
             axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
                 console.log(response.data)
             })
