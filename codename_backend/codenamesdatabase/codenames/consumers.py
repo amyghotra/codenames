@@ -2,10 +2,10 @@
 # define ws consumer class here
 
 import json
-import asyncio # can remove
+#import asyncio # can remove
 from asgiref.sync import async_to_sync # New 
-from channels.consumer import AsyncConsumer
-from channels.generic.websocket import WebsocketConsumer # Can remove
+#from channels.consumer import AsyncConsumer # Can remove
+from channels.generic.websocket import WebsocketConsumer 
 
 class ClueBoxConsumer(WebsocketConsumer):
     def connect(self):
@@ -61,9 +61,10 @@ class ClueBoxConsumer(WebsocketConsumer):
             'clue': clue,
         }))
 
-        print("test") # Each instance of the socket should print this out
+        print("sent") # Each instance of the socket should print this out
 
-# class ClueBoxConsumer(AsyncConsumer): # Not working use above
+# Not working use the above, may have to do with using Websocket() in react, maybe theres an Async counterpart in React
+# class ClueBoxConsumer(AsyncConsumer): 
 #     async def websocket_connect(self, event):
 #         print("connected", event)
 #         await self.send({

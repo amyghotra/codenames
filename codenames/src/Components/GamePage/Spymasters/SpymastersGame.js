@@ -37,12 +37,11 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             //Websocket
             ws: null
         }
-        // Need these statements since they set state!!! Don't remove!!!
+        // Need these statements since they set state - or use xxx = () => {}
         this.incrementClueCount = this.incrementClueCount.bind(this);
         this.decrementClueCount = this.decrementClueCount.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.socketSend = this.socketSend.bind(this);
-        
     }
 
     componentDidMount = () => {
@@ -55,6 +54,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             "clue": this.state.spymasterClueWord
         }
         this.state.ws.send(JSON.stringify(data)) // Testing send
+        console.log(data)
     }
 
     /**
@@ -70,12 +70,6 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         // websocket onopen event listener
         ws.onopen = () => {
             console.log("connected websocket main component");
-
-            var data = {
-                "count": this.state.spymasterClueCount,
-                "clue": this.state.spymasterClueWord
-            }
-            ws.send(JSON.stringify(data)) // Testing send
             this.setState({ ws: ws });
 
             that.timeout = 250; // reset timer to 250 on open of websocket connection 
@@ -106,10 +100,12 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
 
             ws.close();
         };
+
         ws.onmessage = evt => {
             // listen to data sent from the websocket server
             const data = JSON.parse(evt.data)
             console.log(data)
+            console.log("received!")
             let count = data.count
             let clue = data.clue
             this.setState(prevState => {
@@ -124,11 +120,6 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                 ws: ws
             }
         })
-        // var data = {
-        //     "count": this.state.spymasterClueCount,
-        //     "clue": this.state.spymasterClueWord
-        // }
-        // this.state.ws.send(JSON.stringify(data)) // Testing send
     };
 
     /**
@@ -460,7 +451,8 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                         <h6>{this.state.spymasterClueCount}</h6>
                                                         <button type="button" onClick={this.decrementClueCount}>-</button>
                                                     </div>
-                                                    <button onClick={this.socketSend}>Submit Clue</button>
+                                                    {/* <input type="button" onClick={this.socketSend}>Submit Clue</input> */}
+                                                    <input type="button" onClick={this.socketSend}/>
                                                 </div>
                                             </form>
                                         </div>

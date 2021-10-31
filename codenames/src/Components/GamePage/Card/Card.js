@@ -20,9 +20,6 @@ class Card extends Component{
             
         }
     }
-    // make new websocket instance, pass a url address to send requests to
-    // as defined in routing.py in the path function
-    //ws = new WebSocket('ws://localhost:8000/ws/some_url/') // LINK IS NAME OF SOCKET FOUND IN ROUTING.PY PATH()
     
     componentDidMount = () => {
         this.setState({
@@ -68,7 +65,7 @@ class Card extends Component{
                         id = "checkbox"
                         type = "checkbox"
 						checked = {this.state.checked}
-                        onClick={this.handleChange}/><br/>
+                        onChange={this.handleChange}/><br/> {/* onChange */}
                 <div>
                 {(!this.state.checked) ?
                 <div>
