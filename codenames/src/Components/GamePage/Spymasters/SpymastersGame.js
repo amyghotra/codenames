@@ -12,7 +12,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             gameid: '',
             gameWords: '',
             playersdata: '',
-            spymasterClueWord: "",
+            spymasterClueWord: '',
             spymasterClueCount: 0,
 
             redScore: 0,
@@ -80,21 +80,24 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     }
 
     // For changing state when elements are changed on the page by user
-    handleChange(event) {
-
+    handleChange = (event) => {
+        console.log(event.target.value)
+        this.setState({
+            spymasterClueWord: event.target.value
+        });
     }
     // For handling the players' submitting their guesses / word picks
-    handleGuessSubmit(event) {
-
+    handleGuessSubmit = () => {
+        console.log(this.state.spymasterClueWord, this.state.spymasterClueCount)
     }
-    incrementClueCount() {
+    incrementClueCount = () => {
         this.setState(prevState => { // Update with inline function
             return {
                 spymasterClueCount: prevState.spymasterClueCount + 1
             }
         })
     }
-    decrementClueCount() {
+    decrementClueCount = () => {
         this.setState(prevState => {
             return {
                 spymasterClueCount: prevState.spymasterClueCount - 1
@@ -351,7 +354,8 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                         <h6>{this.state.spymasterClueCount}</h6>
                                                         <button type="button" onClick={this.decrementClueCount}>-</button>
                                                     </div>
-                                                    <button>Submit Clue</button>
+                                                    <input type='button' onClick={this.handleGuessSubmit} />
+                                                    {/* <button onClick={this.handleGuessSubmit}>Submit Clue</button> */}
                                                 </div>
                                             </form>
                                         </div>
