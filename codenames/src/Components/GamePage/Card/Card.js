@@ -46,13 +46,10 @@ class Card extends Component{
     handleChange = () => {
         this.setState({
             checked: true,
-            turn: !this.state.turn
-
-            
+            turn: !this.state.turn            
         })
-
+        console.log(this.state.content)
         this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
-        
         
     }
 
