@@ -34,9 +34,16 @@ class Card extends Component{
         if (event.word !== this.props.word) {
             this.setState(prevState => {
                 return {
-                    content: this.props.word
+                    content: this.props.word,
                 }
             })
+
+            if(this.props.word.category === 'A' || this.props.word.category === 'R' || this.props.word.category === 'B') {
+                let wordGuessed = localStorage.getItem(this.props.word.word_id);
+                this.setState({
+                    checked: wordGuessed
+                })
+            }
         }
     }
 
@@ -47,7 +54,7 @@ class Card extends Component{
         })
         console.log(this.state.content)
         this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
-        
+        localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
     }
 
     
