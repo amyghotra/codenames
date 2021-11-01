@@ -152,7 +152,6 @@ class UserInfo extends Component {
 
     createGame = async () => {
         if (this.state.redTeamExist === false) {
-
             await axios.post('http://127.0.0.1:8000/codenames/redTeam', {
                 game_id: this.state.gameid,
                 connected_room_key: this.state.roomid

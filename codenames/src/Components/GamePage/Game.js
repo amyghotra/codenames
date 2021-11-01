@@ -38,6 +38,7 @@ class Game extends Component {
 
 
     componentDidMount = async () =>{
+
         localStorage.getItem('redScore', 'blueScore') && this.setState({
             red_score: JSON.parse(localStorage.getItem('redScore')),
             blue_score: JSON.parse(localStorage.getItem('blueScore'))
@@ -100,6 +101,7 @@ class Game extends Component {
     }
 
     componentDidUpdate = () => {
+
         localStorage.setItem('redScore', JSON.stringify(this.state.red_score));
         localStorage.setItem('blueScore', JSON.stringify(this.state.blue_score));
 
