@@ -105,7 +105,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             // listen to data sent from the websocket server
             const data = JSON.parse(evt.data)
             console.log(data)
-            console.log("received!")
+            console.log("received clue!")
             let count = data.count
             let clue = data.clue
             this.setState(prevState => {
