@@ -352,40 +352,45 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                         </div>
                                     </div>
                                     <Row task={this.state.task}
-                                        rowWords={[this.state.gameWords[0],
-                                        this.state.gameWords[1],
-                                        this.state.gameWords[2],
-                                        this.state.gameWords[3],
-                                        this.state.gameWords[4]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
-                                    <Row task={this.state.task}
-                                        rowWords={[this.state.gameWords[5],
-                                        this.state.gameWords[6],
-                                        this.state.gameWords[7],
-                                        this.state.gameWords[8],
-                                        this.state.gameWords[9]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
-                                    <Row task={this.state.task}
-                                        rowWords={[this.state.gameWords[10],
-                                        this.state.gameWords[11],
-                                        this.state.gameWords[12],
-                                        this.state.gameWords[13],
-                                        this.state.gameWords[14]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
-                                    <Row task={this.state.task}
-                                        rowWords={[this.state.gameWords[15],
-                                        this.state.gameWords[16],
-                                        this.state.gameWords[17],
-                                        this.state.gameWords[18],
-                                        this.state.gameWords[19]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
-                                    <Row task={this.state.task}
-                                        rowWords={[this.state.gameWords[20],
-                                        this.state.gameWords[21],
-                                        this.state.gameWords[22],
-                                        this.state.gameWords[23],
-                                        this.state.gameWords[24]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
+                                            rowWords={[this.state.gameWords[0],
+                                            this.state.gameWords[1],
+                                            this.state.gameWords[2],
+                                            this.state.gameWords[3],
+                                            this.state.gameWords[4]]}
+                                            cardNumbers={[0,1,2,3,4]} // Add in card numbers to distinguish
+                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        <Row task={this.state.task}
+                                            rowWords={[this.state.gameWords[5],
+                                            this.state.gameWords[6],
+                                            this.state.gameWords[7],
+                                            this.state.gameWords[8],
+                                            this.state.gameWords[9]]}
+                                            cardNumbers={[5,6,7,8,9]}
+                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        <Row task={this.state.task}
+                                            rowWords={[this.state.gameWords[10],
+                                            this.state.gameWords[11],
+                                            this.state.gameWords[12],
+                                            this.state.gameWords[13],
+                                            this.state.gameWords[14]]}
+                                            cardNumbers={[10,11,12,13,14]}
+                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        <Row task={this.state.task}
+                                            rowWords={[this.state.gameWords[15],
+                                            this.state.gameWords[16],
+                                            this.state.gameWords[17],
+                                            this.state.gameWords[18],
+                                            this.state.gameWords[19]]}
+                                            cardNumbers={[15,16,17,18,19]}
+                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        <Row task={this.state.task}
+                                            rowWords={[this.state.gameWords[20],
+                                            this.state.gameWords[21],
+                                            this.state.gameWords[22],
+                                            this.state.gameWords[23],
+                                            this.state.gameWords[24]]}
+                                            cardNumbers={[20,21,22,23,24]}
+                                            increaseTeamPoints={this.props.increaseTeamPoints} />
 
                                     <div className="row">
                                         <div className="col-md-12">

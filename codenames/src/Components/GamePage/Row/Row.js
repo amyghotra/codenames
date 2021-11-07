@@ -10,14 +10,15 @@ class Row extends Component{
             rowWords: '',
             redteamid: '',
             blueteamid: '',
+            cardNumbers: '',
         }
     }
     
     componentDidMount = () => {
         this.setState({
             task: this.props.task,
-            rowWords: this.props.rowWords
-            
+            rowWords: this.props.rowWords,
+            cardNumbers: this.props.cardNumbers
         })
       
        
@@ -42,7 +43,8 @@ class Row extends Component{
                         <div className="card-deck">
                         <div className="card-style"> 
                             <Card task={this.props.task} word={this.state.rowWords[0]}
-                            increaseTeamPoints = {this.props.increaseTeamPoints}/>
+                            increaseTeamPoints = {this.props.increaseTeamPoints} 
+                            number={this.state.cardNumbers[0]}/>
                         </div></div>
                     </div>
 
@@ -50,7 +52,8 @@ class Row extends Component{
                         <div className="card-deck">
                         <div className="card-style"> 
                             <Card task={this.props.task} word={this.state.rowWords[1]}
-                            increaseTeamPoints = {this.props.increaseTeamPoints}/>
+                            increaseTeamPoints = {this.props.increaseTeamPoints}
+                            number={this.state.cardNumbers[1]}/>
                         </div></div>
                     </div>
 
@@ -59,7 +62,8 @@ class Row extends Component{
                         <div className="card-deck">
                         <div className="card-style"> 
                             <Card task={this.props.task} word={this.state.rowWords[2]}
-                            increaseTeamPoints = {this.props.increaseTeamPoints}/>
+                            increaseTeamPoints = {this.props.increaseTeamPoints}
+                            number={this.state.cardNumbers[2]}/>
                         </div></div> 
                     </div>
 
@@ -68,7 +72,8 @@ class Row extends Component{
                         <div className="card-deck">
                         <div className="card-style"> 
                             <Card task={this.props.task} word={this.state.rowWords[3]}
-                            increaseTeamPoints = {this.props.increaseTeamPoints}/>
+                            increaseTeamPoints = {this.props.increaseTeamPoints}
+                            number={this.state.cardNumbers[3]}/>
                         </div></div>
                     </div>
 
@@ -77,7 +82,8 @@ class Row extends Component{
                         <div className="card-deck">
                         <div className="card-style"> 
                             <Card task={this.props.task} word={this.state.rowWords[4]}
-                            increaseTeamPoints = {this.props.increaseTeamPoints}/>
+                            increaseTeamPoints = {this.props.increaseTeamPoints}
+                            number={this.state.cardNumbers[4]}/>
                         </div></div>
                     </div>
                     </div>
