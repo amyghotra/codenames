@@ -91,7 +91,35 @@ class Game extends Component {
 
         this.updateGameWords(this.props.location.state.gameid)
 
+        await axios.get(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`)
+        .then(response => {
+            this.setState({
+                red_score:response.data.red_team_score
+            })
+        })
+        await axios.get(`http://127.0.0.1:8000/codenames/blueTeam/${this.state.blueteamid}`)
+        .then(response => {
+            this.setState({
+                blue_score:response.data.blue_team_score
+            })
+        })
+
+        const localRedTeamId = localStorage.getItem(this.state.redteamid);
+        const localBlueTeamId = localStorage.getItem(this.state.blueteamid);
+
+        if(localRedTeamId && localBlueTeamId) {
+            // console.log(localRedTeamId, localBlueTeamId);
+            this.setState({
+                red_score: Number(localRedTeamId),
+                blue_score: Number(localBlueTeamId)
+            })
+        }
     }
+
+    componentDidUpdate = () => {
+        // await axios.get()
+    }
+    
     setDoubleAgent = () => {
         let doubleAgent = { ...this.state.doubleAgent}; 
         doubleAgent.category = this.state.team;
@@ -118,38 +146,51 @@ class Game extends Component {
         })
     }
 
+    //from the card component, the words id and its corresponding team will be sent here to increase the points and change the guess to true accordingly
     increaseTeamPoints = (team, word) => {
         let redPoints = this.state.red_score
         let bluePoints = this.state.blue_score
         if(team === 'R'){
-            console.log("IT RAN")
-            this.setState(prevState => {
-                return {
-                    red_score: prevState.red_score+1,
-                }
-            })
-            redPoints += 1
+            let wordObj = this.state.gameWords.find(w => w.word_id === word);
+            if(wordObj.guessed === false) {
+                this.setState(prevState => {
+                    return {
+                        red_score: prevState.red_score+1,
+                    }
+                })
+                redPoints += 1
+    
+                localStorage.setItem(this.state.redteamid, JSON.stringify(redPoints));
+
+                axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
+                    console.log(response.data)
+                })
+                axios.patch(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`, {red_team_score: redPoints}).then(response => {
+                    console.log(response.data)
+                })
+            }
             
-            axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
-                console.log(response.data)
-            })
-            axios.patch(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`, {red_team_score: redPoints}).then(response => {
-                console.log(response.data)
-            })
         }
         else if(team === 'B'){
-            this.setState(prevState => {
-                return {
-                    blue_score: prevState.blue_score+1,
-                }
-            })
-            bluePoints += 1
-            axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
-                console.log(response.data)
-            })
-            axios.patch(`http://127.0.0.1:8000/codenames/blueTeam/${this.state.blueteamid}`, {blue_team_score: bluePoints}).then(response => {
-                console.log(response.data)
-            })
+            let wordObj = this.state.gameWords.find(w => w.word_id === word);
+            if(wordObj.guessed === false) {
+                this.setState(prevState => {
+                    return {
+                        blue_score: prevState.blue_score+1,
+                    }
+                })
+                bluePoints += 1
+
+                localStorage.setItem(this.state.blueteamid, JSON.stringify(bluePoints));
+
+                axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
+                    console.log(response.data)
+                })
+                axios.patch(`http://127.0.0.1:8000/codenames/blueTeam/${this.state.blueteamid}`, {blue_team_score: bluePoints}).then(response => {
+                    console.log(response.data)
+                })
+
+            }
         }
 
     }

@@ -122,20 +122,32 @@ class Card extends Component{
         if (event.word !== this.props.word) {
             this.setState(prevState => {
                 return {
-                    content: this.props.word
+                    content: this.props.word,
                 }
             })
+
+            if(this.props.word.category === 'A' || this.props.word.category === 'R' || this.props.word.category === 'B') {
+                let wordGuessed = localStorage.getItem(this.props.word.word_id);
+                this.setState({
+                    checked: wordGuessed
+                })
+            }
         }
     }
 
     handleChange = () => {
+
+        if(!this.state.checked) {
             this.setState({
                 checked: true,
-                turn: !this.state.turn
+                turn: !this.state.turn            
             })
-    
+            console.log(this.state.checked)
             this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
+            localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
             this.socketSend()
+        }
+
     }
 
     

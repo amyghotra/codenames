@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-
 import Row from "../Row/Row"
 import './OperativesGame.css'
 
@@ -113,7 +112,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                 return {
                     gameWords: this.props.gameWords,
                     room_key: this.props.room_key,
-                    gameid: this.props.gameid
+                    gameid: this.props.gameid,
+                    redteamid: this.props.redteamid,
+                    blueteamid: this.props.blueteamid
                 }
             })
         }
@@ -137,7 +138,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
         })
         //console.log(players)
 
-        console.log("Checking how many times this will call the update players!")
+        // console.log("Checking how many times this will call the update players!")
         this.updatePlayers(players.playersdata)
     }
 
@@ -148,7 +149,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
         //console.log('Update Players Called!');
         let room_key = this.props.room_key;
         //let players = this.props.playersdata;
-        console.log("Players data: ", players)
+        // console.log("Players data: ", players)
         //if(this.state.renderPlayers === true){
 
         for (let i = 0; i < players.length; i++) {

@@ -12,7 +12,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             gameid: '',
             gameWords: '',
             playersdata: '',
-            spymasterClueWord: "",
+            spymasterClueWord: '',
             spymasterClueCount: 0,
 
             redScore: 0,
@@ -175,26 +175,28 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     }
 
     // For changing state when elements are changed on the page by user
+
     handleChange(event) {
         const {name, value, type, checked} = event.target
         // if the type just grabbed from the event is a checkbox, set the name of the event, 
         // which is named after an element in the state - so the element in the state - to 
         // the boolean checked, otherwise set [name], in state, to the value grabbed. 
         type === "checkbox" ? this.setState({ [name]: checked }) : this.setState({ [name]: value })
+
     }
     
     // For handling the players' submitting their guesses / word picks
-    handleGuessSubmit(event) {
-
+    handleGuessSubmit = () => {
+        console.log(this.state.spymasterClueWord, this.state.spymasterClueCount)
     }
-    incrementClueCount() {
+    incrementClueCount = () => {
         this.setState(prevState => { // Update with inline function
             return {
                 spymasterClueCount: prevState.spymasterClueCount + 1
             }
         })
     }
-    decrementClueCount() {
+    decrementClueCount = () => {
         this.setState(prevState => {
             return {
                 spymasterClueCount: prevState.spymasterClueCount - 1
@@ -451,8 +453,10 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                         <h6>{this.state.spymasterClueCount}</h6>
                                                         <button type="button" onClick={this.decrementClueCount}>-</button>
                                                     </div>
+
                                                     {/* <input type="button" onClick={this.socketSend}>Submit Clue</input> */}
                                                     <input type="button" onClick={this.socketSend}/>
+
                                                 </div>
                                             </form>
                                         </div>
