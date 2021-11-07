@@ -1,0 +1,19 @@
+1) Create a designated folder somewhere for this project.
+2) Go into the folder you just created
+3) type 'git init'
+4) type 'git clone https://github.com/amyghotra/codenames.git'
+    - it should make a copy of amys repo into the folder you just made.
+5) Once you have the copy of the repo, 'cd codenames'
+6) type 'npm install'
+7) we're gonna create a branch for each of you to work on without messing up the main code so type 'git branch (your first name)'
+8) then go into it by typing 'git checkout (your first name)'
+9) now to start react just type 'npm start'
+
+
+HOW TO GET THE MOST UPDATED VERSION
+When you're working on your own branch, and you want to get the latest version of the project, make sure you're in your own branch.
+You can check to see which branch you're on by typing 'git branch'
+It should highlight which branch you're on.
+If you're not in your own branch, type 'git checkout (your first name)'
+Then to get the most updated version, type 'git pull origin main'
+Now you should have the most updated version
