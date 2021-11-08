@@ -29,11 +29,81 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             showblueOperatives: [],
             showblueSpymasters: [],
 
+            //websocket
+            ws: null,
+            spymasterClueCount: '0',
+            spymasterClueWord: 'WAITING...'
+
         }
-    }
-    componentDidMount = () => {
 
     }
+    componentDidMount = () => { // Doesn't fire?
+        this.connect();
+    }
+
+    /**
+     * @function connect
+     * This function establishes the connect with the websocket and also ensures 
+     * constant reconnection if connection closes
+     */
+     connect = () => {
+        var ws = new WebSocket('ws://localhost:8000/ws/game/');
+        let that = this; // cache the this
+        var connectInterval;
+
+        // websocket onopen event listener
+        ws.onopen = () => {
+            console.log("connected websocket main component");
+            this.setState({ ws: ws });
+
+            that.timeout = 250; // reset timer to 250 on open of websocket connection 
+            clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+        };
+
+        // websocket onclose event listener
+        ws.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in ${Math.min(
+                    10000 / 1000,
+                    (that.timeout + that.timeout) / 1000
+                )} second.`,
+                e.reason
+            );
+
+            that.timeout = that.timeout + that.timeout; //increment retry interval
+            connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
+        };
+
+        // websocket onerror event listener
+        ws.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            ws.close();
+        };
+        ws.onmessage = evt => {
+            // listen to data sent from the websocket server
+            const data = JSON.parse(evt.data)
+            console.log(data)
+            console.log("received clue!")
+            let count = data.count
+            let clue = data.clue
+            this.setState(prevState => {
+                return {
+                    spymasterClueCount: count,
+                    spymasterClueWord: clue
+                }
+            })
+        };
+        this.setState(prevState => {
+            return {
+                ws: ws
+            }
+        })
+    };
 
     componentDidUpdate = (event) => {
 
@@ -222,23 +292,6 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
         console.log((this.state.turn) ? "Blue turn" : "Red turn")
     }
 
-    incrementClueCount = () => {
-        this.setState(prevState => { // Update with inline function
-            return {
-                spymasterClueCount: prevState.spymasterClueCount + 1
-            }
-        })
-    }
-    decrementClueCount = () => {
-        this.setState(prevState => {
-            return {
-                spymasterClueCount: prevState.spymasterClueCount - 1
-            }
-        })
-    }
-
-
-
     render() {
         return (
             <div className="game">
@@ -292,45 +345,52 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="clueBody">
-                                                <h5 className="clue">Clue: 1 Card(s) CURRENCY</h5>
+                                            <h5 className="clue">Clue: 
+                                                 {' ' + this.state.spymasterClueCount} Card(s)
+                                                 {' ' + this.state.spymasterClueWord}</h5>
                                             </div>
                                         </div>
                                     </div>
                                     <Row task={this.state.task}
-                                        rowWords={[this.state.gameWords[0],
-                                        this.state.gameWords[1],
-                                        this.state.gameWords[2],
-                                        this.state.gameWords[3],
-                                        this.state.gameWords[4]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
-                                    <Row task={this.state.task}
-                                        rowWords={[this.state.gameWords[5],
-                                        this.state.gameWords[6],
-                                        this.state.gameWords[7],
-                                        this.state.gameWords[8],
-                                        this.state.gameWords[9]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
-                                    <Row task={this.state.task}
-                                        rowWords={[this.state.gameWords[10],
-                                        this.state.gameWords[11],
-                                        this.state.gameWords[12],
-                                        this.state.gameWords[13],
-                                        this.state.gameWords[14]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
-                                    <Row task={this.state.task}
-                                        rowWords={[this.state.gameWords[15],
-                                        this.state.gameWords[16],
-                                        this.state.gameWords[17],
-                                        this.state.gameWords[18],
-                                        this.state.gameWords[19]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
-                                    <Row task={this.state.task}
-                                        rowWords={[this.state.gameWords[20],
-                                        this.state.gameWords[21],
-                                        this.state.gameWords[22],
-                                        this.state.gameWords[23],
-                                        this.state.gameWords[24]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
+                                            rowWords={[this.state.gameWords[0],
+                                            this.state.gameWords[1],
+                                            this.state.gameWords[2],
+                                            this.state.gameWords[3],
+                                            this.state.gameWords[4]]}
+                                            cardNumbers={[0,1,2,3,4]} // Add in card numbers to distinguish
+                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        <Row task={this.state.task}
+                                            rowWords={[this.state.gameWords[5],
+                                            this.state.gameWords[6],
+                                            this.state.gameWords[7],
+                                            this.state.gameWords[8],
+                                            this.state.gameWords[9]]}
+                                            cardNumbers={[5,6,7,8,9]}
+                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        <Row task={this.state.task}
+                                            rowWords={[this.state.gameWords[10],
+                                            this.state.gameWords[11],
+                                            this.state.gameWords[12],
+                                            this.state.gameWords[13],
+                                            this.state.gameWords[14]]}
+                                            cardNumbers={[10,11,12,13,14]}
+                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        <Row task={this.state.task}
+                                            rowWords={[this.state.gameWords[15],
+                                            this.state.gameWords[16],
+                                            this.state.gameWords[17],
+                                            this.state.gameWords[18],
+                                            this.state.gameWords[19]]}
+                                            cardNumbers={[15,16,17,18,19]}
+                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        <Row task={this.state.task}
+                                            rowWords={[this.state.gameWords[20],
+                                            this.state.gameWords[21],
+                                            this.state.gameWords[22],
+                                            this.state.gameWords[23],
+                                            this.state.gameWords[24]]}
+                                            cardNumbers={[20,21,22,23,24]}
+                                            increaseTeamPoints={this.props.increaseTeamPoints} />
 
                                     <div className="row">
                                         <div className="col-md-12">
