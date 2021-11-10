@@ -33,8 +33,25 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             showredSpymasters: [],
             showblueOperatives: [],
             showblueSpymasters: [],
+
+            ws: null
         }
 
+        this.chatSocket = this.chatSocket.bind(this)
+        this.handleGuessSubmit = this.handleGuessSubmit.bind(this)
+        this.incrementClueCount = this.incrementClueCount.bind(this)
+        this.decrementClueCount = this.decrementClueCount.bind(this)
+
+    }
+
+    chatSocket = () => { 
+        return new WebSocket('ws://localhost:8000/ws/game/')
+        // 'ws://'
+        // + window.location.host
+        // + '/ws/chat/'
+        // + this.state.gameid
+        // + '/'
+        // ); 
     }
     /*
         states affected: 
@@ -89,6 +106,17 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     // For handling the players' submitting their guesses / word picks
     handleGuessSubmit = () => {
         console.log(this.state.spymasterClueWord, this.state.spymasterClueCount)
+        console.log(this.state.gameid)
+        console.log(this.state.room_key)
+        let ws = new WebSocket(`ws://localhost:8000/ws/game/${this.state.gameid}`)
+        this.setState({ws:ws})
+        ws.onopen = () => {
+            ws.send(JSON.stringify({
+                'count': this.state.spymasterClueCount,
+                'clue': this.state.spymasterClueWord
+            }));
+            console.log("connected websocket main component")
+        };
     }
     incrementClueCount = () => {
         this.setState(prevState => { // Update with inline function
