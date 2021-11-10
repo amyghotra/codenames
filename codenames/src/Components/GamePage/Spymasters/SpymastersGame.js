@@ -112,8 +112,9 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         this.setState({ws:ws})
         ws.onopen = () => {
             ws.send(JSON.stringify({
-                'count': this.state.spymasterClueCount,
-                'clue': this.state.spymasterClueWord
+                'clueWord': this.state.spymasterClueWord,
+                'clueCount': this.state.spymasterClueCount
+                
             }));
             console.log("connected websocket main component")
         };

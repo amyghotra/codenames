@@ -27,14 +27,14 @@ class SpymasterClueBox(WebsocketConsumer):
         print("just received some data")
         print(text_data)
         text_data_json = json.loads(text_data)
-        clueWord = text_data_json['clue']
-        clueCount = text_data_json['count']
+        clueWord = text_data_json['clueWord']
+        clueCount = text_data_json['clueCount']
 
         # Send message to room group
         async_to_sync( self.channel_layer.group_send (
             self.room_group_name,
             {
-                "type": "clueInfo",
+                'type': 'clueInfo',
                 'clueWord': clueWord,
                 'clueCount': clueCount
             }
@@ -43,13 +43,13 @@ class SpymasterClueBox(WebsocketConsumer):
     # Receive message from room group
     def clueInfo(self, event):
         print("clueinfo func")
-        clueCount = event['count']
-        clueWord = event['clue']
+        clueWord = event['clueWord']
+        clueCount = event['clueCount']
 
         # Send message to WebSocket
-        async_to_sync (self.send(text_data=json.dumps({
+        self.send(text_data=json.dumps({
             'clueWord': clueWord,
             'clueCount': clueCount
-        })))
+        }))
 
         print("clue information was sent")

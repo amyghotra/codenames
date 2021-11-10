@@ -31,8 +31,35 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
         }
     }
-    componentDidMount = () => {
 
+    websocket = () => {
+        console.log(this.state.gameid)
+        console.log(this.state.room_key)
+        let ws = new WebSocket(`ws://localhost:8000/ws/game/${this.state.gameid}`)
+        this.setState({ws:ws})
+        ws.onopen = (e) => {
+            console.log("connected websocket main component")
+            console.log("right after ws open")
+            ws.onmessage = e => {
+                console.log(`THE CLUE WORD WAHOO FINALLLY:${e}`)
+                const data = JSON.parse(e.data)
+                console.log(data)
+            }
+        };
+        ws.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            ws.close();
+        };
+        
+    }
+
+    componentDidMount = () => {
+        this.websocket()
     }
 
     componentDidUpdate = (event) => {
