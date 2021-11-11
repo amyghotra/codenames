@@ -139,15 +139,20 @@ class Game extends Component {
 
     updateGameWords = (gameid) => {
         axios.get(`http://127.0.0.1:8000/codenames/games/${gameid}`).then(res => {
+            console.log("trying to update game words in the game.js file")
+            // console.log(res)
             this.setState({ 
                 gameWords: res.data.gameWords 
             })
+            console.log(`after the variable assignment: ${this.state.gameWords}`)
+            console.log(this.state.gameWords)
+            console.log("did it print?")
         
         })
     }
 
     //from the card component, the words id and its corresponding team will be sent here to increase the points and change the guess to true accordingly
-    increaseTeamPoints = (team, word) => {
+    increaseTeamPoints = event => (team, word) => {
         let redPoints = this.state.red_score
         let bluePoints = this.state.blue_score
         if(team === 'R'){

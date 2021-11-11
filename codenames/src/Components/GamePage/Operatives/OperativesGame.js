@@ -29,22 +29,36 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             showblueOperatives: [],
             showblueSpymasters: [],
 
+            revealedCards: [],
+            selectedCards: []
+
         }
     }
 
-    websocket = () => {
-        console.log(this.state.gameid)
-        console.log(this.state.room_key)
+    // For handling the players' submitting their guesses / word picks
+    handleEndTurn = () => {
+
+        this.setState = {
+            turn: !this.state.turn
+        }
+
+        console.log("trying to send some card data back")
+        console.log(JSON.stringify({'cardsPlayed': this.state.revealedCards}))
+
+        for (let i = 0; i < this.state.selectedCards.length; i++) {
+            console.log(this.state.selectedCards[i])
+            let wordObj = this.state.gameWords.find(w => w.word_id === this.state.selectedCards[i]);
+            // this.props.increaseTeamPoints(wordObj.category, this.state.selectedCards[i])
+            console.log(wordObj)
+            console.log("send to inc after this")
+        }
+
         let ws = new WebSocket(`ws://localhost:8000/ws/game/${this.state.gameid}`)
-        this.setState({ws:ws})
-        ws.onopen = (e) => {
-            console.log("connected websocket main component")
-            console.log("right after ws open")
-            ws.onmessage = e => {
-                console.log(`THE CLUE WORD WAHOO FINALLLY:${e}`)
-                const data = JSON.parse(e.data)
-                console.log(data)
-            }
+        ws.onopen = () => {
+            ws.send(JSON.stringify({
+                'cardsPlayed': this.state.revealedCards
+                
+            }));
         };
         ws.onerror = err => {
             console.error(
@@ -55,11 +69,37 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
             ws.close();
         };
+    }
+
+    // for receiving clues
+    websocket = () => {
+        console.log(this.state.gameid)
+        console.log(this.state.room_key)
+        let ws = new WebSocket(`ws://localhost:8000/ws/game/${this.state.gameid}`)
+        this.setState({ws:ws})
+        // ws.onopen = (e) => {
+        //     console.log("connected websocket main component")
+        //     console.log("right after ws open")
+        //     ws.onmessage = e => {
+        //         console.log(`THE CLUE WORD WAHOO FINALLLY:${e}`)
+        //         const data = JSON.parse(e.data)
+        //         console.log(data)
+        //     }
+        // };
+        // ws.onerror = err => {
+        //     console.error(
+        //         "Socket encountered error: ",
+        //         err.message,
+        //         "Closing socket"
+        //     );
+
+        //     ws.close();
+        // };
         
     }
 
     componentDidMount = () => {
-        this.websocket()
+        // this.websocket()
     }
 
     componentDidUpdate = (event) => {
@@ -240,31 +280,16 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     }
 
+    saveSelection = (word) => {
 
-    // For handling the players' submitting their guesses / word picks
-    handleEndTurn = () => {
-        this.setState = {
-            turn: !this.state.turn
-        }
-        console.log((this.state.turn) ? "Blue turn" : "Red turn")
+        let selected = [...this.state.selectedCards]
+        selected.push(word)
+        this.setState({selectedCards : selected})
+        let allPlayed = [...this.state.revealedCards]
+        allPlayed.push(word)
+        this.setState({revealedCards: allPlayed})
+
     }
-
-    incrementClueCount = () => {
-        this.setState(prevState => { // Update with inline function
-            return {
-                spymasterClueCount: prevState.spymasterClueCount + 1
-            }
-        })
-    }
-    decrementClueCount = () => {
-        this.setState(prevState => {
-            return {
-                spymasterClueCount: prevState.spymasterClueCount - 1
-            }
-        })
-    }
-
-
 
     render() {
         return (
@@ -329,40 +354,40 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                         this.state.gameWords[2],
                                         this.state.gameWords[3],
                                         this.state.gameWords[4]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        increaseTeamPoints={this.saveSelection} />
                                     <Row task={this.state.task}
                                         rowWords={[this.state.gameWords[5],
                                         this.state.gameWords[6],
                                         this.state.gameWords[7],
                                         this.state.gameWords[8],
                                         this.state.gameWords[9]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        increaseTeamPoints={this.saveSelection} />
                                     <Row task={this.state.task}
                                         rowWords={[this.state.gameWords[10],
                                         this.state.gameWords[11],
                                         this.state.gameWords[12],
                                         this.state.gameWords[13],
                                         this.state.gameWords[14]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        increaseTeamPoints={this.saveSelection} />
                                     <Row task={this.state.task}
                                         rowWords={[this.state.gameWords[15],
                                         this.state.gameWords[16],
                                         this.state.gameWords[17],
                                         this.state.gameWords[18],
                                         this.state.gameWords[19]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        increaseTeamPoints={this.saveSelection} />
                                     <Row task={this.state.task}
                                         rowWords={[this.state.gameWords[20],
                                         this.state.gameWords[21],
                                         this.state.gameWords[22],
                                         this.state.gameWords[23],
                                         this.state.gameWords[24]]}
-                                        increaseTeamPoints={this.props.increaseTeamPoints} />
+                                        increaseTeamPoints={this.saveSelection} />
 
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="d-flex justify-content-end">
-                                                <button className="btn" onChange={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
+                                                <button className="btn" onClick={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
                                             </div>
                                         </div>
                                     </div>
