@@ -20,28 +20,28 @@ class Card extends Component{
             number: 0, // Need to get number of card from props, can just pass it in from the game page when calling Row
             // So all checkboxes should check with one check for right now
         }
-        //this.socketSend = this.socketSend.bind(this);
+        this.socketSend = this.socketSend.bind(this);
     }
 
-    // socketSend = () => {
-    //     var data = {
-    //         "number": this.state.number,
-    //         "checked": true //this.state.checked // Hard coded to true, it'll never be false ?
-    //     }
-    //     this.state.ws.send(JSON.stringify(data)) // Testing send
-    //     console.log(data)
-    // }
+    socketSend = () => {
+        var data = {
+            "number": this.props.number, // used props instead of state, states not setting
+            "checked": true //this.state.checked // Hard coded to true, it'll never be false ?
+        }
+        this.state.ws.send(JSON.stringify(data)) // Testing send
+        console.log(data)
+    }
     
     componentDidMount = () => {
         this.setState({
             task: this.props.task,
             team: this.state.team,
             turn: this.state.turn,
-            number: this.props.number            
+            number: this.props.number // Not setting number ?      
         })
-        // if (this.props.task === "O") {
-        //     this.connect();
-        // }
+        if (this.props.task === "O") {
+            this.connect();
+        }
     }
 
     /**
@@ -49,74 +49,78 @@ class Card extends Component{
      * This function establishes the connect with the websocket and also ensures 
      * constant reconnection if connection closes
     */
-    // connect = () => {
-    //     var ws = new WebSocket('ws://localhost:8000/ws2/game/');
-    //     let that = this; // cache the this
-    //     var connectInterval;
+    connect = () => {
+        var ws = new WebSocket('ws://localhost:8000/ws2/game/');
+        let that = this; // cache the this
+        var connectInterval;
 
-    //     // websocket onopen event listener
-    //     ws.onopen = () => {
-    //         console.log("connected websocket main component");
-    //         this.setState({ ws: ws });
+        // websocket onopen event listener
+        ws.onopen = () => {
+            console.log("connected websocket main component");
+            this.setState({ ws: ws });
 
-    //         that.timeout = 250; // reset timer to 250 on open of websocket connection 
-    //         clearTimeout(connectInterval); // clear Interval on on open of websocket connection
-    //     };
+            that.timeout = 250; // reset timer to 250 on open of websocket connection 
+            clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+        };
 
-    //     // websocket onclose event listener
-    //     ws.onclose = e => {
-    //         console.log(
-    //             `Socket is closed. Reconnect will be attempted in ${Math.min(
-    //                 10000 / 1000,
-    //                 (that.timeout + that.timeout) / 1000
-    //             )} second.`,
-    //             e.reason
-    //         );
+        // websocket onclose event listener
+        ws.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in ${Math.min(
+                    10000 / 1000,
+                    (that.timeout + that.timeout) / 1000
+                )} second.`,
+                e.reason
+            );
 
-    //         that.timeout = that.timeout + that.timeout; //increment retry interval
-    //         connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
-    //     };
+            that.timeout = that.timeout + that.timeout; //increment retry interval
+            connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
+        };
 
-    //     // websocket onerror event listener
-    //     ws.onerror = err => {
-    //         console.error(
-    //             "Socket encountered error: ",
-    //             err.message,
-    //             "Closing socket"
-    //         );
+        // websocket onerror event listener
+        ws.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
 
-    //         ws.close();
-    //     };
+            ws.close();
+        };
 
-    //     ws.onmessage = evt => {
-    //         // listen to data sent from the websocket server
-    //         const data = JSON.parse(evt.data)
-    //         console.log(data)
-    //         console.log("received check!")
-    //         let number = data.number
-    //         let checked = data.checked
-    //         if (number === this.state.number) {
-    //             this.setState(prevState => {
-    //                 return {
-    //                     checked: checked
-    //                 }
-    //             })
-    //         }
-    //     };
-    //     this.setState(prevState => {
-    //         return {
-    //             ws: ws
-    //         }
-    //     })
-    // };
+        ws.onmessage = evt => {
+            // listen to data sent from the websocket server
+            const data = JSON.parse(evt.data)
+            console.log(data)
+            console.log("received check!")
+            let number = data.number
+            let checked = data.checked
+            if (number === this.props.number && this.state.checked !== true) { // Using props instead of state again
+                this.setState(prevState => {
+                    return {
+                        checked: checked
+                    }
+                })
+                // Points weren't updating correctly so I'm just pasting this from handleChange
+                this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id) // Race conditions?
+                // This doesn't update it for spymaster's view - but i think they should have checkbox channels
+                // anyway since they're gonna need to see which cards have already been chosen anyways, that'll solve it
+            }
+        };
+        this.setState(prevState => {
+            return {
+                ws: ws
+            }
+        })
+    };
 
-    // /**
-    //  * utilited by the @function connect to check if the connection is close, if so attempts to reconnect
-    //  */
-    // check = () => {
-    //     const { ws } = this.state.ws;
-    //     if (!ws || ws.readyState === WebSocket.CLOSED) this.connect(); //check if websocket instance is closed, if so call `connect` function.
-    // };
+    /**
+     * utilited by the @function connect to check if the connection is close, if so attempts to reconnect
+     */
+    check = () => {
+        const { ws } = this.state.ws;
+        if (!ws || ws.readyState === WebSocket.CLOSED) this.connect(); //check if websocket instance is closed, if so call `connect` function.
+    };
 
     componentDidUpdate = (event) => {
         if (event.word !== this.props.word) {
@@ -143,9 +147,9 @@ class Card extends Component{
                 turn: !this.state.turn            
             })
             console.log(this.state.checked)
-            this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
+            this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id) // Moved to Socket's onmessage
             localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
-            //this.socketSend() 
+            this.socketSend() 
         }
 
     }
