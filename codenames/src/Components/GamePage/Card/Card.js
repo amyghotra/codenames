@@ -14,6 +14,7 @@ class Card extends Component{
             turn: true, // true = blue turn && false = red turn
             redteamid: '',
             blueteamid: '',
+            gameid: '',
 
             // WebSocket
             ws: null,
@@ -33,14 +34,25 @@ class Card extends Component{
     }
     
     componentDidMount = () => {
-        this.setState({
-            task: this.props.task,
-            team: this.state.team,
-            turn: this.state.turn,
-            number: this.props.number // Not setting number ?      
+        // this.setState({
+        //     task: this.props.task,
+        //     team: this.state.team,
+        //     turn: this.state.turn,
+        //     number: this.props.number, // Not setting number ?
+        //     gameid: this.props.gameid    
+        // })
+        this.setState(prevState => {
+            return {
+                task: this.props.task,
+                team: this.state.team,
+                turn: this.state.turn,
+                number: this.props.number, // Not setting number ?
+                gameid: this.props.gameid
+            }
         })
+        
         if (this.props.task === "O") {
-            this.connect();
+            this.connect(this.props.number, this.props.gameid);
         }
     }
 
@@ -49,8 +61,9 @@ class Card extends Component{
      * This function establishes the connect with the websocket and also ensures 
      * constant reconnection if connection closes
     */
-    connect = () => {
-        var ws = new WebSocket('ws://localhost:8000/ws2/game/');
+    connect = (num, id) => {
+        var ws = new WebSocket('ws://localhost:8000/checkbox/checkbox/' 
+                                + this.props.number + '/' + this.props.gameid + '/'); 
         let that = this; // cache the this
         var connectInterval;
 

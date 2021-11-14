@@ -11,9 +11,15 @@ class ClueBoxConsumer(WebsocketConsumer):
         Connect to a chat room
         Spaces are replaced like this: 'My new room' -> 'My_new_room'
         """
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_name = self.room_name.replace(' ', '_')
-        self.room_group_name = 'clue_%s' % self.room_name # each consumer needs their own separate name
+        # Get the type of websocket that we called it in routing
+        self.type_name = self.scope['url_route']['kwargs']['type_name']
+        self.type_name = self.type_name.replace(' ', '_')
+        # Get the game id for each game being played
+        self.gameid = self.scope['url_route']['kwargs']['gameid']
+        self.gameid = self.gameid.replace(' ', '_')
+        # Create the full group name
+        self.room_group_name = 'cluebox_' + self.type_name + '_' + self.gameid 
+        # each consumer needs their own separate name
         # add in game code to the room group here so it creates different channels for each room
 
         # Join room group
@@ -22,7 +28,7 @@ class ClueBoxConsumer(WebsocketConsumer):
             self.channel_name
         )
         self.accept()
-        print("added to clue group")
+        print("added to clue group ", self.room_group_name)
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
@@ -32,7 +38,6 @@ class ClueBoxConsumer(WebsocketConsumer):
     def receive(self, text_data):
         """
         Receive a message and broadcast it to a room group
-        UTC time is included so the client can display it in each user's local time
         """   
         text_data_json = json.loads(text_data)
         print(text_data_json)
@@ -70,9 +75,18 @@ class CheckBoxConsumer(WebsocketConsumer):
         Connect to a chat room
         Spaces are replaced like this: 'My new room' -> 'My_new_room'
         """
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_name = self.room_name.replace(' ', '_')
-        self.room_group_name = 'check_%s' % self.room_name # each consumer needs their own separate name
+        # Get the type of websocket that we called it in routing
+        self.type_name = self.scope['url_route']['kwargs']['type_name']
+        self.type_name = self.type_name.replace(' ', '_')
+        # Get the card number of this exact set so only corresponding cards will communicate
+        self.card_number = self.scope['url_route']['kwargs']['card_number']
+        self.card_number = self.card_number.replace(' ', '_')
+        # Get the game id for each game being played
+        self.gameid = self.scope['url_route']['kwargs']['gameid']
+        self.gameid = self.gameid.replace(' ', '_')
+        # Create the full group name
+        self.room_group_name = 'checkbox_' + self.type_name + '_' + self.card_number + '_' + self.gameid
+        # each consumer needs their own separate name
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
@@ -80,7 +94,7 @@ class CheckBoxConsumer(WebsocketConsumer):
             self.channel_name
         )
         self.accept()
-        print("added to check group")
+        print("added to check group ", self.room_group_name)
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
@@ -90,7 +104,6 @@ class CheckBoxConsumer(WebsocketConsumer):
     def receive(self, text_data):
         """
         Receive a message and broadcast it to a room group
-        UTC time is included so the client can display it in each user's local time
         """   
         text_data_json = json.loads(text_data)
         print(text_data_json)
