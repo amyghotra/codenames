@@ -16,12 +16,6 @@ class Row extends Component{
     }
     
     componentDidMount = () => {
-        // this.setState({
-        //     task: this.props.task,
-        //     rowWords: this.props.rowWords,
-        //     cardNumbers: this.props.cardNumbers,
-        //     gameid: this.props.gameid
-        // })
         this.setState(prevState => {
             return {
                 task: this.props.task,

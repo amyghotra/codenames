@@ -45,7 +45,6 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     }
 
     componentDidMount = () => {
-        this.connect();
     }
 
     socketSend = () => {
@@ -149,6 +148,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     gameid: this.props.gameid
                 }
             })
+            this.connect();
         }
 
         if(event.playersdata !== this.props.playersdata){

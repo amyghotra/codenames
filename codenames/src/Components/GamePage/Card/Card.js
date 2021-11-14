@@ -34,34 +34,39 @@ class Card extends Component{
     }
     
     componentDidMount = () => {
-        // this.setState({
-        //     task: this.props.task,
-        //     team: this.state.team,
-        //     turn: this.state.turn,
-        //     number: this.props.number, // Not setting number ?
-        //     gameid: this.props.gameid    
-        // })
-        this.setState(prevState => {
-            return {
-                task: this.props.task,
-                team: this.state.team,
-                turn: this.state.turn,
-                number: this.props.number, // Not setting number ?
-                gameid: this.props.gameid
+    }
+
+    componentDidUpdate = (event) => {
+        if (event.word !== this.props.word) {
+            this.setState(prevState => {
+                return {
+                    content: this.props.word,
+                    task: this.props.task,
+                    team: this.state.team,
+                    turn: this.state.turn,
+                    number: this.props.number, // Not setting number ?
+                    gameid: this.props.gameid
+                }
+            })
+
+            if(this.props.word.category === 'A' || this.props.word.category === 'R' || this.props.word.category === 'B') {
+                let wordGuessed = localStorage.getItem(this.props.word.word_id);
+                this.setState({
+                    checked: wordGuessed
+                })
             }
-        })
-        
-        if (this.props.task === "O") {
-            this.connect(this.props.number, this.props.gameid);
+            if (this.props.task === "O") {
+                this.connect();
+            }
         }
     }
 
-    /**
+    /*
      * @function connect
      * This function establishes the connect with the websocket and also ensures 
      * constant reconnection if connection closes
     */
-    connect = (num, id) => {
+    connect = () => {
         var ws = new WebSocket('ws://localhost:8000/checkbox/checkbox/' 
                                 + this.props.number + '/' + this.props.gameid + '/'); 
         let that = this; // cache the this
@@ -134,23 +139,6 @@ class Card extends Component{
         const { ws } = this.state.ws;
         if (!ws || ws.readyState === WebSocket.CLOSED) this.connect(); //check if websocket instance is closed, if so call `connect` function.
     };
-
-    componentDidUpdate = (event) => {
-        if (event.word !== this.props.word) {
-            this.setState(prevState => {
-                return {
-                    content: this.props.word,
-                }
-            })
-
-            if(this.props.word.category === 'A' || this.props.word.category === 'R' || this.props.word.category === 'B') {
-                let wordGuessed = localStorage.getItem(this.props.word.word_id);
-                this.setState({
-                    checked: wordGuessed
-                })
-            }
-        }
-    }
 
     handleChange = () => {
 
