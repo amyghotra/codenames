@@ -52,14 +52,35 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             console.log(wordObj)
             console.log("send to inc after this")
         }
-
-        let ws = new WebSocket(`ws://localhost:8000/ws/game/${this.state.gameid}`)
-        ws.onopen = () => {
-            ws.send(JSON.stringify({
+        this.state.ws.onopen = () => {
+            this.state.ws.send(JSON.stringify({
                 'cardsPlayed': this.state.revealedCards
-                
             }));
         };
+        this.state.ws.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            this.state.ws.close();
+        };
+    }
+
+    websocket = () => {
+        console.log(this.state.gameid)
+        console.log(this.state.room_key)
+        let ws = new WebSocket(`ws://localhost:8000/ws/game/${this.state.gameid}`)
+        this.setState({ws:ws})
+        ws.onopen = () => {
+            console.log("connected websocket main component")
+        };
+        ws.onmessage = e => {
+            console.log("inside ws.onmessage")
+            const data = JSON.parse(e.data)
+            console.log(data)
+        }
         ws.onerror = err => {
             console.error(
                 "Socket encountered error: ",
@@ -69,37 +90,11 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
             ws.close();
         };
-    }
-
-    // for receiving clues
-    websocket = () => {
-        console.log(this.state.gameid)
-        console.log(this.state.room_key)
-        let ws = new WebSocket(`ws://localhost:8000/ws/game/${this.state.gameid}`)
-        this.setState({ws:ws})
-        // ws.onopen = (e) => {
-        //     console.log("connected websocket main component")
-        //     console.log("right after ws open")
-        //     ws.onmessage = e => {
-        //         console.log(`THE CLUE WORD WAHOO FINALLLY:${e}`)
-        //         const data = JSON.parse(e.data)
-        //         console.log(data)
-        //     }
-        // };
-        // ws.onerror = err => {
-        //     console.error(
-        //         "Socket encountered error: ",
-        //         err.message,
-        //         "Closing socket"
-        //     );
-
-        //     ws.close();
-        // };
         
     }
 
     componentDidMount = () => {
-        // this.websocket()
+        this.websocket()
     }
 
     componentDidUpdate = (event) => {
@@ -280,7 +275,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     }
 
-    saveSelection = (word) => {
+    saveSelection = (e,word) => {
+
+        // this.props.increaseTeamPoints(e)
 
         let selected = [...this.state.selectedCards]
         selected.push(word)

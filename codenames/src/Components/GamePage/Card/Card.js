@@ -16,9 +16,35 @@ class Card extends Component{
             redteamid: '',
             blueteamid: '',
 
+            ws: null
             
         }
     }
+    
+    websocket = () => {
+        console.log(this.state.gameid)
+        console.log(this.state.room_key)
+        let ws = new WebSocket(`ws://localhost:8000/ws/game/${this.state.gameid}`)
+        this.setState({ws:ws})
+        ws.onopen = () => {
+            console.log("connected websocket main component card.js")
+        };
+        ws.onmessage = e => {
+            console.log("inside card.js ws.onmessage")
+            const data = JSON.parse(e.data)
+            console.log(data)
+        }
+        ws.onerror = err => {
+            console.error(
+                "Socket encountered error card.js: ",
+                err.message,
+                "Closing socket card.js"
+            );
+
+            ws.close();
+        };
+    }
+      
     
     componentDidMount = () => {
         this.setState({
@@ -27,10 +53,12 @@ class Card extends Component{
             turn: this.state.turn
             
         })
-        // console.log("task : ", this.props.task)
+
+        this.websocket()
     }
 
     componentDidUpdate = (event) => {
+        
         if (event.word !== this.props.word) {
             this.setState(prevState => {
                 return {
@@ -53,13 +81,17 @@ class Card extends Component{
                 checked: true,
                 turn: !this.state.turn            
             })
+            this.state.ws.onopen = () => {
+                console.log("attemtping to send some stuff to the websocket card.js")
+                this.state.ws.send(JSON.stringify({
+                    'cardsPlayed': this.props.word
+                }));
+            }
             console.log(this.state.checked)
-            this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
+            // this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
             localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
         }
     }
-
-    
     
 
     render(){
