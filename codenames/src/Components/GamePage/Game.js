@@ -118,6 +118,8 @@ class Game extends Component {
 
     componentDidUpdate = () => {
         // await axios.get()
+
+
     }
     
     setDoubleAgent = () => {
@@ -129,6 +131,9 @@ class Game extends Component {
             doubleAgent,
             agentClicked
         })
+
+        // localStorage.setItem(this.state.gameid, agentClicked)
+        
 
         axios.put(`http://127.0.0.1:8000/codenames/games/word/${this.state.doubleAgent.word_id}`, doubleAgent)
             .then(res => {
@@ -205,40 +210,24 @@ class Game extends Component {
                 {
                     this.state.task === 'S' ?
                     
-                    <div>
-                        {
-                        this.state.agentClicked === false ?
-                        <div>
-                            <button onClick={this.setDoubleAgent}>I WANT FIRST</button> 
-                            <SpymastersGame 
-                                room_key = {this.state.room_key}
-                                gameWords = {this.state.gameWords}
-                                increaseTeamPoints = {this.increaseTeamPoints}
-                                redPoints = {this.state.red_score}
-                                bluePoints = {this.state.blue_score}
-                                playersdata = {this.state.playersdata}
-                                gameid = {this.state.gameid}
-                            />
-                        </div>
-
-                        :
-
-                        <div>
-                            <SpymastersGame 
-                                    room_key = {this.state.room_key}
-                                    gameWords = {this.state.gameWords}
-                                    increaseTeamPoints = {this.increaseTeamPoints}
-                                    redPoints = {this.state.red_score}
-                                    bluePoints = {this.state.blue_score}
-                                    playersdata = {this.state.playersdata}
-                                    gameid = {this.state.gameid}
-                            />
-                        </div>
-                        }
-                    </div>
+                    
+                    <SpymastersGame 
+                        doubleAgent ={this.state.doubleAgent}
+                        doubleAgentIndex = {this.state.doubleAgentIndex}
+                        setDoubleAgent = {this.setDoubleAgent}
+                        room_key = {this.state.room_key}
+                        gameWords = {this.state.gameWords}
+                        increaseTeamPoints = {this.increaseTeamPoints}
+                        redPoints = {this.state.red_score}
+                        bluePoints = {this.state.blue_score}
+                        playersdata = {this.state.playersdata}
+                        gameid = {this.state.gameid}
+                    />
                     : 
 
                     <OperativesGame 
+                        doubleAgent ={this.state.doubleAgent}
+                        doubleAgentIndex = {this.state.doubleAgentIndex}
                         room_key = {this.state.room_key}
                         gameWords = {this.state.gameWords}
                         increaseTeamPoints = {this.increaseTeamPoints}
