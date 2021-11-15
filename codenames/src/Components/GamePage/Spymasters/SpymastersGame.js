@@ -37,7 +37,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             ws: null
         }
 
-        this.chatSocket = this.chatSocket.bind(this)
+        // this.chatSocket = this.chatSocket.bind(this)
         this.handleGuessSubmit = this.handleGuessSubmit.bind(this)
         this.incrementClueCount = this.incrementClueCount.bind(this)
         this.decrementClueCount = this.decrementClueCount.bind(this)

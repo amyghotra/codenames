@@ -28,16 +28,12 @@ class Game extends Component {
             redteamid: '',
             blueteamid: '',
             
-
-            
         }
     }
 
-    
 
+    componentDidMount = async () => {
 
-
-    componentDidMount = async () =>{
         let gameWords = this.props.location.state.gameWords;
         for(let i = 0; i < gameWords.length; i++) {
             if(gameWords[i].category === 'D') {
@@ -47,7 +43,6 @@ class Game extends Component {
                 })
             }
         }
-
 
         await axios.get('http://127.0.0.1:8000/codenames/players').then(res => {
             this.setState({
@@ -114,10 +109,13 @@ class Game extends Component {
                 blue_score: Number(localBlueTeamId)
             })
         }
-    }
+    }    
 
     componentDidUpdate = () => {
         // await axios.get()
+        // console.log("comp did update")
+        // console.log(this.state.playersdata)
+        // console.log("comp did update")
     }
     
     setDoubleAgent = () => {
@@ -139,14 +137,14 @@ class Game extends Component {
 
     updateGameWords = (gameid) => {
         axios.get(`http://127.0.0.1:8000/codenames/games/${gameid}`).then(res => {
-            console.log("trying to update game words in the game.js file")
+            // console.log("trying to update game words in the game.js file")
             // console.log(res)
             this.setState({ 
                 gameWords: res.data.gameWords 
             })
-            console.log(`after the variable assignment: ${this.state.gameWords}`)
-            console.log(this.state.gameWords)
-            console.log("did it print?")
+            // console.log(`after the variable assignment: ${this.state.gameWords}`)
+            // console.log(this.state.gameWords)
+            // console.log("did it print?")
         
         })
     }
@@ -168,10 +166,10 @@ class Game extends Component {
                 localStorage.setItem(this.state.redteamid, JSON.stringify(redPoints));
 
                 axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
-                    console.log(response.data)
+                    // console.log(response.data)
                 })
                 axios.patch(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`, {red_team_score: redPoints}).then(response => {
-                    console.log(response.data)
+                    // console.log(response.data)
                 })
             }
             
@@ -189,10 +187,10 @@ class Game extends Component {
                 localStorage.setItem(this.state.blueteamid, JSON.stringify(bluePoints));
 
                 axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
-                    console.log(response.data)
+                    // console.log(response.data)
                 })
                 axios.patch(`http://127.0.0.1:8000/codenames/blueTeam/${this.state.blueteamid}`, {blue_team_score: bluePoints}).then(response => {
-                    console.log(response.data)
+                    // console.log(response.data)
                 })
 
             }
@@ -200,7 +198,13 @@ class Game extends Component {
 
     }
 
-    
+    getUserInfo = () => {
+        return this.state.playerid
+    }
+
+    getPlayerId = () => {
+        return this.state.playerid
+    }
     
 
     render() {
@@ -250,6 +254,9 @@ class Game extends Component {
                         redPoints = {this.state.red_score}
                         bluePoints = {this.state.blue_score}
                         playersdata = {this.state.playersdata}
+                        nickname = {this.state.nickname}
+                        getUserInfo = {this.getUserInfo}
+                        playerID = {this.state.playerid}
                     />
                 }
             </div>

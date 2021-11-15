@@ -30,42 +30,48 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             showblueSpymasters: [],
 
             revealedCards: [],
-            selectedCards: []
+            selectedCards: [],
+
+            currentTeam: "",
+            currentPlayer: "",
+            
+            playerId: ""
 
         }
     }
 
     // For handling the players' submitting their guesses / word picks
-    handleEndTurn = () => {
+    handleEndTurn = async () => {
 
-        this.setState = {
-            turn: !this.state.turn
-        }
+        await this.endTurn()
 
-        console.log("trying to send some card data back")
-        console.log(JSON.stringify({'cardsPlayed': this.state.revealedCards}))
+        console.log(this.state.currentTeam)
+        console.log(this.state.currentPlayer)
+        console.log("testing testing testing testing testing testing")
 
-        for (let i = 0; i < this.state.selectedCards.length; i++) {
-            console.log(this.state.selectedCards[i])
-            let wordObj = this.state.gameWords.find(w => w.word_id === this.state.selectedCards[i]);
-            // this.props.increaseTeamPoints(wordObj.category, this.state.selectedCards[i])
-            console.log(wordObj)
-            console.log("send to inc after this")
-        }
-        this.state.ws.onopen = () => {
-            this.state.ws.send(JSON.stringify({
-                'cardsPlayed': this.state.revealedCards
-            }));
-        };
-        this.state.ws.onerror = err => {
-            console.error(
-                "Socket encountered error: ",
-                err.message,
-                "Closing socket"
-            );
+        // console.log("trying to send some card data back")
+        // console.log(JSON.stringify({'cardsPlayed': this.state.revealedCards}))
 
-            this.state.ws.close();
-        };
+        // for (let i = 0; i < this.state.selectedCards.length; i++) {
+        //     console.log(this.state.selectedCards[i])
+        //     let wordObj = this.state.gameWords.find(w => w.word_id === this.state.selectedCards[i]);
+        //     console.log(wordObj)
+        //     console.log("send to inc after this")
+        // }
+        // this.state.ws.onopen = () => {
+        //     this.state.ws.send(JSON.stringify({
+        //         'cardsPlayed': this.state.revealedCards
+        //     }));
+        // };
+        // this.state.ws.onerror = err => {
+        //     console.error(
+        //         "Socket encountered error: ",
+        //         err.message,
+        //         "Closing socket"
+        //     );
+
+        //     this.state.ws.close();
+        // };
     }
 
     websocket = () => {
@@ -93,11 +99,60 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
         
     }
 
-    componentDidMount = () => {
-        this.websocket()
+    changePlayers = async () => {
+        if(this.state.currentTeam === 'R') {
+            this.setState({currentTeam: 'B'})
+            this.setState({
+                currentPlayer: this.state.blueOperatives[Math.floor(Math.random()*this.state.blueOperatives.length)]
+            })
+        } else if(this.state.currentTeam === 'B') {
+            this.setState({currentTeam: 'R'})
+            this.setState({
+                currentPlayer: this.state.redOperatives[Math.floor(Math.random()*this.state.redOperatives.length)]
+            })
+        }
+        console.log("playerid:")
+        var id = await this.props.playerID
+        console.log(id)
+        console.log("playerid completed?")
+    }
+
+    endTurn = async () => {
+
+        console.log("end turn was clicked end turn was clicked end turn was clicked")
+
+        console.log(this.state.currentTeam)
+        console.log(this.state.currentPlayer)
+
+        await this.changePlayers()
+
+        console.log("update:")
+        console.log(this.state.currentTeam)
+        console.log(this.state.currentPlayer)
+
+        console.log("end turn was clicked end turn was clicked end turn was clicked")
+
+    }
+
+    setIntial = async () => {
+        if(this.state.currentTeam === "") {
+            let teams = ['R','B']
+            this.setState({
+                currentTeam: teams[Math.floor(Math.random()*teams.length)]
+            })
+        } else {
+            console.log("it was already set")
+            console.log(this.state.currentTeam)
+        }
+    }
+
+    componentDidMount = async () => {
+        await this.setIntial()
     }
 
     componentDidUpdate = (event) => {
+
+        // console.log("there was an update")
 
         if (event.gameWords !== this.props.gameWords) {
             this.setState(prevState => {
@@ -288,6 +343,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     }
 
+
     render() {
         return (
             <div className="game">
@@ -351,35 +407,35 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                         this.state.gameWords[2],
                                         this.state.gameWords[3],
                                         this.state.gameWords[4]]}
-                                        increaseTeamPoints={this.saveSelection} />
+                                        increaseTeamPoints={this.props.increaseTeamPoints} />
                                     <Row task={this.state.task}
                                         rowWords={[this.state.gameWords[5],
                                         this.state.gameWords[6],
                                         this.state.gameWords[7],
                                         this.state.gameWords[8],
                                         this.state.gameWords[9]]}
-                                        increaseTeamPoints={this.saveSelection} />
+                                        increaseTeamPoints={this.props.increaseTeamPoints} />
                                     <Row task={this.state.task}
                                         rowWords={[this.state.gameWords[10],
                                         this.state.gameWords[11],
                                         this.state.gameWords[12],
                                         this.state.gameWords[13],
                                         this.state.gameWords[14]]}
-                                        increaseTeamPoints={this.saveSelection} />
+                                        increaseTeamPoints={this.props.increaseTeamPoints} />
                                     <Row task={this.state.task}
                                         rowWords={[this.state.gameWords[15],
                                         this.state.gameWords[16],
                                         this.state.gameWords[17],
                                         this.state.gameWords[18],
                                         this.state.gameWords[19]]}
-                                        increaseTeamPoints={this.saveSelection} />
+                                        increaseTeamPoints={this.props.increaseTeamPoints} />
                                     <Row task={this.state.task}
                                         rowWords={[this.state.gameWords[20],
                                         this.state.gameWords[21],
                                         this.state.gameWords[22],
                                         this.state.gameWords[23],
                                         this.state.gameWords[24]]}
-                                        increaseTeamPoints={this.saveSelection} />
+                                        increaseTeamPoints={this.props.increaseTeamPoints} />
 
                                     <div className="row">
                                         <div className="col-md-12">
