@@ -16,6 +16,8 @@ class Card extends Component{
             redteamid: '',
             blueteamid: '',
 
+            winningTeam: '',
+
             
         }
     }
@@ -57,9 +59,9 @@ class Card extends Component{
             this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
             localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
         }
-    }
 
-    
+
+    }
     
 
     render(){

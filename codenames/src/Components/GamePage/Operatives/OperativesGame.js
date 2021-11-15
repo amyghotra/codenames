@@ -29,6 +29,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             showblueOperatives: [],
             showblueSpymasters: [],
 
+
         }
     }
     componentDidMount = () => {
@@ -220,6 +221,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             turn: !this.state.turn
         }
         console.log((this.state.turn) ? "Blue turn" : "Red turn")
+
     }
 
     incrementClueCount = () => {
@@ -237,8 +239,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
         })
     }
 
-
-
+    
     render() {
         return (
             <div className="game">
@@ -331,7 +332,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                         this.state.gameWords[23],
                                         this.state.gameWords[24]]}
                                         increaseTeamPoints={this.props.increaseTeamPoints} />
-
+                                    {!this.props.winningScreenIsOpen ?
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="d-flex justify-content-end">
@@ -339,7 +340,12 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             </div>
                                         </div>
                                     </div>
-                                </div>  {/* Changed back to div from a form */}
+                                     :
+                                     <div className="popUp" >
+                                         <h4 className="Status">{this.props.statusMessage}</h4>
+                                     </div>
+                                    }
+                                </div> 
                             </div>
                         </div>
                     </div>
