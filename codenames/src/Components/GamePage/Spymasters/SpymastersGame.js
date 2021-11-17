@@ -108,6 +108,8 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     componentWillReceiveProps = (players) => {
         this.setState({
             playersdata: players.playersdata,
+            currentPlayer: this.props.currentPlayer,
+            currentTeam: this.props.currentTeam
             //renderPlayers: true,
         })
         //console.log(players)

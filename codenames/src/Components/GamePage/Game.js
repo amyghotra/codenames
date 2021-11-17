@@ -27,6 +27,9 @@ class Game extends Component {
 
             redteamid: '',
             blueteamid: '',
+
+            currentPlayer: null,
+            currentTeam: null
             
         }
     }
@@ -85,6 +88,11 @@ class Game extends Component {
         })
 
         this.updateGameWords(this.props.location.state.gameid)
+
+        if (this.state.currentPlayer === null) {
+            this.state.currentPlayer = this.state.playerid
+            this.state.currentTeam = this.state.team
+        }
 
         await axios.get(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`)
         .then(response => {
@@ -197,14 +205,6 @@ class Game extends Component {
         }
 
     }
-
-    getUserInfo = () => {
-        return this.state.playerid
-    }
-
-    getPlayerId = () => {
-        return this.state.playerid
-    }
     
 
     render() {
@@ -241,6 +241,8 @@ class Game extends Component {
                                     bluePoints = {this.state.blue_score}
                                     playersdata = {this.state.playersdata}
                                     gameid = {this.state.gameid}
+                                    currentPlayer = {this.state.currentPlayer}
+                                    currentTeam = {this.state.currentTeam}
                             />
                         </div>
                         }
@@ -255,8 +257,9 @@ class Game extends Component {
                         bluePoints = {this.state.blue_score}
                         playersdata = {this.state.playersdata}
                         nickname = {this.state.nickname}
-                        getUserInfo = {this.getUserInfo}
                         playerID = {this.state.playerid}
+                        currentPlayer = {this.state.currentPlayer}
+                        currentTeam = {this.state.currentTeam}
                     />
                 }
             </div>

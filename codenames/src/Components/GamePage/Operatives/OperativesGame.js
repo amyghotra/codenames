@@ -33,7 +33,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             selectedCards: [],
 
             currentTeam: "",
-            currentPlayer: "",
+            currentPlayer: null,
             
             playerId: ""
 
@@ -144,10 +144,33 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             console.log("it was already set")
             console.log(this.state.currentTeam)
         }
+        if(this.state.currentPlayer === null) {
+            if(this.state.blueOperatives.length > 0 && this.state.currentTeam === 'B') {
+                this.setState({
+                    currentTeam :'R',
+                    currentPlayer: this.props.playerID
+                })
+            } else if(this.state.redOperatives.length > 0 && this.state.currentTeam === 'R') {
+                this.setState({
+                    currentTeam :'B',
+                    currentPlayer: this.state.redOperatives[0]
+                })
+            } else if(this.state.redOperatives.length === 0 && this.state.currentTeam === 'R') {
+                this.setState({
+                    currentTeam :'B',
+                    currentPlayer: this.state.blueOperatives[0]
+                })
+            } else if(this.state.blueOperatives.length === 0 && this.state.currentTeam === 'B') {
+                this.setState({
+                    currentTeam :'R',
+                    currentPlayer: this.state.redOperatives[0]
+                })
+            }
+        }
+
     }
 
     componentDidMount = async () => {
-        await this.setIntial()
     }
 
     componentDidUpdate = (event) => {
@@ -178,15 +201,23 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     /*This one will call updatePlayers twice therefore adds it twice but will show normal when refreshed. 
         =>Fixed with the deleteRepeated() function    
     */
-    componentWillReceiveProps = (players) => {
+    componentWillReceiveProps = async (players) => {
         this.setState({
             playersdata: players.playersdata,
+            currentPlayer: this.props.currentPlayer,
+            currentTeam: this.props.currentTeam
             //renderPlayers: true,
         })
         //console.log(players)
 
         // console.log("Checking how many times this will call the update players!")
-        this.updatePlayers(players.playersdata)
+        await this.updatePlayers(players.playersdata)
+
+        console.log("mountig component")
+        console.log(this.state.redOperatives.length)
+        await this.setIntial()
+        console.log(this.state.currentTeam)
+        console.log(this.state.currentPlayer)
     }
 
     /*Issues: Being called twice so it adds double the amount until you refresh the page.
@@ -343,7 +374,6 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     }
 
-
     render() {
         return (
             <div className="game">
@@ -437,13 +467,13 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                         this.state.gameWords[24]]}
                                         increaseTeamPoints={this.props.increaseTeamPoints} />
 
-                                    <div className="row">
+                                    {this.state.currentPlayer !== null && this.props.playerId === this.state.currentPlayer.user_id && <div className="row">
                                         <div className="col-md-12">
                                             <div className="d-flex justify-content-end">
                                                 <button className="btn" onClick={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>}
                                 </div>  {/* Changed back to div from a form */}
                             </div>
                         </div>

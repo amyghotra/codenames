@@ -2,7 +2,7 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 
-class CardSelectionConsumer(WebsocketConsumer):
+class TurnConsumer(WebsocketConsumer):
     
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
@@ -27,29 +27,33 @@ class CardSelectionConsumer(WebsocketConsumer):
         print("just received some data")
         print(text_data)
         text_data_json = json.loads(text_data)
-        cardsPlayed = text_data_json['cardsPlayed']
+        nextTeam = text_data_json['cardsPlayed']
+        nextPlayer = text_data_json['cardsPlayed']
 
         # Send message to room group
         async_to_sync( self.channel_layer.group_send (
             self.room_group_name,
             {
-                'type': 'selectedCards',
-                'cardsPlayed': cardsPlayed
+                'type': 'nextRound',
+                'nextTeam': nextTeam,
+                'nextPlayer': nextPlayer,
             }
         ))
 
     # Receive message from room group
-    def selectedCards(self, event):
-        print("selectedCard func")
+    def nextRound(self, event):
+        print("nextRound func")
         print(event)
-        cardsPlayed = event['cardsPlayed']
+        nextTeam = event['nextTeam']
+        nextPlayer = event['nextPlayer']
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
-            'cardsPlayed': cardsPlayed
+            'nextTeam': nextTeam,
+            'nextPlayer': nextPlayer,
         }))
 
-        print("selected card information was send")
+        print("next round information was sent")
 
 class SpymasterClueBox(WebsocketConsumer):
 
