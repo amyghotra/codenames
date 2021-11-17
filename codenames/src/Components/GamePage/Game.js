@@ -255,6 +255,7 @@ class Game extends Component {
                                     gameid = {this.state.gameid}
                                     currentPlayer = {this.state.currentPlayer}
                                     currentTeam = {this.state.currentTeam}
+                                    spymasterTeam = {this.state.team}
                             />
                         </div>
                         }

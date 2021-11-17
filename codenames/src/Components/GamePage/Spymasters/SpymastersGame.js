@@ -382,7 +382,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                 this.state.gameWords[24]]} />
                                         </div>
                                     </div>
-                                    <div className="row">
+                                    {this.props.currentTeam === this.state.spymasterTeam && <div className="row">
                                         <div className="col-md-12">
                                             <form>
                                                 <div className="spymasterClue">
@@ -404,7 +404,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                 </div>
                                             </form>
                                         </div>
-                                    </div>
+                                    </div>}
                                 </div> {/* Changed back to div from a form */}
                             </div>
                         </div>
