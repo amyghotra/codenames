@@ -131,14 +131,14 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         console.log(this.state.gameid)
         console.log(this.state.room_key)
 
-        this.state.ws.onopen = () => {
-            this.state.ws.send(JSON.stringify({
-                'clueWord': this.state.spymasterClueWord,
-                'clueCount': this.state.spymasterClueCount
+        // this.state.ws.onopen = () => {
+        //     this.state.ws.send(JSON.stringify({
+        //         'clueWord': this.state.spymasterClueWord,
+        //         'clueCount': this.state.spymasterClueCount
                 
-            }));
-            console.log("connected websocket main component")
-        };
+        //     }));
+        //     console.log("connected websocket main component")
+        // };
     }
     incrementClueCount = () => {
         this.setState(prevState => { // Update with inline function

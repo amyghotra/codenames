@@ -32,10 +32,12 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             revealedCards: [],
             selectedCards: [],
 
-            currentTeam: "",
+            currentTeam: null,
             currentPlayer: null,
             
-            playerId: ""
+            playerId: "",
+
+            ws: null
 
         }
     }
@@ -43,42 +45,38 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     // For handling the players' submitting their guesses / word picks
     handleEndTurn = async () => {
 
-        await this.endTurn()
+        await this.changePlayers()
 
-        console.log(this.state.currentTeam)
-        console.log(this.state.currentPlayer)
-        console.log("testing testing testing testing testing testing")
-
-        // console.log("trying to send some card data back")
-        // console.log(JSON.stringify({'cardsPlayed': this.state.revealedCards}))
-
-        // for (let i = 0; i < this.state.selectedCards.length; i++) {
-        //     console.log(this.state.selectedCards[i])
-        //     let wordObj = this.state.gameWords.find(w => w.word_id === this.state.selectedCards[i]);
-        //     console.log(wordObj)
-        //     console.log("send to inc after this")
-        // }
-        // this.state.ws.onopen = () => {
-        //     this.state.ws.send(JSON.stringify({
-        //         'cardsPlayed': this.state.revealedCards
-        //     }));
-        // };
-        // this.state.ws.onerror = err => {
-        //     console.error(
-        //         "Socket encountered error: ",
-        //         err.message,
-        //         "Closing socket"
-        //     );
-
-        //     this.state.ws.close();
-        // };
+        this.websocket()
+        this.state.ws.onopen = () => {
+            this.state.ws.send(JSON.stringify({
+                'nextTeam': this.state.currentTeam,
+                'nextPlayer': this.state.currentPlayer.player_id
+            }));
+        }
+        
+    }
+    
+    changePlayers = async () => {
+        console.log("changeplayers function")
+        if(this.state.currentTeam === 'R') {
+            this.setState({currentTeam: 'B'})
+            this.setState({
+                currentPlayer: this.state.blueOperatives[Math.floor(Math.random()*this.state.blueOperatives.length)]
+            })
+        } else if(this.state.currentTeam === 'B') {
+            this.setState({currentTeam: 'R'})
+            this.setState({
+                currentPlayer: this.state.redOperatives[Math.floor(Math.random()*this.state.redOperatives.length)]
+            })
+        }
     }
 
     websocket = () => {
         console.log(this.state.gameid)
         console.log(this.state.room_key)
         let ws = new WebSocket(`ws://localhost:8000/ws/game/${this.state.gameid}`)
-        this.setState({ws:ws})
+        
         ws.onopen = () => {
             console.log("connected websocket main component")
         };
@@ -96,86 +94,52 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
             ws.close();
         };
+        this.setState({ws:ws})
         
     }
 
-    changePlayers = async () => {
-        if(this.state.currentTeam === 'R') {
-            this.setState({currentTeam: 'B'})
-            this.setState({
-                currentPlayer: this.state.blueOperatives[Math.floor(Math.random()*this.state.blueOperatives.length)]
-            })
-        } else if(this.state.currentTeam === 'B') {
-            this.setState({currentTeam: 'R'})
-            this.setState({
-                currentPlayer: this.state.redOperatives[Math.floor(Math.random()*this.state.redOperatives.length)]
-            })
-        }
-        console.log("playerid:")
-        var id = await this.props.playerID
-        console.log(id)
-        console.log("playerid completed?")
-    }
-
-    endTurn = async () => {
-
-        console.log("end turn was clicked end turn was clicked end turn was clicked")
-
+    setInitialPlayer = () => {
         console.log(this.state.currentTeam)
-        console.log(this.state.currentPlayer)
-
-        await this.changePlayers()
-
-        console.log("update:")
-        console.log(this.state.currentTeam)
-        console.log(this.state.currentPlayer)
-
-        console.log("end turn was clicked end turn was clicked end turn was clicked")
-
-    }
-
-    setIntial = async () => {
-        if(this.state.currentTeam === "") {
-            let teams = ['R','B']
-            this.setState({
-                currentTeam: teams[Math.floor(Math.random()*teams.length)]
-            })
-        } else {
-            console.log("it was already set")
-            console.log(this.state.currentTeam)
-        }
-        if(this.state.currentPlayer === null) {
-            if(this.state.blueOperatives.length > 0 && this.state.currentTeam === 'B') {
-                this.setState({
-                    currentTeam :'R',
-                    currentPlayer: this.props.playerID
-                })
-            } else if(this.state.redOperatives.length > 0 && this.state.currentTeam === 'R') {
-                this.setState({
-                    currentTeam :'B',
-                    currentPlayer: this.state.redOperatives[0]
-                })
-            } else if(this.state.redOperatives.length === 0 && this.state.currentTeam === 'R') {
+        if(this.props.currentPlayer === null) {
+            if(this.state.blueOperatives.length > 0 && this.state.redOperatives.length === 0  ){
                 this.setState({
                     currentTeam :'B',
                     currentPlayer: this.state.blueOperatives[0]
-                })
-            } else if(this.state.blueOperatives.length === 0 && this.state.currentTeam === 'B') {
+                }, this.props.updateRoundPlayers(this.state.currentTeam, this.state.currentPlayer))
+                console.log(this.state.blueOperatives.length)
+            } else if(this.state.redOperatives.length > 0 && this.state.blueOperatives.length === 0) {
                 this.setState({
                     currentTeam :'R',
-                    currentPlayer: this.state.redOperatives[0]
-                })
+                    currentPlayer: this.props.redOperatives[0]
+                }, this.props.updateRoundPlayers(this.state.currentTeam, this.state.currentPlayer))
+                console.log("no blue ops yet")
+                console.log(this.state.redOperatives.length)
             }
+        }
+    }
+
+    setIntial = async () => {
+        console.log("setinitial function")
+        if(this.props.currentTeam === null) {
+            let teams = ['R','B']
+            this.setState({
+                currentTeam: teams[Math.floor(Math.random()*teams.length)]
+            }, this.setInitialPlayer)
+        } else {
+            console.log("it was already set")
+            console.log(this.props.currentTeam)
         }
 
     }
 
     componentDidMount = async () => {
+        this.websocket()
+        await this.setIntial()
+        console.log(this.props.currentPlayer)
+        console.log(this.props.currentTeam)
     }
 
     componentDidUpdate = (event) => {
-
-        // console.log("there was an update")
 
         if (event.gameWords !== this.props.gameWords) {
             this.setState(prevState => {
@@ -206,18 +170,8 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             playersdata: players.playersdata,
             currentPlayer: this.props.currentPlayer,
             currentTeam: this.props.currentTeam
-            //renderPlayers: true,
         })
-        //console.log(players)
-
-        // console.log("Checking how many times this will call the update players!")
-        await this.updatePlayers(players.playersdata)
-
-        console.log("mountig component")
-        console.log(this.state.redOperatives.length)
-        await this.setIntial()
-        console.log(this.state.currentTeam)
-        console.log(this.state.currentPlayer)
+        this.updatePlayers(players.playersdata)
     }
 
     /*Issues: Being called twice so it adds double the amount until you refresh the page.

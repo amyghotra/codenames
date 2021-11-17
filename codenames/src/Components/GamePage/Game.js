@@ -117,7 +117,19 @@ class Game extends Component {
                 blue_score: Number(localBlueTeamId)
             })
         }
-    }    
+    }
+
+    displayInformation = () => {
+        console.log(this.state.currentPlayer)
+        console.log(this.state.currentTeam)
+    }
+    
+    updateRoundPlayers = (team, player) => {
+        this.setState({
+            currentTeam: team,
+            currentPlayer: player
+        }, this.displayInformation)
+    }
 
     componentDidUpdate = () => {
         // await axios.get()
@@ -260,6 +272,7 @@ class Game extends Component {
                         playerID = {this.state.playerid}
                         currentPlayer = {this.state.currentPlayer}
                         currentTeam = {this.state.currentTeam}
+                        updateRoundPlayers = {this.updateRoundPlayers}
                     />
                 }
             </div>

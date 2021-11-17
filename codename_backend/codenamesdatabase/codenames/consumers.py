@@ -27,8 +27,8 @@ class TurnConsumer(WebsocketConsumer):
         print("just received some data")
         print(text_data)
         text_data_json = json.loads(text_data)
-        nextTeam = text_data_json['cardsPlayed']
-        nextPlayer = text_data_json['cardsPlayed']
+        nextTeam = text_data_json['nextTeam']
+        nextPlayer = text_data_json['nextPlayer']
 
         # Send message to room group
         async_to_sync( self.channel_layer.group_send (
