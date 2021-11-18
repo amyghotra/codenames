@@ -32,7 +32,10 @@ class Game extends Component {
             //Websocket Team Points
             wstp: null,
             //Websocket Players
-            wsp: null
+            wsp: null,
+            ws_turn: null,
+            currentTeam: 'B',
+            currentPlayer: 'fd6a7a14048d'
         }
     }
 
@@ -120,6 +123,7 @@ class Game extends Component {
 
         this.connectTeamPoints();
         this.connectPlayers();  
+        this.connectTurns()
 
         
     }
@@ -246,7 +250,7 @@ class Game extends Component {
             );
 
             that.timeout = that.timeout + that.timeout; //increment retry interval
-            connectInterval = setTimeout(this.checkTeamPoints, Math.min(1000, that.timeout));
+            connectInterval = setTimeout(this.checkTurnsWS, Math.min(1000, that.timeout));
         }
 
         // websocket onerror event listener
@@ -281,6 +285,65 @@ class Game extends Component {
         })
     };
 
+    connectTurns = () => {
+        var ws_turn = new WebSocket('ws://localhost:8000/turns/turns/' + this.state.gameid + '/');
+        let that = this; //cache the this
+        var connectInterval;
+
+        //websocket onopen event listener
+        ws_turn.onopen = () => {
+            // console.log('connect team points component');
+            this.setState({ ws_turn: ws_turn });
+
+            that.timeout = 250;
+            clearTimeout(connectInterval);
+        }
+
+        ws_turn.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in ${Math.min(
+                    10000 / 1000,
+                    (that.timeout + that.timeout) / 1000
+                )} second.`,
+                e.reason
+            );
+
+            that.timeout = that.timeout + that.timeout; //increment retry interval
+            connectInterval = setTimeout(this.checkTurns, Math.min(1000, that.timeout));
+        }
+
+        // websocket onerror event listener
+        ws_turn.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            ws_turn.close();
+        };
+
+        ws_turn.onmessage = evt => {
+            // listen to data sent from the websocket server
+            const data = JSON.parse(evt.data)
+            console.log(data)
+            // console.log("received clue!")
+            let nextPlayingTeam = data.nextTeam
+            let nextUser= data.nextPlayer
+            this.setState(prevState => {
+                return {
+                    nextTeam: nextPlayingTeam,
+                    nextPlayer: nextUser
+                }
+            })
+        };
+        this.setState(prevState => {
+            return {
+                ws_turn: ws_turn
+            }
+        })
+    };
+
     /**
      * utilited by the @function connect to check if the connection is close, if so attempts to reconnect
      */
@@ -288,12 +351,26 @@ class Game extends Component {
         const { wstp } = this.state.wstp;
         if (!wstp || wstp.readyState === WebSocket.CLOSED) this.connectTeamPoints(); //check if websocket instance is closed, if so call `connect` function.
     };
+
+    checkTurns = () => {
+        const { ws_turn } = this.state.ws_turn;
+        if (!ws_turn || ws_turn.readyState === WebSocket.CLOSED) this.connectTurns(); //check if websocket instance is closed, if so call `connect` function.
+    };
     
     socketSendPlayers = (player) => {
         var data = {
             "new_players": player
         }
         this.state.wsp.send(JSON.stringify(data))
+        
+        // console.log('this is the incoming players data', data);
+    }
+
+    sendTurns = (team, player) => {
+        this.state.ws_turn.send(JSON.stringify({
+            'nextTeam': team,
+            'nextPlayer': player
+        }))
         
         // console.log('this is the incoming players data', data);
     }
@@ -361,6 +438,14 @@ class Game extends Component {
         if(!wsp || wsp.readyState === WebSocket.CLOSED) this.connectPlayers();
     }
 
+    updateRoundPlayer = (team, player) => {
+        this.setState({
+            currentPlayer: player,
+            currentTeam: team
+        })
+        this.sendTurns(team, player)
+    }
+
     render() {
         
         return(
@@ -396,6 +481,8 @@ class Game extends Component {
                                     bluePoints = {this.state.blue_score}
                                     playersdata = {this.state.playersdata}
                                     gameid = {this.state.gameid}
+                                    currentTeam = {this.state.currentTeam}
+                                    currentPlayer = {this.state.currentPlayer}
                             />
                         </div>
                         }
@@ -410,6 +497,9 @@ class Game extends Component {
                         redPoints = {this.state.red_score}
                         bluePoints = {this.state.blue_score}
                         playersdata = {this.state.playersdata}
+                        currentTeam = {this.state.currentTeam}
+                        currentPlayer = {this.state.currentPlayer}
+                        updateRoundPlayer = {this.updateRoundPlayer}
                     />
                 }
             </div>

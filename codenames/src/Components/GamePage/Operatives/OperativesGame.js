@@ -32,13 +32,14 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             //websocket
             ws: null,
             spymasterClueCount: '0',
-            spymasterClueWord: 'WAITING...'
+            spymasterClueWord: 'WAITING...',
 
         }
 
     }
     componentDidMount = () => { // Doesn't fire?
         this.connect();
+        this.setIntial()
     }
 
     /**
@@ -286,10 +287,65 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     // For handling the players' submitting their guesses / word picks
     handleEndTurn = () => {
-        this.setState = {
-            turn: !this.state.turn
+        // this.setState = {
+        //     turn: !this.state.turn
+        // }
+        // console.log((this.state.turn) ? "Blue turn" : "Red turn")
+
+        console.log("handleendturn function")
+
+        var team;
+        var player;
+
+        if(this.props.currentTeam === 'R') {
+            team = 'B'
+            player = this.state.blueOperatives[Math.floor(Math.random()*this.state.blueOperatives.length)]
+            
+        } else if(this.props.currentTeam === 'B') {
+            team = 'R'
+            player = this.state.redOperatives[Math.floor(Math.random()*this.state.redOperatives.length)]
         }
-        console.log((this.state.turn) ? "Blue turn" : "Red turn")
+
+        this.props.updateRoundPlayer(team, player)
+
+        // this.state.ws.send(JSON.stringify({
+        //     'nextTeam': team,
+        //     'nextPlayer': player
+        // }));
+
+    }
+
+    setIntial = () => {
+        console.log("trying to set the initial playing team")
+
+        if(this.props.currentTeam === null) {
+            let teams = ['R','B']
+            let selectedTeam = teams[Math.floor(Math.random()*teams.length)]
+
+            if(this.props.currentPlayer === null) {
+
+                var player = ""
+                var team = ""
+    
+                if(this.state.blueOperatives.length > 0 && this.state.redOperatives.length === 0  ) {
+                    player = this.state.blueOperatives[0].player_id
+                    team = 'B'
+                } else if(this.state.redOperatives.length > 0 && this.state.blueOperatives.length === 0) {
+                    player = this.props.redOperatives[0].player_id
+                    team = 'R'
+                }
+
+                this.props.updateRoundPlayer(team, player)
+                // this.connect()
+                // this.state.ws.send = () => (JSON.stringify({
+                //     'nextTeam': team,
+                //     'nextPlayer': player
+                // }));
+            }
+        } else {
+            console.log("it was already set")
+        }
+
     }
 
     render() {
@@ -395,7 +451,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="d-flex justify-content-end">
-                                                <button className="btn" onChange={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
+                                                <button className="btn" onClick={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
                                             </div>
                                         </div>
                                     </div>
