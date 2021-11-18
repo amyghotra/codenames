@@ -7,6 +7,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
         super()
         this.state = {
             room_key: '',
+            gameid: '',
             task: 'O',
             gameWords: '',
             redScore: 0,
@@ -37,54 +38,60 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             
             playerId: "",
 
-            ws: null
+            ws: null,
+            testing: ""
 
         }
     }
 
     // For handling the players' submitting their guesses / word picks
-    handleEndTurn = async () => {
+    handleEndTurn = () => {
 
-        await this.changePlayers()
-
-        this.websocket()
-        this.state.ws.onopen = () => {
-            this.state.ws.send(JSON.stringify({
-                'nextTeam': this.state.currentTeam,
-                'nextPlayer': this.state.currentPlayer.player_id
-            }));
-        }
+        this.changePlayers()
         
     }
     
-    changePlayers = async () => {
+    changePlayers = () => {
         console.log("changeplayers function")
+
+        var team;
+        var player;
+
         if(this.state.currentTeam === 'R') {
+            team = 'B'
+            player = this.state.blueOperatives[Math.floor(Math.random()*this.state.blueOperatives.length)]
             this.setState({currentTeam: 'B'})
             this.setState({
-                currentPlayer: this.state.blueOperatives[Math.floor(Math.random()*this.state.blueOperatives.length)]
+                currentPlayer: player
             })
         } else if(this.state.currentTeam === 'B') {
+            team = 'R'
+            player = this.state.redOperatives[Math.floor(Math.random()*this.state.redOperatives.length)]
             this.setState({currentTeam: 'R'})
             this.setState({
-                currentPlayer: this.state.redOperatives[Math.floor(Math.random()*this.state.redOperatives.length)]
+                currentPlayer: player
             })
         }
+
+        this.websocket()
+        // this.state.ws.onopen= () => {
+            this.state.ws.send(JSON.stringify({
+                'nextTeam': team,
+                'nextPlayer': player
+            }));
+        // }
+        
+
     }
 
     websocket = () => {
-        console.log(this.state.gameid)
-        console.log(this.state.room_key)
+        
         let ws = new WebSocket(`ws://localhost:8000/ws/game/${this.state.gameid}`)
         
         ws.onopen = () => {
             console.log("connected websocket main component")
+            this.setState({ws:ws})
         };
-        ws.onmessage = e => {
-            console.log("inside ws.onmessage")
-            const data = JSON.parse(e.data)
-            console.log(data)
-        }
         ws.onerror = err => {
             console.error(
                 "Socket encountered error: ",
@@ -94,36 +101,66 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
             ws.close();
         };
+        ws.onmessage = (e) => {
+            const data = JSON.parse(e.data)
+            console.log(data)
+            console.log("received next round information")
+            let nextTeam = data.nextTeam
+            let nextPlayer = data.nextPlayer
+            this.setState({
+                currentTeam: nextTeam,
+                currentPlayer: nextPlayer
+            })
+        }
+
         this.setState({ws:ws})
         
     }
 
-    setInitialPlayer = () => {
-        console.log(this.state.currentTeam)
-        if(this.props.currentPlayer === null) {
-            if(this.state.blueOperatives.length > 0 && this.state.redOperatives.length === 0  ){
+    setInitialPlayer = async () => {
+        console.log("set initial player")
+        if(this.state.currentPlayer === null) {
+
+            var player = ""
+            var team = ""
+
+            if(this.state.blueOperatives.length > 0 && this.state.redOperatives.length === 0  ) {
+                player = this.state.blueOperatives[0].player_id
+                team = 'B'
                 this.setState({
-                    currentTeam :'B',
-                    currentPlayer: this.state.blueOperatives[0]
-                }, this.props.updateRoundPlayers(this.state.currentTeam, this.state.currentPlayer))
-                console.log(this.state.blueOperatives.length)
+                    currentTeam :team,
+                    currentPlayer: player
+                }, this.props.updateRoundPlayers(team, player))
             } else if(this.state.redOperatives.length > 0 && this.state.blueOperatives.length === 0) {
+                player = this.props.redOperatives[0].player_id
+                team = 'R'
                 this.setState({
-                    currentTeam :'R',
-                    currentPlayer: this.props.redOperatives[0]
-                }, this.props.updateRoundPlayers(this.state.currentTeam, this.state.currentPlayer))
-                console.log("no blue ops yet")
-                console.log(this.state.redOperatives.length)
+                    currentTeam: team,
+                    currentPlayer: player
+                }, this.props.updateRoundPlayers(team, player))
             }
+            // this.state.ws.onopen = () => {
+                this.websocket()
+                this.state.ws.send = () => (JSON.stringify({
+                    'nextTeam': team,
+                    'nextPlayer': player
+                }));
+            // }
+            console.log(team)
+            console.log(player)
+            console.log(this.state.blueOperatives)
+            console.log(this.state.redOperatives)
         }
+        
     }
 
     setIntial = async () => {
-        console.log("setinitial function")
-        if(this.props.currentTeam === null) {
+        console.log("trying to set the initial playing team")
+        if(this.state.currentTeam === null) {
             let teams = ['R','B']
+            let selectedTeam = teams[Math.floor(Math.random()*teams.length)]
             this.setState({
-                currentTeam: teams[Math.floor(Math.random()*teams.length)]
+                currentTeam: selectedTeam
             }, this.setInitialPlayer)
         } else {
             console.log("it was already set")
@@ -133,10 +170,17 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     }
 
     componentDidMount = async () => {
-        this.websocket()
-        await this.setIntial()
-        console.log(this.props.currentPlayer)
-        console.log(this.props.currentTeam)
+        
+        // if(this.props.currentTeam === null && this.state.currentTeam === null){
+        //     await this.setIntial()
+        // }
+        
+        // console.log("the current round's information")
+        // console.log(this.state.currentPlayer)
+        // console.log(this.state.currentTeam)
+        // console.log(this.props.currentPlayer)
+        // console.log(this.props.currentTeam)
+        // console.log("the current round's information END")
     }
 
     componentDidUpdate = (event) => {
@@ -151,6 +195,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                     blueteamid: this.props.blueteamid
                 }
             })
+            this.websocket()
         }
 
         if (event.playersdata !== this.props.playersdata) {
@@ -160,18 +205,23 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                 }
             })
         }
+
     }
 
     /*This one will call updatePlayers twice therefore adds it twice but will show normal when refreshed. 
         =>Fixed with the deleteRepeated() function    
     */
-    componentWillReceiveProps = async (players) => {
+    componentWillReceiveProps = (players) => {
         this.setState({
             playersdata: players.playersdata,
             currentPlayer: this.props.currentPlayer,
-            currentTeam: this.props.currentTeam
+            currentTeam: this.props.currentTeam,
+            gameid: this.props.gameid
         })
         this.updatePlayers(players.playersdata)
+        console.log("props")
+        console.log(this.props.gameid)
+        console.log("props")
     }
 
     /*Issues: Being called twice so it adds double the amount until you refresh the page.
@@ -421,13 +471,14 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                         this.state.gameWords[24]]}
                                         increaseTeamPoints={this.props.increaseTeamPoints} />
 
-                                    {this.state.currentPlayer !== null && this.props.playerId === this.state.currentPlayer.user_id && <div className="row">
+                                    {/* && this.props.playerId === this.state.currentPlayer.user_id */ console.log(this.state.currentTeam) }
+                                    { this.props.currentPlayer !== null ? this.props.playerId === this.props.currentPlayer.user_id  && <div className="row">
                                         <div className="col-md-12">
                                             <div className="d-flex justify-content-end">
                                                 <button className="btn" onClick={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
                                             </div>
                                         </div>
-                                    </div>}
+                                    </div> : console.log("something's wrong")}
                                 </div>  {/* Changed back to div from a form */}
                             </div>
                         </div>

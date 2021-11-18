@@ -4,7 +4,6 @@ import axios from 'axios'
 import SpymastersGame from './Spymasters/SpymastersGame.js'
 import OperativesGame from './Operatives/OperativesGame.js'
 
-
 class Game extends Component {
     constructor() {
         super()
@@ -271,6 +270,7 @@ class Game extends Component {
                         playersdata = {this.state.playersdata}
                         nickname = {this.state.nickname}
                         playerID = {this.state.playerid}
+                        gameid = {this.state.gameid}
                         currentPlayer = {this.state.currentPlayer}
                         currentTeam = {this.state.currentTeam}
                         updateRoundPlayers = {this.updateRoundPlayers}

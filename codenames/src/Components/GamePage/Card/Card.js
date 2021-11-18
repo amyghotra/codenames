@@ -54,7 +54,7 @@ class Card extends Component{
             
         })
 
-        this.websocket()
+        // this.websocket()
     }
 
     componentDidUpdate = (event) => {
@@ -81,13 +81,13 @@ class Card extends Component{
                 checked: true,
                 turn: !this.state.turn            
             })
-            this.state.ws.onopen = () => {
-                console.log("attemtping to send some stuff to the websocket card.js")
-                this.state.ws.send(JSON.stringify({
-                    'cardsPlayed': this.props.word
-                }));
-            }
-            console.log(this.state.checked)
+            // this.state.ws.onopen = () => {
+            //     console.log("attemtping to send some stuff to the websocket card.js")
+            //     this.state.ws.send(JSON.stringify({
+            //         'cardsPlayed': this.props.word
+            //     }));
+            // }
+            // console.log(this.state.checked)
             // this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
             localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
         }

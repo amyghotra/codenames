@@ -34,7 +34,9 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             showblueOperatives: [],
             showblueSpymasters: [],
 
-            ws: null
+            ws: null,
+            currentPlayer: null,
+            currentTeam: null
         }
 
         // this.chatSocket = this.chatSocket.bind(this)
@@ -45,18 +47,12 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     }
 
     websocket = () => {
-        console.log(this.state.gameid)
-        console.log(this.state.room_key)
+
         let ws = new WebSocket(`ws://localhost:8000/ws/game/${this.state.gameid}`)
-        this.setState({ws:ws})
+        
         ws.onopen = () => {
             console.log("connected websocket main component")
         };
-        ws.onmessage = e => {
-            console.log("inside ws.onmessage")
-            const data = JSON.parse(e.data)
-            console.log(data)
-        }
         ws.onerror = err => {
             console.error(
                 "Socket encountered error: ",
@@ -66,6 +62,20 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
 
             ws.close();
         };
+        ws.onmessage = (e) => {
+            const data = JSON.parse(e.data)
+            console.log(data)
+            console.log("received next round information")
+            let nextTeam = data.nextTeam
+            let nextPlayer = data.nextPlayer
+            this.setState({
+                currentTeam: nextTeam,
+                currentPlayer: nextPlayer
+            })
+        }
+
+        this.setState({ws:ws})
+
         
     }
 
@@ -91,6 +101,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     gameid: this.props.gameid
                 }
             })
+            this.websocket()
         }
 
         if(event.playersdata !== this.props.playersdata){
@@ -100,6 +111,8 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                 }
             })
         }
+
+        
     }
 
     /*This one will call updatePlayers twice therefore adds it twice but will show normal when refreshed. 
