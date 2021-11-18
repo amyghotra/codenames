@@ -73,7 +73,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             })
         }
 
-        this.websocket()
+        // this.websocket()
         // this.state.ws.onopen= () => {
             this.state.ws.send(JSON.stringify({
                 'nextTeam': team,
@@ -87,6 +87,8 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     websocket = () => {
         
         let ws = new WebSocket(`ws://localhost:8000/ws/game/${this.state.gameid}`)
+        let that = this; // cache the this
+        var connectInterval;
         
         ws.onopen = () => {
             console.log("connected websocket main component")
@@ -100,6 +102,18 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             );
 
             ws.close();
+        };
+        ws.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in ${Math.min(
+                    10000 / 1000,
+                    (that.timeout + that.timeout) / 1000
+                )} second.,
+                e.reason`
+            );
+
+            that.timeout = that.timeout + that.timeout; //increment retry interval
+            connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
         };
         ws.onmessage = (e) => {
             const data = JSON.parse(e.data)
@@ -116,6 +130,11 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
         this.setState({ws:ws})
         
     }
+
+    check = () => {
+        const { ws } = this.state.ws;
+        if (!ws || ws.readyState === WebSocket.CLOSED) this.websocket(); //check if websocket instance is closed, if so call `connect` function.
+    };
 
     setInitialPlayer = async () => {
         console.log("set initial player")
@@ -170,10 +189,10 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     }
 
     componentDidMount = async () => {
-        
-        // if(this.props.currentTeam === null && this.state.currentTeam === null){
-        //     await this.setIntial()
-        // }
+        this.websocket()
+        if(this.props.currentTeam === null && this.state.currentTeam === null){
+            await this.setIntial()
+        }
         
         // console.log("the current round's information")
         // console.log(this.state.currentPlayer)
@@ -195,7 +214,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                     blueteamid: this.props.blueteamid
                 }
             })
-            this.websocket()
+            // this.websocket()
         }
 
         if (event.playersdata !== this.props.playersdata) {

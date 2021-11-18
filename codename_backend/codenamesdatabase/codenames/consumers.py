@@ -33,27 +33,27 @@ class TurnConsumer(WebsocketConsumer):
         nextPlayer = text_data_json['nextPlayer']
 
         # Send message to room group
-        async_to_sync( self.channel_layer.group_send)(
+        async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
-                'type': 'nextRound',
-                'nextTeam': nextTeam,
-                'nextPlayer': nextPlayer,
+                "type": "changeTurn",
+                "nextTeam": nextTeam,
+                "nextPlayer": nextPlayer,
             }
         )
         print("finished sending")
 
     # Receive message from room group
-    def nextRound(self, event):
+    def changeTurn(self, event):
         print("nextRound func")
         print(event)
-        nextTeam = event['nextTeam']
-        nextPlayer = event['nextPlayer']
+        nextTeam = event["nextTeam"]
+        nextPlayer = event["nextPlayer"]
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
-            'nextTeam': nextTeam,
-            'nextPlayer': nextPlayer,
+            "nextTeam": nextTeam,
+            "nextPlayer": nextPlayer,
         }))
 
         print("next round information was sent")
