@@ -28,8 +28,11 @@ class Game extends Component {
             redteamid: '',
             blueteamid: '',
             
-
-            
+            loadedPlayers: false,
+            //Websocket Team Points
+            wstp: null,
+            //Websocket Players
+            wsp: null
         }
     }
 
@@ -47,7 +50,6 @@ class Game extends Component {
                 })
             }
         }
-
 
         await axios.get('http://127.0.0.1:8000/codenames/players').then(res => {
             this.setState({
@@ -70,11 +72,12 @@ class Game extends Component {
                     user_id: this.props.location.state.playerid
                 }).then(response =>{
                     this.setState({
-                        playersdata: [...this.state.playersdata, response.data]
+                        playersdata: [...this.state.playersdata, response.data],
                     })
                 })
             }
         })
+        
         this.setState({
             room_key: this.props.location.state.room_key,
             roomid: this.props.location.state.roomid,
@@ -114,13 +117,22 @@ class Game extends Component {
                 blue_score: Number(localBlueTeamId)
             })
         }
+
+        this.connectTeamPoints();
+        this.connectPlayers();  
+
+        
     }
 
-    componentDidUpdate = () => {
-        // await axios.get()
-
-
-    }
+    componentDidUpdate = (prevProps, prevState) => {
+        if(this.state.wsp && this.state.wsp.readyState === 1 && this.state.loadedPlayers === false) {
+            console.log('the ready state is working', this.state.playersdata[this.state.playersdata.length-1])
+            this.socketSendPlayers(this.state.playersdata[this.state.playersdata.length-1]);
+            this.setState({
+                loadedPlayers: true
+            })
+        }
+    }    
     
     setDoubleAgent = () => {
         let doubleAgent = { ...this.state.doubleAgent}; 
@@ -175,6 +187,8 @@ class Game extends Component {
                 })
             }
             
+            this.socketSendTeamPoints(redPoints, bluePoints);
+            // this.socketSendPlayers(this.state.playersdata[this.state.playersdata.length-1]);
         }
         else if(team === 'B'){
             let wordObj = this.state.gameWords.find(w => w.word_id === word);
@@ -196,18 +210,166 @@ class Game extends Component {
                 })
 
             }
+            this.socketSendTeamPoints(redPoints, bluePoints);
         }
 
     }
 
+    socketSendTeamPoints = (red_team_points, blue_team_points) => {
+        var data = {
+            "red_team_points": red_team_points,
+            "blue_team_points": blue_team_points
+        }
+
+        this.state.wstp.send(JSON.stringify(data))
+        // console.log(data)
+    }
+
+    connectTeamPoints = () => {
+        var wstp = new WebSocket('ws://localhost:8000/teampoints/teampoints/' + this.state.gameid + '/');
+        let that = this; //cache the this
+        var connectInterval;
+
+        //websocket onopen event listener
+        wstp.onopen = () => {
+            // console.log('connect team points component');
+            this.setState({ wstp: wstp });
+
+            that.timeout = 250;
+            clearTimeout(connectInterval);
+        }
+
+        wstp.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in ${Math.min(
+                    10000 / 1000,
+                    (that.timeout + that.timeout) / 1000
+                )} second.`,
+                e.reason
+            );
+
+            that.timeout = that.timeout + that.timeout; //increment retry interval
+            connectInterval = setTimeout(this.checkTeamPoints, Math.min(1000, that.timeout));
+        }
+
+        // websocket onerror event listener
+        wstp.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            wstp.close();
+        };
+
+        wstp.onmessage = evt => {
+            // listen to data sent from the websocket server
+            const data = JSON.parse(evt.data)
+            console.log(data)
+            // console.log("received clue!")
+            let red_team_points = data.red_team_points
+            let blue_team_points = data.blue_team_points
+            this.setState(prevState => {
+                return {
+                    red_score: red_team_points,
+                    blue_score: blue_team_points
+                }
+            })
+        };
+        this.setState(prevState => {
+            return {
+                wstp: wstp
+            }
+        })
+    };
+
+    /**
+     * utilited by the @function connect to check if the connection is close, if so attempts to reconnect
+     */
+     checkTeamPoints = () => {
+        const { wstp } = this.state.wstp;
+        if (!wstp || wstp.readyState === WebSocket.CLOSED) this.connectTeamPoints(); //check if websocket instance is closed, if so call `connect` function.
+    };
     
-    
+    socketSendPlayers = (player) => {
+        var data = {
+            "new_players": player
+        }
+        this.state.wsp.send(JSON.stringify(data))
+        
+        // console.log('this is the incoming players data', data);
+    }
+
+    connectPlayers = () => {
+        var wsp = new WebSocket('ws://localhost:8000/players/players/' + this.state.gameid + '/');
+        let that = this;
+        var connectInterval;
+
+        wsp.onopen = () => {
+            this.setState ({ wsp: wsp });
+
+            that.timeout = 250;
+            clearTimeout(connectInterval);
+        };
+
+        wsp.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in ${Math.min(
+                    10000 / 1000,
+                    (that.timeout + that.timeout) / 1000
+                )} second.`,
+                e.reason
+            );
+
+            that.timeout = that.timeout + that.timeout; //increment retry interval
+            connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
+        }
+
+        wsp.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            wsp.close();
+        };
+
+        wsp.onmessage = evt => {
+            const data = JSON.parse(evt.data)
+            let new_players = data.new_players
+
+            if(!this.state.playersdata.includes(new_players)) {
+                let playersData = this.state.playersdata;
+                playersData.push(new_players);
+                this.setState({
+                    playersdata: playersData
+                })
+            }
+            
+            // console.log('THIS IS THE NEWEST PLAYERS ,PLEASE SHOW ', new_players)
+        };
+
+        this.setState(prevState => {
+            return {
+                wsp: wsp
+            }
+        })
+
+    };
+
+    checkPlayers = () => {
+        const { wsp } = this.state.wsp;
+        if(!wsp || wsp.readyState === WebSocket.CLOSED) this.connectPlayers();
+    }
 
     render() {
         
         return(
             <div>
                 {
+
                     this.state.task === 'S' ?
                     
                     
@@ -230,6 +392,7 @@ class Game extends Component {
                         doubleAgentIndex = {this.state.doubleAgentIndex}
                         room_key = {this.state.room_key}
                         gameWords = {this.state.gameWords}
+                        gameid = {this.state.gameid}
                         increaseTeamPoints = {this.increaseTeamPoints}
                         redPoints = {this.state.red_score}
                         bluePoints = {this.state.blue_score}

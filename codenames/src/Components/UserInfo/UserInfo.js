@@ -80,12 +80,12 @@ class UserInfo extends Component {
     }
 
     renderTeamId = (gameid) => {
-        console.log('double checking ', gameid);
+        // console.log('double checking ', gameid);
 
         axios.get('http://127.0.0.1:8000/codenames/redTeam').then(res => {
             for(let i = 0; i < res.data.length; i++) {
                 if(res.data[i].game_id === gameid) {
-                    console.log(res.data[i].game_id, ' COMPARED TO ', gameid)
+                    // console.log(res.data[i].game_id, ' COMPARED TO ', gameid)
                     this.setState({
                         redteamid: res.data[i].red_team_id,
                         redTeamExist: true,

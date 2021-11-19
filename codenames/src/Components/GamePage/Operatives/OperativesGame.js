@@ -53,7 +53,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
         // websocket onopen event listener
         ws.onopen = () => {
-            console.log("connected websocket main component");
+            // console.log("connected websocket main component");
             this.setState({ ws: ws });
 
             that.timeout = 250; // reset timer to 250 on open of websocket connection 

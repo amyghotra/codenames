@@ -21,7 +21,7 @@ class ClueBoxConsumer(WebsocketConsumer):
             self.channel_name
         )
         self.accept()
-        print("added to clue group")
+        # print("added to clue group")
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
@@ -34,7 +34,7 @@ class ClueBoxConsumer(WebsocketConsumer):
         UTC time is included so the client can display it in each user's local time
         """   
         text_data_json = json.loads(text_data)
-        print(text_data_json)
+        # print(text_data_json)
         count = text_data_json['count']
         clue = text_data_json['clue']
         async_to_sync(self.channel_layer.group_send)(
@@ -59,11 +59,11 @@ class ClueBoxConsumer(WebsocketConsumer):
             'clue': clue,
         }))
 
-        print("sent clue") # Each instance of the socket should print this out
+        # print("sent clue") # Each instance of the socket should print this out
 
 
 # Consumer for sending messages through checkboxes - not fully implemented yet
-# class CheckBoxConsumer(WebsocketConsumer):
+# class CheckBoxConsumer(WebsocketConsumer): 
 #     def connect(self):
 #         """
 #         Connect to a chat room
@@ -118,3 +118,100 @@ class ClueBoxConsumer(WebsocketConsumer):
 #         }))
 
 #         print("sent check") # Each instance of the socket should print this out
+
+class TeamPointsConsumer(WebsocketConsumer):
+    def connect(self):
+        # Get the type of websocket that we called it in routing
+        self.type_name = self.scope['url_route']['kwargs']['type_name']
+        self.type_name = self.type_name.replace(' ', '_')
+        
+        # Get the game id for each game being played
+        self.gameid = self.scope['url_route']['kwargs']['gameid']
+        self.gameid = self.gameid.replace(' ', '_')
+        # create both team points
+        self.both_team_points = 'teampoints_' + self.type_name + '_' + self.gameid
+
+        #join team points
+        async_to_sync(self.channel_layer.group_add)(
+            self.both_team_points,
+            self.channel_name
+        )
+        self.accept()
+        print('added both team points here', self.both_team_points)
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)(
+            self.both_team_points,
+            self.channel_name
+        )
+
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        print('This is the incoming data for team points, ', text_data_json)
+        red_team_points = text_data_json['red_team_points']
+        blue_team_points = text_data_json['blue_team_points']
+        async_to_sync(self.channel_layer.group_send)(
+            self.both_team_points,
+            {
+                "type": "teamPoints", 
+                "red_team_points": red_team_points,
+                "blue_team_points": blue_team_points,
+            }
+        )
+    
+    def teamPoints(self, event): 
+        red_team_points = event['red_team_points']
+        blue_team_points = event['blue_team_points']
+
+        self.send(text_data=json.dumps({
+            'red_team_points': red_team_points,
+            'blue_team_points': blue_team_points,
+        }))
+
+        # print ('sent team points')
+
+class PlayersConsumer(WebsocketConsumer):
+    def connect(self):
+        # Get the type of websocket that we called it in routing
+        self.type_name = self.scope['url_route']['kwargs']['type_name']
+        self.type_name = self.type_name.replace(' ', '_')
+        # Get the game id for each game being played
+        self.gameid = self.scope['url_route']['kwargs']['gameid']
+        self.gameid = self.gameid.replace(' ', '_')
+        # create all players
+        self.new_players = 'players_' + self.type_name + '_' + self.gameid 
+
+        #join team points
+        async_to_sync(self.channel_layer.group_add)(
+            self.new_players,
+            self.channel_name
+        )
+        self.accept()
+        print('all players rendered here', self.new_players)
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)(
+            self.new_players,
+            self.channel_name
+        )
+    
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        print('This is incoming data for all players, ', text_data_json)
+        new_players = text_data_json['new_players']
+        async_to_sync(self.channel_layer.group_send)(
+            self.new_players,
+            {
+                "type": "newPlayers",
+                "new_players": new_players,
+            }
+        )
+
+    def newPlayers(self, event):
+        new_players = event['new_players']
+
+        self.send(text_data=json.dumps({
+            'new_players': new_players,
+        }))
+
+        print('sent all players')
