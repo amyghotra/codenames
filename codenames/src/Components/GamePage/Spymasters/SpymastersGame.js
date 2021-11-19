@@ -52,7 +52,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             "count": this.state.spymasterClueCount,
             "clue": this.state.spymasterClueWord
         }
-        this.state.ws.send(JSON.stringify(data)) // Testing send
+        this.state.ws.send(JSON.stringify(data)) // send to channel
         console.log(data)
     }
 

@@ -35,6 +35,7 @@ class ClueBoxConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+
     def receive(self, text_data):
         """
         Receive a message and broadcast it to a room group
@@ -68,7 +69,8 @@ class ClueBoxConsumer(WebsocketConsumer):
         print("sent clue") # Each instance of the socket should print this out
 
 
-# Consumer for sending messages through checkboxes - not fully implemented yet
+
+# Consumer for sending messages through checkboxes
 class CheckBoxConsumer(WebsocketConsumer):
     def connect(self):
         """
@@ -101,6 +103,7 @@ class CheckBoxConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+
     def receive(self, text_data):
         """
         Receive a message and broadcast it to a room group
@@ -132,3 +135,64 @@ class CheckBoxConsumer(WebsocketConsumer):
         }))
 
         print("sent check") # Each instance of the socket should print this out
+
+
+
+# Consumer for updating the Double Agent
+class DoubleAgentConsumer(WebsocketConsumer):
+    def connect(self):
+        """
+        Connect to a chat room
+        Spaces are replaced like this: 'My new room' -> 'My_new_room'
+        """
+        # Get the type of websocket that we called it in routing
+        self.type_name = self.scope['url_route']['kwargs']['type_name']
+        self.type_name = self.type_name.replace(' ', '_')
+        # Get the game id for each game being played
+        self.gameid = self.scope['url_route']['kwargs']['gameid']
+        self.gameid = self.gameid.replace(' ', '_')
+        # Create the full group name
+        self.room_group_name = 'doubleagent_' + self.type_name + '_' + self.gameid
+        # each consumer needs their own separate name
+
+        # Join room group
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+        )
+        self.accept()
+        print("added to double agent group ", self.room_group_name)
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    def receive(self, text_data):
+        """
+        Receive a message and broadcast it to a room group
+        """   
+        text_data_json = json.loads(text_data)
+        print(text_data_json)
+        team = text_data_json['team']
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "doubleAgentReveal", # same as message defined below
+                "team": team,
+            }
+        )
+
+    def doubleAgentReveal(self, event): # must be same as 'type': 'doubleAgentReveal', ~6 lines above
+        """
+        Receive a broadcast message and send it over a websocket
+        """
+    
+        team = event['team']
+
+        self.send(text_data=json.dumps({
+            'team': team,
+        }))
+
+        print("sent double agent") # Each instance of the socket should print this out

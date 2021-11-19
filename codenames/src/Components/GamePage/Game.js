@@ -27,8 +27,8 @@ class Game extends Component {
 
             redteamid: '',
             blueteamid: '',
-            
 
+            doubleAgentWS: '',
             
         }
     }
@@ -114,11 +114,82 @@ class Game extends Component {
                 blue_score: Number(localBlueTeamId)
             })
         }
+        this.connectDoubleAgent();
     }
 
     componentDidUpdate = () => {
         // await axios.get()
     }
+
+    /**
+     * @function connectDoubleAgent
+     * This function establishes the connect with the websocket and also ensures 
+     * constant reconnection if connection closes
+     */
+     connectDoubleAgent = () => {
+        var ws = new WebSocket('ws://localhost:8000/doubleagent/doubleagent/' + this.state.gameid + '/');
+        let that = this; // cache the this
+        var connectInterval;
+
+        // websocket onopen event listener
+        ws.onopen = () => {
+            console.log("connected websocket main component");
+            this.setState({ doubleAgentWS: ws });
+
+            that.timeout = 250; // reset timer to 250 on open of websocket connection 
+            clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+        };
+
+        // websocket onclose event listener
+        ws.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in ${Math.min(
+                    10000 / 1000,
+                    (that.timeout + that.timeout) / 1000
+                )} second.`,
+                e.reason
+            );
+
+            that.timeout = that.timeout + that.timeout; //increment retry interval
+            connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
+        };
+
+        // websocket onerror event listener
+        ws.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            ws.close();
+        };
+        ws.onmessage = evt => {
+            // listen to data sent from the websocket server
+            const data = JSON.parse(evt.data)
+            console.log(data)
+            console.log("received clue!")
+            let team = data.team
+
+            let doubleAgent = { ...this.state.doubleAgent}; 
+            doubleAgent.category = team;
+
+            this.setState(prevState => {
+                return {
+                    // Add
+                    agentClicked: true, // Make it so the I WANT FIRST goes away
+                    doubleAgent: doubleAgent
+
+                }
+            })
+            this.updateGameWords(this.state.gameid)
+        };
+        this.setState(prevState => {
+            return {
+                doubleAgentWS: ws
+            }
+        })
+    };
     
     setDoubleAgent = () => {
         let doubleAgent = { ...this.state.doubleAgent}; 
@@ -135,6 +206,14 @@ class Game extends Component {
                 console.log(res)
                 this.updateGameWords(this.state.gameid)
             })
+        
+        // Add Double Agent Websocket Send
+        var data = {
+            "number": this.state.doubleAgentIndex,
+            "team": this.state.team
+        }
+        this.state.doubleAgentWS.send(JSON.stringify(data)) // send to channel
+        console.log(data)
     }
 
     updateGameWords = (gameid) => {
