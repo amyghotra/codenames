@@ -59,6 +59,7 @@ class Game extends Component {
                 })
             }
         }
+        this.setTotalCards(); 
 
         await axios.get('http://127.0.0.1:8000/codenames/players').then(res => {
             this.setState({
@@ -164,6 +165,7 @@ class Game extends Component {
     }    
     
     setDoubleAgent = () => {
+
         let doubleAgent = { ...this.state.doubleAgent}; 
         doubleAgent.category = this.state.team;
         let agentClicked = this.state.agentClicked;
@@ -256,6 +258,7 @@ class Game extends Component {
                 axios.patch(`http://127.0.0.1:8000/codenames/blueTeam/${this.state.blueteamid}`, {blue_team_score: bluePoints}).then(response => {
                     console.log(response.data)
                 })
+
 
             }
             this.socketSendTeamPoints(redPoints, bluePoints);
@@ -522,6 +525,8 @@ class Game extends Component {
                         bluePoints = {this.state.blue_score}
                         playersdata = {this.state.playersdata}
                         gameid = {this.state.gameid}
+                        winningScreenIsOpen = {this.state.winningScreenIsOpen}
+                        statusMessage= {this.state.statusMessage}
                     />
                     : 
 
@@ -535,6 +540,9 @@ class Game extends Component {
                         redPoints = {this.state.red_score}
                         bluePoints = {this.state.blue_score}
                         playersdata = {this.state.playersdata}
+                        winningScreenIsOpen = {this.state.winningScreenIsOpen}
+                        statusMessage= {this.state.statusMessage}
+                        
                     />
                 }
             </div>

@@ -451,6 +451,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-12">
+                                                        {!this.props.winningScreenIsOpen ? 
                                                         <form>
                                                             <div className="spymasterClue">
                                                                 <input
@@ -472,6 +473,11 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     
                                                             </div>
                                                         </form>
+                                                        :
+                                                        <div className='popUp'>
+                                                            <h4>{this.props.statusMessage}</h4>
+                                                        </div>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div> {/* Changed back to div from a form */}

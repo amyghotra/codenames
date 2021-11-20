@@ -290,8 +290,25 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             turn: !this.state.turn
         }
         console.log((this.state.turn) ? "Blue turn" : "Red turn")
+
     }
 
+    incrementClueCount = () => {
+        this.setState(prevState => { // Update with inline function
+            return {
+                spymasterClueCount: prevState.spymasterClueCount + 1
+            }
+        })
+    }
+    decrementClueCount = () => {
+        this.setState(prevState => {
+            return {
+                spymasterClueCount: prevState.spymasterClueCount - 1
+            }
+        })
+    }
+
+    
     render() {
         return (
             <div>
@@ -403,7 +420,12 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             </div>
                                         </div>  {/* Changed back to div from a form */}
                                     </div>
-                                </div>
+                                     :
+                                     <div className="popUp" >
+                                         <h4 className="Status">{this.props.statusMessage}</h4>
+                                     </div>
+                                    
+                                </div> 
                             </div>
                         </div>
                 </div>

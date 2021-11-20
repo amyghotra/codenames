@@ -150,8 +150,8 @@ class Card extends Component{
             //this.socketSend() 
         }
 
-    }
 
+    }
     
 
     render(){
