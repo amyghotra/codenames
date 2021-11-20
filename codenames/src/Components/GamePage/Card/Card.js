@@ -19,6 +19,8 @@ class Card extends Component{
             ws: null,
             number: 0, // Need to get number of card from props, can just pass it in from the game page when calling Row
             // So all checkboxes should check with one check for right now
+
+            winningTeam: '',
         }
         //this.socketSend = this.socketSend.bind(this);
     }
