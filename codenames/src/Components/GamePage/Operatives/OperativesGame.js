@@ -410,7 +410,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     this.state.gameWords[24]]}
                                                     cardNumbers={[20,21,22,23,24]}
                                                     increaseTeamPoints={this.props.increaseTeamPoints} />
-        
+                                            {!this.props.winningScreenIsOpen ?
                                             <div className="row">
                                                 <div className="col-md-12">
                                                     <div className="d-flex justify-content-end">
@@ -418,12 +418,13 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     </div>
                                                 </div>
                                             </div>
+                                            :
+                                            <div className="popUp" >
+                                                <h4 className="Status">{this.props.statusMessage}</h4>
+                                            </div>
+                                            }
                                         </div>  {/* Changed back to div from a form */}
                                     </div>
-                                     :
-                                     <div className="popUp" >
-                                         <h4 className="Status">{this.props.statusMessage}</h4>
-                                     </div>
                                     
                                 </div> 
                             </div>

@@ -34,6 +34,9 @@ class Game extends Component {
             //Websocket Players
             wsp: null,
 
+            //Websocket Win Lose Prompt
+            wswl: null,
+
             totalBlueCards: 0,
             totalRedCards: 0,
 
@@ -129,7 +132,9 @@ class Game extends Component {
         }
 
         this.connectTeamPoints();
-        this.connectPlayers();  
+        this.connectPlayers(); 
+        // ATTEMP WS FOR WIN LOSE PROMPT
+        this.checkWinLose(); 
 
         /* Just in case of refresh */
         let totalBlueCards = this.state.totalBlueCards
@@ -214,6 +219,8 @@ class Game extends Component {
     increaseTeamPoints = (team, word) => {
         let totalBlueCards = this.state.totalBlueCards
         let totalRedCards = this.state.totalRedCards
+        let win = this.state.winningTeam
+        let lose = this.state.losingTeam
 
         let redPoints = this.state.red_score
         let bluePoints = this.state.blue_score
@@ -263,6 +270,10 @@ class Game extends Component {
             }
             this.socketSendTeamPoints(redPoints, bluePoints);
         }
+        // if assassin card is guessed
+        else if(team === 'A'){
+            console.log("ASSASSIN PICKED")
+        }
 
         if(redPoints === totalRedCards){
             this.setState({
@@ -270,17 +281,37 @@ class Game extends Component {
                 losingTeam: "B",
             }) 
             let winningTeam = "R"
+            win = 'R'
+            lose = 'B'
             this.showPopUp(winningTeam)
+            // ATTEMPT
+            this.socketSendWinLose(win, lose)
+
         }
         else if(bluePoints === totalBlueCards){
             this.setState({
                 winningTeam: "B",
                 losingTeam: "R",
             })
+            win = 'B'
+            lose = 'R'
             let winningTeam= "B"
             this.showPopUp(winningTeam)
+            // ATTEMPT
+            this.socketSendWinLose(win, lose)
         }
+
     }
+
+    // ATTEMPT
+    socketSendWinLose = (winningTeam, losingTeam) => {
+        var data = {
+            "winningTeam": winningTeam,
+            "losingTeam": losingTeam
+        }
+        this.state.wswl.send(JSON.stringify(data))
+    }
+
 
     setTotalCards = () => {
         let gameWords = this.props.location.state.gameWords;
@@ -504,6 +535,68 @@ class Game extends Component {
         const { wsp } = this.state.wsp;
         if(!wsp || wsp.readyState === WebSocket.CLOSED) this.connectPlayers();
     }
+
+
+    // ATTEMPT WS FOR WIN/LOSE PROMPT 
+    connectWinLose = () => {
+        var wswl = new WebSocket('ws://localhost:8000/winlose/winlose/' + this.state.gameid + '/')
+        let that = this
+        var connectInterval;
+        wswl.onopen = () => {
+            this.setState({ wswl: wswl})
+            that.timeout = 250
+            clearTimeout(connectInterval)
+        }
+
+        wswl.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in ${Math.min(
+                    10000 / 1000,
+                    (that.timeout + that.timeout) / 1000
+                )} second.`,
+                e.reason
+            )
+            
+            // increment retry interval
+            that.timeout = that.timeout + that.timeout 
+            connectInterval = setTimeout(this.checkWinLose, Math.min(1000, that.timeout))
+        }
+
+        wswl.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            )
+
+            wswl.close()
+        }
+        wswl.onmessage = evt => {
+            const data = JSON.parse(evt.data)
+            console.log(data)
+            let winningTeam = data.winningTeam
+            let losingTeam = data.losingTeam
+            this.setState(prevState => {
+                return{
+                    winningTeam: winningTeam,
+                    losingTeam: losingTeam
+                }
+            })
+        }
+        this.setState(prevState => {
+            return{
+                wswl: wswl
+            }
+        })
+    }
+
+    checkWinLose = () => {
+        const {wswl} = this.state.wswl
+        if(!wswl || wswl.readyState === WebSocket.CLOSED){
+            this.connectWinLose()
+        }
+    }
+
 
     render() {
         
