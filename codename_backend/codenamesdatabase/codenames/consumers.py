@@ -121,7 +121,7 @@ class ClueBoxConsumer(WebsocketConsumer):
 
 # ATTEMPT
 class WinLoseConsumer(WebsocketConsumer):
-    def connet(self):
+    def connect(self):
         self.type_name = self.scope['url_route']['kwargs']['type_name']
         self.type_name = self.type_name.replace(' ', '_')
         
@@ -148,7 +148,6 @@ class WinLoseConsumer(WebsocketConsumer):
         print('this is the incoming data for win or lose, ', text_data_json)
         winningTeam = text_data_json['winningTeam']
         losingTeam = text_data_json['losingTeam']
-        print(self.both_win_lose)
         async_to_sync(self.channel_layer.group_send)(
             self.both_win_lose,
             {
@@ -162,10 +161,11 @@ class WinLoseConsumer(WebsocketConsumer):
         winningTeam = event['winningTeam']
         losingTeam = event['losingTeam']
 
-        self.send(text_data=json.dump({
+        self.send(text_data=json.dumps({
             'winningTeam': winningTeam,
             'losingTeam': losingTeam,
         }))
+        print('SENT WIN LOSE !!!!!!!!!!!!!!')
 
 class TeamPointsConsumer(WebsocketConsumer):
     def connect(self):

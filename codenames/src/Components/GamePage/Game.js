@@ -145,6 +145,8 @@ class Game extends Component {
         let totalRedCards = this.state.totalRedCards
         let redPoints = this.state.red_score
         let bluePoints = this.state.blue_score
+
+
         if(redPoints === totalRedCards){
             this.setState({
                 winningTeam: "R",
@@ -161,6 +163,8 @@ class Game extends Component {
             let winningTeam = "B"
             this.showPopUp(winningTeam)
         }
+
+        
     }
 
     componentDidUpdate = (prevProps, prevState) => {
@@ -275,33 +279,38 @@ class Game extends Component {
             this.socketSendTeamPoints(redPoints, bluePoints);
         }
         // if assassin card is guessed
-        else if(team === 'A'){
-            let wordObj = this.state.gameWords.find(w => w.word.id === word);
-            let currentTeam = this.state.currentTeam
-            if(wordObj.guessed === false){
+        else if( team === 'A'){
+            let wordObj = this.state.gameWords.find(w => w.word_id === word);
+            let currentTeam = this.state.currentTeam;
+            console.log(currentTeam);
+            if(wordObj.guessed === false) {
+                // bluePoints += 1
                 this.setState({
                     assassinGuessed: true,
                 })
-                if(this.state.currentTeam === 'R'){
+
+                if (this.state.currentTeam === 'R'){
                     this.setState({
-                        winningTeam:'B',
-                        losingTeam: 'R',
-                    })
-                    let winningTeam = 'B'
+                        winningTeam: "B",
+                        losingTeam: "R",
+                    }) 
+                    let winningTeam = "B"
                     this.showPopUp(winningTeam)
                 }
                 else if(this.state.currentTeam === 'B'){
                     this.setState({
-                        winningTeam: 'R',
-                        losingTeam: 'B',
+                        winningTeam: "R",
+                        losingTeam: "B",
                     })
-                    let winningTeam = 'R'
+                    let winningTeam= "R"
                     this.showPopUp(winningTeam)
                 }
 
-                axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}.then(response => {
+                // localStorage.setItem(this.state.blueteamid, JSON.stringify(bluePoints));
+
+                axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
                     console.log(response.data)
-                }))
+                })
             }
         }
 
@@ -346,6 +355,8 @@ class Game extends Component {
             "losingTeam": losingTeam
         }
         this.state.wswl.send(JSON.stringify(data))
+        console.log('SENT WIN LOSE TO OTHERS!!!!!!!!!')
+        
     }
 
 
