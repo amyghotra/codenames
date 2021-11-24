@@ -284,7 +284,7 @@ class Game extends Component {
     /**
      * utilited by the @function connect to check if the connection is close, if so attempts to reconnect
      */
-     checkTeamPoints = () => {
+    checkTeamPoints = () => {
         const { wstp } = this.state.wstp;
         if (!wstp || wstp.readyState === WebSocket.CLOSED) this.connectTeamPoints(); //check if websocket instance is closed, if so call `connect` function.
     };
