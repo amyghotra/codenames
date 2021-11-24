@@ -39,7 +39,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     }
     componentDidMount = () => { // Doesn't fire?
         this.connect();
-        this.setIntial()
+        // this.setIntial()
     }
 
     /**
@@ -107,6 +107,22 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     };
 
     componentDidUpdate = (event) => {
+
+        // console.log("compdidupdate func in op js")
+
+        // if(this.props.currentPlayer !== null && this.state.turn === true) {
+        //     if(this.props.playerid !== this.props.currentPlayer.user_id) {
+        //         this.setState({turn: false})
+        //         console.log("ths player should not be playing right now")
+        //     } else {
+        //         this.setState({turn: true})
+        //         console.log("this player should be playing")
+        //     }
+        // }
+
+        // console.log(this.props.playerid)
+        // console.log(this.props.currentPlayer.user_id)
+
 
         if (event.gameWords !== this.props.gameWords) {
             this.setState(prevState => {
@@ -292,6 +308,21 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
         // }
         // console.log((this.state.turn) ? "Blue turn" : "Red turn")
 
+        // if(this.props.currentPlayer !== null) {
+        //     if(this.props.playerid !== this.props.currentPlayer.user_id) {
+        //         console.log("ths player should not be playing right now")
+        //         console.log(this.props.playerid)
+        //         console.log(this.props.currentPlayer.user_id)
+        //     } else {
+        //         console.log("this player should be playing")
+        //     }
+        // }
+
+        
+
+        // console.log(this.props.playerid)
+        // console.log(this.props.currentPlayer)
+
         console.log("handleendturn function")
 
         var team;
@@ -299,10 +330,14 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
         if(this.props.currentTeam === 'R') {
             team = 'B'
+            console.log("tryig to fetch a blue player")
+            console.log(this.state.blueOperatives.length)
             player = this.state.blueOperatives[Math.floor(Math.random()*this.state.blueOperatives.length)]
             
         } else if(this.props.currentTeam === 'B') {
             team = 'R'
+            console.log("tryig to fetch a red player")
+            console.log(this.state.redOperatives.length)
             player = this.state.redOperatives[Math.floor(Math.random()*this.state.redOperatives.length)]
         }
 
@@ -315,38 +350,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     }
 
-    setIntial = () => {
-        console.log("trying to set the initial playing team")
-
-        if(this.props.currentTeam === null) {
-            let teams = ['R','B']
-            let selectedTeam = teams[Math.floor(Math.random()*teams.length)]
-
-            if(this.props.currentPlayer === null) {
-
-                var player = ""
-                var team = ""
     
-                if(this.state.blueOperatives.length > 0 && this.state.redOperatives.length === 0  ) {
-                    player = this.state.blueOperatives[0].player_id
-                    team = 'B'
-                } else if(this.state.redOperatives.length > 0 && this.state.blueOperatives.length === 0) {
-                    player = this.props.redOperatives[0].player_id
-                    team = 'R'
-                }
-
-                this.props.updateRoundPlayer(team, player)
-                // this.connect()
-                // this.state.ws.send = () => (JSON.stringify({
-                //     'nextTeam': team,
-                //     'nextPlayer': player
-                // }));
-            }
-        } else {
-            console.log("it was already set")
-        }
-
-    }
 
     render() {
         return (
@@ -447,7 +451,6 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             this.state.gameWords[24]]}
                                             cardNumbers={[20,21,22,23,24]}
                                             increaseTeamPoints={this.props.increaseTeamPoints} />
-
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="d-flex justify-content-end">
@@ -455,6 +458,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             </div>
                                         </div>
                                     </div>
+                                    
                                 </div>  {/* Changed back to div from a form */}
                             </div>
                         </div>

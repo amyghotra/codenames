@@ -24,13 +24,13 @@ class Row extends Component{
        
     }
     componentDidUpdate = (event) => {
-        if (event.rowWords !== this.props.rowWords) {
-            this.setState(prevState => {
-                return {
-                    rowWords: this.props.rowWords
-                }
-            })
-        }
+        // if (event.rowWords !== this.props.rowWords) {
+        //     this.setState(prevState => {
+        //         return {
+        //             rowWords: this.props.rowWords
+        //         }
+        //     })
+        // }
     }
     
     render(){
