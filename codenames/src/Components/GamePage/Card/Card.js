@@ -120,7 +120,7 @@ class Card extends Component{
                     }
                 })
                 // Points weren't updating correctly so I'm just pasting this from handleChange
-                this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id) // Race conditions?
+                // this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id) // Race conditions?
                 // This doesn't update it for spymaster's view - but i think they should have checkbox channels
                 // anyway since they're gonna need to see which cards have already been chosen anyways, that'll solve it
             }
