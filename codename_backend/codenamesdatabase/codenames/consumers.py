@@ -148,12 +148,13 @@ class WinLoseConsumer(WebsocketConsumer):
         print('this is the incoming data for win or lose, ', text_data_json)
         winningTeam = text_data_json['winningTeam']
         losingTeam = text_data_json['losingTeam']
+        print(self.both_win_lose)
         async_to_sync(self.channel_layer.group_send)(
             self.both_win_lose,
             {
-                'type': "promptWinLose",
-                'winningTeam': winningTeam,
-                'losingTeam': losingTeam
+                "type": "promptWinLose",
+                "winningTeam": winningTeam,
+                "losingTeam": losingTeam
             }
         )
     

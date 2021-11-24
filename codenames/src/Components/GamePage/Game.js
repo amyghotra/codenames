@@ -45,6 +45,9 @@ class Game extends Component {
 
             winningScreenIsOpen: false,
             statusMessage: '',
+
+            currentTeam: 'B',
+            assassinGuessed: false,
         }
     }
 
@@ -133,8 +136,9 @@ class Game extends Component {
 
         this.connectTeamPoints();
         this.connectPlayers(); 
+
         // ATTEMP WS FOR WIN LOSE PROMPT
-        this.checkWinLose(); 
+        this.connectWinLose(); 
 
         /* Just in case of refresh */
         let totalBlueCards = this.state.totalBlueCards
@@ -272,7 +276,33 @@ class Game extends Component {
         }
         // if assassin card is guessed
         else if(team === 'A'){
-            console.log("ASSASSIN PICKED")
+            let wordObj = this.state.gameWords.find(w => w.word.id === word);
+            let currentTeam = this.state.currentTeam
+            if(wordObj.guessed === false){
+                this.setState({
+                    assassinGuessed: true,
+                })
+                if(this.state.currentTeam === 'R'){
+                    this.setState({
+                        winningTeam:'B',
+                        losingTeam: 'R',
+                    })
+                    let winningTeam = 'B'
+                    this.showPopUp(winningTeam)
+                }
+                else if(this.state.currentTeam === 'B'){
+                    this.setState({
+                        winningTeam: 'R',
+                        losingTeam: 'B',
+                    })
+                    let winningTeam = 'R'
+                    this.showPopUp(winningTeam)
+                }
+
+                axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}.then(response => {
+                    console.log(response.data)
+                }))
+            }
         }
 
         if(redPoints === totalRedCards){
@@ -283,9 +313,12 @@ class Game extends Component {
             let winningTeam = "R"
             win = 'R'
             lose = 'B'
-            this.showPopUp(winningTeam)
+            
             // ATTEMPT
             this.socketSendWinLose(win, lose)
+            console.log('RED WIN')
+
+            this.showPopUp(winningTeam)
 
         }
         else if(bluePoints === totalBlueCards){
@@ -296,9 +329,12 @@ class Game extends Component {
             win = 'B'
             lose = 'R'
             let winningTeam= "B"
-            this.showPopUp(winningTeam)
             // ATTEMPT
             this.socketSendWinLose(win, lose)
+            console.log('BLUE WIN')
+
+            this.showPopUp(winningTeam)
+
         }
 
     }
@@ -539,8 +575,8 @@ class Game extends Component {
 
     // ATTEMPT WS FOR WIN/LOSE PROMPT 
     connectWinLose = () => {
-        var wswl = new WebSocket('ws://localhost:8000/winlose/winlose/' + this.state.gameid + '/')
-        let that = this
+        var wswl = new WebSocket('ws://localhost:8000/winlose/winlose/' + this.state.gameid + '/');
+        let that = this;
         var connectInterval;
         wswl.onopen = () => {
             this.setState({ wswl: wswl})
@@ -592,9 +628,7 @@ class Game extends Component {
 
     checkWinLose = () => {
         const {wswl} = this.state.wswl
-        if(!wswl || wswl.readyState === WebSocket.CLOSED){
-            this.connectWinLose()
-        }
+        if(!wswl || wswl.readyState === WebSocket.CLOSED) this.connectWinLose();
     }
 
 
