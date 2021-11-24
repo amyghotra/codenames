@@ -45,7 +45,6 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     }
 
     componentDidMount = () => {
-        this.connect();
     }
 
     socketSend = () => {
@@ -53,7 +52,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             "count": this.state.spymasterClueCount,
             "clue": this.state.spymasterClueWord
         }
-        this.state.ws.send(JSON.stringify(data)) // Testing send
+        this.state.ws.send(JSON.stringify(data)) // send to channel
         console.log(data)
     }
 
@@ -63,7 +62,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
      * constant reconnection if connection closes
      */
      connect = () => {
-        var ws = new WebSocket('ws://localhost:8000/ws/game/');
+        var ws = new WebSocket('ws://localhost:8000/cluebox/cluebox/' + this.props.gameid + '/');
         let that = this; // cache the this
         var connectInterval;
 
@@ -149,6 +148,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     gameid: this.props.gameid
                 }
             })
+            this.connect();
         }
 
         if(event.playersdata !== this.props.playersdata){
@@ -170,7 +170,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         })
         //console.log(players)
 
-        // console.log("Checking how many times this will call the update players!")
+        console.log("Checking how many times this will call the update players!")
         this.updatePlayers(players.playersdata)
     }
 
@@ -211,7 +211,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         //console.log('Update Players Called!');
         let room_key = this.props.room_key;
         //let players = this.props.playersdata;
-        // console.log("Players data: ", players)
+        console.log("Players data: ", players)
         //if(this.state.renderPlayers === true){
 
         for(let i = 0; i < players.length; i++){
@@ -406,6 +406,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                 this.state.gameWords[3],
                                                 this.state.gameWords[4]]}
                                                 cardNumbers={[0,1,2,3,4]} // Add in card numbers to distinguish
+                                                gameid={this.state.gameid} // Add in gameid for card websocket
                                                 increaseTeamPoints={this.props.increaseTeamPoints} />
                                             <Row task={this.state.task}
                                                 rowWords={[this.state.gameWords[5],
@@ -414,6 +415,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                 this.state.gameWords[8],
                                                 this.state.gameWords[9]]}
                                                 cardNumbers={[5,6,7,8,9]}
+                                                gameid={this.state.gameid}
                                                 increaseTeamPoints={this.props.increaseTeamPoints} />
                                             <Row task={this.state.task}
                                                 rowWords={[this.state.gameWords[10],
@@ -422,6 +424,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                 this.state.gameWords[13],
                                                 this.state.gameWords[14]]}
                                                 cardNumbers={[10,11,12,13,14]}
+                                                gameid={this.state.gameid}
                                                 increaseTeamPoints={this.props.increaseTeamPoints} />
                                             <Row task={this.state.task}
                                                 rowWords={[this.state.gameWords[15],
@@ -430,6 +433,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                 this.state.gameWords[18],
                                                 this.state.gameWords[19]]}
                                                 cardNumbers={[15,16,17,18,19]}
+                                                gameid={this.state.gameid}
                                                 increaseTeamPoints={this.props.increaseTeamPoints} />
                                             <Row task={this.state.task}
                                                 rowWords={[this.state.gameWords[20],
@@ -438,6 +442,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                 this.state.gameWords[23],
                                                 this.state.gameWords[24]]}
                                                 cardNumbers={[20,21,22,23,24]}
+                                                gameid={this.state.gameid}
                                                 increaseTeamPoints={this.props.increaseTeamPoints} />
 
                                         </div>
