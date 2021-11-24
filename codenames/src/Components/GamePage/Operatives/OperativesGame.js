@@ -38,6 +38,11 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     }
     componentDidMount = () => { // Doesn't fire?
+        console.log("operatives.js")
+        console.log(this.props.currentTeam)
+        console.log(this.props.currentPlayer)
+        console.log("operatives.js")
+        if(this.props.currentPlayer === null) { this.props.setInitial() }
     }
 
     /**
@@ -286,10 +291,42 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     // For handling the players' submitting their guesses / word picks
     handleEndTurn = () => {
-        this.setState = {
-            turn: !this.state.turn
+
+        this.deleteRepeated()
+
+        console.log("handleendturn function")
+
+        var team;
+        var player;
+        var redIndex = this.props.rInedx
+        var blueIndex = this.props.bInedx
+
+        if(this.props.currentTeam === 'R') {
+            this.deleteRepeated()
+            console.log(this.state.redOperatives)
+            team = 'B'
+            player = this.state.blueOperatives[blueIndex]
+            redIndex += 1
+            if(redIndex === this.state.redOperatives.length) { redIndex = 0 }
+            
+        } else if(this.props.currentTeam === 'B') {
+            this.deleteRepeated()
+            console.log(this.state.blueOperatives)
+            team = 'R'
+            player = this.state.redOperatives[redIndex]
+            blueIndex += 1
+            if(blueIndex === this.state.blueOperatives.length) { blueIndex = 0 }
         }
-        console.log((this.state.turn) ? "Blue turn" : "Red turn")
+
+        console.log("operatives print statements")
+        console.log(team)
+        console.log(player)
+        console.log(redIndex)
+        console.log(blueIndex)
+        console.log("end of operatives print statements")
+
+        this.props.updateRoundPlayer(team, player, redIndex, blueIndex)
+
     }
 
     render() {
@@ -400,7 +437,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="d-flex justify-content-end">
-                                                <button className="btn" onChange={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
+                                                <button className="btn" onClick={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
                                             </div>
                                         </div>
                                     </div>
