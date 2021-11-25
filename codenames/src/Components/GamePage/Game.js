@@ -184,11 +184,13 @@ class Game extends Component {
         if(this.state.wantedFirst === 'B' && this.state.blueOperatives.length > 0) {
             player = this.state.blueOperatives[this.state.bIndex].player_id
             team = 'B'
+            var bIdx = this.state.bIndex + 1
+            this.setState({bIndex: bIdx})
         } else if(this.state.wantedFirst === 'R' && this.state.redOperatives.length > 0) {
-            console.log("selecting red player")
-            console.log(this.state.redOperatives.length)
             player = this.state.redOperatives[this.state.rIndex].player_id
             team = 'R'
+            var rIdx = this.state.rIndex + 1
+            this.setState({rIndex: rIdx})
         }
         this.updateRoundPlayer(team, player, this.state.rIndex, this.state.bIndex)
         this.setState({

@@ -337,10 +337,6 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             player = this.state.blueOperatives[blueIndex]
             blueIndex += 1
             if(blueIndex === this.state.blueOperatives.length) {blueIndex = 0}
-            console.log("trying to print some stuff out")
-            console.log(team)
-            console.log(player)
-            console.log("trying to print some stuff out")
 
             this.props.updateRoundPlayer(team, player, redIndex, blueIndex)
             
@@ -351,10 +347,6 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             player = this.state.redOperatives[redIndex]
             redIndex += 1
             if(redIndex === this.state.redOperatives.length) {redIndex = 0}
-            console.log("trying to print some stuff out")
-            console.log(team)
-            console.log(player)
-            console.log("trying to print some stuff out")
 
             this.props.updateRoundPlayer(team, player, redIndex, blueIndex)
         }
