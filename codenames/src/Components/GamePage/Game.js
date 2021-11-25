@@ -295,8 +295,7 @@ class Game extends Component {
         })
     }
 
-    //from the card component, the words id and its corresponding team will be sent here to increase the points and change the guess to true accordingly
-    increaseTeamPoints = (team, word) => {
+    canPlay = (team, word) => {
         let redPoints = this.state.red_score
         let bluePoints = this.state.blue_score
         if(team === 'R'){
@@ -344,6 +343,64 @@ class Game extends Component {
             }
             this.socketSendTeamPoints(redPoints, bluePoints);
         }
+    }
+
+    //from the card component, the words id and its corresponding team will be sent here to increase the points and change the guess to true accordingly
+    increaseTeamPoints = (team, word) => {
+        if(this.state.currentTeam === this.state.team) {
+            console.log("user can play")
+            this.canPlay(team, word)
+        } else {
+            console.log("user cannot pla")
+        }
+
+        // let redPoints = this.state.red_score
+        // let bluePoints = this.state.blue_score
+        // if(team === 'R'){
+        //     let wordObj = this.state.gameWords.find(w => w.word_id === word);
+        //     if(wordObj.guessed === false) {
+        //         this.setState(prevState => {
+        //             return {
+        //                 red_score: prevState.red_score+1,
+        //             }
+        //         })
+        //         redPoints += 1
+    
+        //         localStorage.setItem(this.state.redteamid, JSON.stringify(redPoints));
+
+        //         axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
+        //             console.log(response.data)
+        //         })
+        //         axios.patch(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`, {red_team_score: redPoints}).then(response => {
+        //             console.log(response.data)
+        //         })
+        //     }
+            
+        //     this.socketSendTeamPoints(redPoints, bluePoints);
+        //     // this.socketSendPlayers(this.state.playersdata[this.state.playersdata.length-1]);
+        // }
+        // else if(team === 'B'){
+        //     let wordObj = this.state.gameWords.find(w => w.word_id === word);
+        //     if(wordObj.guessed === false) {
+        //         this.setState(prevState => {
+        //             return {
+        //                 blue_score: prevState.blue_score+1,
+        //             }
+        //         })
+        //         bluePoints += 1
+
+        //         localStorage.setItem(this.state.blueteamid, JSON.stringify(bluePoints));
+
+        //         axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
+        //             console.log(response.data)
+        //         })
+        //         axios.patch(`http://127.0.0.1:8000/codenames/blueTeam/${this.state.blueteamid}`, {blue_team_score: bluePoints}).then(response => {
+        //             console.log(response.data)
+        //         })
+
+        //     }
+        //     this.socketSendTeamPoints(redPoints, bluePoints);
+        // }
 
     }
 
@@ -447,6 +504,9 @@ class Game extends Component {
     // }
 
     sendTurns = (team, player) => {
+        console.log("sendturns")
+        console.log(player)
+        console.log("sendturns")
         if(player !== null){
             this.state.ws_turn.send(JSON.stringify({
                 'nextTeam': team,
@@ -665,6 +725,7 @@ class Game extends Component {
                         currentPlayer = {this.state.currentPlayer}
                         updateRoundPlayer = {this.updateRoundPlayer}
                         playerid = {this.state.playerid}
+                        playerTeam = {this.state.team}
                         bIndex = {this.state.bIndex}
                         rIndex = {this.state.rIndex}
                     />

@@ -40,6 +40,8 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     componentDidMount = () => { // Doesn't fire?
         // this.connect();
         // this.setIntial()
+        console.log(this.props.playerid)
+        console.log(this.props.currentPlayer)
     }
 
     /**
