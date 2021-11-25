@@ -327,26 +327,27 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
         var team;
         var player;
+        var blueIndex = this.props.bIndex
+        var redIndex = this.props.rIndex
 
         if(this.props.currentTeam === 'R') {
             team = 'B'
             console.log("tryig to fetch a blue player")
             console.log(this.state.blueOperatives.length)
-            player = this.state.blueOperatives[Math.floor(Math.random()*this.state.blueOperatives.length)]
+            player = this.state.blueOperatives[blueIndex]
+            blueIndex += 1
+            if(blueIndex === this.state.blueOperatives.length) {blueIndex = 0}
             
         } else if(this.props.currentTeam === 'B') {
             team = 'R'
             console.log("tryig to fetch a red player")
             console.log(this.state.redOperatives.length)
-            player = this.state.redOperatives[Math.floor(Math.random()*this.state.redOperatives.length)]
+            player = this.state.redOperatives[redIndex]
+            redIndex += 1
+            if(redIndex === this.state.redOperatives.length) {redIndex = 0}
         }
 
-        this.props.updateRoundPlayer(team, player)
-
-        // this.state.ws.send(JSON.stringify({
-        //     'nextTeam': team,
-        //     'nextPlayer': player
-        // }));
+        this.props.updateRoundPlayer(team, player, redIndex, blueIndex)
 
     }
 
