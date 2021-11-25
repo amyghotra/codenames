@@ -37,7 +37,7 @@ class Game extends Component {
             doubleAgentWS: '',
 
             ws_turn: null,
-            currentTeam: null,
+            currentTeam: 'R',
             currentPlayer: null,
 
             blueOperatives: [],
@@ -50,8 +50,6 @@ class Game extends Component {
     }
 
     componentDidMount = async () => {
-
-        this.connectTurns()
 
         let gameWords = this.props.location.state.gameWords;
         for(let i = 0; i < gameWords.length; i++) {
@@ -116,6 +114,7 @@ class Game extends Component {
         })
 
         this.updateGameWords(this.props.location.state.gameid)
+        this.connectTurns()
 
         await axios.get(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`)
         .then(response => {
@@ -177,31 +176,25 @@ class Game extends Component {
 
     setIntial = () => {
 
-        console.log("trying to set initial player")
+        console.log(this.state.redOperatives.length)
+
+        var player;
+        var team;
         
         if(this.state.wantedFirst === 'B' && this.state.blueOperatives.length > 0) {
-            var player = this.state.blueOperatives[Math.floor(Math.random()*this.state.blueOperatives.length)].player_id
-            var team = 'B'
-            this.updateRoundPlayer(team, player)
-            this.setState({
-                currentPlayer: player
-            })
-            console.log(player)
-            console.log(team)
+            player = this.state.blueOperatives[this.state.bIndex].player_id
+            team = 'B'
         } else if(this.state.wantedFirst === 'R' && this.state.redOperatives.length > 0) {
             console.log("selecting red player")
             console.log(this.state.redOperatives.length)
-            var player = this.state.redOperatives[Math.floor(Math.random()*this.state.redOperatives.length)].player_id
-            var team = 'R'
-            this.updateRoundPlayer(team, player)
-            this.setState({
-                currentPlayer: player
-            })
-            console.log(player)
-            console.log(team)
+            player = this.state.redOperatives[this.state.rIndex].player_id
+            team = 'R'
         }
-
-        console.log("done setting initial player")
+        this.updateRoundPlayer(team, player, this.state.rIndex, this.state.bIndex)
+        this.setState({
+            currentPlayer: player,
+            currentTeam: team
+        })
 
     }
 
@@ -434,40 +427,42 @@ class Game extends Component {
         if (!ws_turn || ws_turn.readyState === WebSocket.CLOSED) this.connectTurns(); //check if websocket instance is closed, if so call `connect` function.
     };
 
+    // sendTurns = (team, player) => {
+    //     if(team !== null && player !== null ) {
+    //         console.log("in sendturns")
+    //         console.log(team)
+    //         console.log(player)
+    //         console.log("in sendturns")
+    //         if(player !== null && team !== null && this.state.ws_turn !== null) {
+    //             while(WebSocket.CONNECTING){}
+    //             if(WebSocket.OPEN){
+    //             this.state.ws_turn.send(JSON.stringify({
+    //                 'nextTeam': team,
+    //                 'nextPlayer': player
+    //             }))}
+    //         }
+    //     }
+    // }
+
     sendTurns = (team, player) => {
-        if(team !== null && player !== null ) {
-            console.log("in sendturns")
-            console.log(team)
-            console.log(player)
-            console.log("in sendturns")
-            if(player !== null && team !== null && this.state.ws_turn !== null) {
-                while(WebSocket.CONNECTING){}
-                if(WebSocket.OPEN){
-                this.state.ws_turn.send(JSON.stringify({
-                    'nextTeam': team,
-                    'nextPlayer': player
-                }))}
-            }
+        if(player !== null){
+            this.state.ws_turn.send(JSON.stringify({
+                'nextTeam': team,
+                'nextPlayer': player
+            }))
         }
+        
+        // console.log('this is the incoming players data', data);
     }
 
     updateRoundPlayer = (team, player, redIndex, blueIndex) => {
-        console.log("updateroundplayers function")
-        console.log(team)
-        console.log(player)
-        console.log(redIndex)
-        console.log(blueIndex)
-        console.log("end of updateroundplayer prints")
-
-        if(team !== null && player !== null) {
-            this.setState({
-                currentPlayer: player,
-                currentTeam: team,
-                bIndex: blueIndex,
-                rIndex: redIndex
-            })
-            this.sendTurns(team, player)
-        }
+        this.setState({
+            currentPlayer: player,
+            currentTeam: team,
+            rIndex: redIndex,
+            bIndex: blueIndex
+        })
+        this.sendTurns(team, player)
     }
     
     socketSendPlayers = (player) => {
@@ -670,7 +665,6 @@ class Game extends Component {
                         playerid = {this.state.playerid}
                         bIndex = {this.state.bIndex}
                         rIndex = {this.state.rIndex}
-                        setInitial = {this.setIntial}
                     />
                 }
             </div>
