@@ -449,7 +449,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                     </div>
                                     <div className="row">
                                         <div className="col-md-12">
-                                            <form>
+                                            {this.props.myTeam === this.props.currentTeam && <form>
                                                 <div className="spymasterClue">
                                                     <input
                                                         type="text"
@@ -469,7 +469,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                     {this.props.myTeam === this.props.currentTeam && <input type="button" onClick={this.socketSend}/>}
 
                                                 </div>
-                                            </form>
+                                            </form>}
                                         </div>
                                     </div>
                                 </div> {/* Changed back to div from a form */}
