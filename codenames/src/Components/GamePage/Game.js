@@ -347,7 +347,7 @@ class Game extends Component {
             console.log("user can play")
             this.canPlay(team, word)
         } else {
-            console.log("user cannot pla")
+            console.log("user cannot play")
         }
 
         // let redPoints = this.state.red_score
@@ -668,6 +668,9 @@ class Game extends Component {
                                 bluePoints = {this.state.blue_score}
                                 playersdata = {this.state.playersdata}
                                 gameid = {this.state.gameid}
+                                myTeam = {this.state.team}
+                                currentTeam = {this.state.currentTeam}
+                                currentPlayer = {this.state.currentPlayer}
                             />
                         </div>
 

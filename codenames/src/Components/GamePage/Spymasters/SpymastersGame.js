@@ -466,7 +466,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                     </div>
 
                                                     {/* <input type="button" onClick={this.socketSend}>Submit Clue</input> */}
-                                                    <input type="button" onClick={this.socketSend}/>
+                                                    {this.props.myTeam === this.props.currentTeam && <input type="button" onClick={this.socketSend}/>}
 
                                                 </div>
                                             </form>
