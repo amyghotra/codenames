@@ -110,7 +110,10 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     componentDidUpdate = (event) => {
 
-        // console.log("compdidupdate func in op js")
+        console.log("compdidupdate func in op js START")
+        console.log(this.props.currentPlayer)
+        console.log(this.props.currentTeam)
+        console.log("compdidupdate func in op js END")
 
         // if(this.props.currentPlayer !== null && this.state.turn === true) {
         //     if(this.props.playerid !== this.props.currentPlayer.user_id) {
@@ -425,7 +428,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             this.state.gameWords[3],
                                             this.state.gameWords[4]]}
                                             cardNumbers={[0,1,2,3,4]} // Add in card numbers to distinguish
-                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                            increaseTeamPoints={this.props.increaseTeamPoints}
+                                            thisPlayer = {this.props.playerid}
+                                            currentAllowedPlayer = {this.props.currentPlayer} />
                                         <Row task={this.state.task}
                                             rowWords={[this.state.gameWords[5],
                                             this.state.gameWords[6],
@@ -433,7 +438,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             this.state.gameWords[8],
                                             this.state.gameWords[9]]}
                                             cardNumbers={[5,6,7,8,9]}
-                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                            increaseTeamPoints={this.props.increaseTeamPoints}
+                                            thisPlayer = {this.props.playerid}
+                                            currentAllowedPlayer = {this.props.currentPlayer} />
                                         <Row task={this.state.task}
                                             rowWords={[this.state.gameWords[10],
                                             this.state.gameWords[11],
@@ -441,7 +448,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             this.state.gameWords[13],
                                             this.state.gameWords[14]]}
                                             cardNumbers={[10,11,12,13,14]}
-                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                            increaseTeamPoints={this.props.increaseTeamPoints}
+                                            thisPlayer = {this.props.playerid}
+                                            currentAllowedPlayer = {this.props.currentPlayer} />
                                         <Row task={this.state.task}
                                             rowWords={[this.state.gameWords[15],
                                             this.state.gameWords[16],
@@ -449,7 +458,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             this.state.gameWords[18],
                                             this.state.gameWords[19]]}
                                             cardNumbers={[15,16,17,18,19]}
-                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                            increaseTeamPoints={this.props.increaseTeamPoints}
+                                            thisPlayer = {this.props.playerid}
+                                            currentAllowedPlayer = {this.props.currentPlayer} />
                                         <Row task={this.state.task}
                                             rowWords={[this.state.gameWords[20],
                                             this.state.gameWords[21],
@@ -457,7 +468,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             this.state.gameWords[23],
                                             this.state.gameWords[24]]}
                                             cardNumbers={[20,21,22,23,24]}
-                                            increaseTeamPoints={this.props.increaseTeamPoints} />
+                                            increaseTeamPoints={this.props.increaseTeamPoints}
+                                            thisPlayer = {this.props.playerid}
+                                            currentAllowedPlayer = {this.props.currentPlayer} />
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="d-flex justify-content-end">

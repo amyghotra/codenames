@@ -142,15 +142,21 @@ class Card extends Component{
 
     handleChange = () => {
 
-        if(!this.state.checked) {
+        if(this.props.currentAllowedPlayer !== null && this.props.currentAllowedPlayer.user_id !== null) {
+            if(!this.state.checked && this.props.currentAllowedPlayer.user_id === this.props.thisPlayer) {
+                this.setState({
+                    checked: true,
+                    turn: !this.state.turn            
+                })
+                console.log(this.state.checked)
+                this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id) // Moved to Socket's onmessage
+                localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
+                this.socketSend() 
+            }
+        } else {
             this.setState({
-                checked: true,
-                turn: !this.state.turn            
+                checked: false      
             })
-            console.log(this.state.checked)
-            this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id) // Moved to Socket's onmessage
-            localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
-            this.socketSend() 
         }
 
     }

@@ -143,27 +143,20 @@ class Game extends Component {
         this.connectTeamPoints();
         this.connectPlayers();  
         this.connectDoubleAgent();
-        // if(this.state.currentPlayer === null) {this.setIntial()}
+        if(this.state.currentPlayer === null) {
+            console.log("trying to set initial player")
+            this.setIntial()
+        } else {
+            console.log("was already set")
+            console.log(this.state.currentPlayer)
+            console.log(this.state.currentTeam)
+            console.log("was already set")
+        }
         // this.setIntial()
 
     }
 
     componentDidUpdate = (prevProps, prevState) => {
-
-        // if(this.state.currentPlayer === null) {
-        //     this.connectTeamPoints();
-        //     this.setIntial()
-        // }
-
-        // if(this.state.currentPlayer === null) {
-        //     console.log("attempt to select initial player")
-        //     this.setIntial()
-        // } else if(this.state.currentPlayer !== null) {
-        //     console.log("player was already set")
-        //     console.log(this.state.currentPlayer)
-        // } else {
-        //     console.log("compdidupdate else stmnt")
-        // }
 
         if(this.state.wsp && this.state.wsp.readyState === 1 && this.state.loadedPlayers === false) {
             console.log('the ready state is working', this.state.playersdata[this.state.playersdata.length-1])
@@ -175,8 +168,6 @@ class Game extends Component {
     }
 
     setIntial = () => {
-
-        console.log(this.state.redOperatives.length)
 
         var player;
         var team;
@@ -192,12 +183,13 @@ class Game extends Component {
             var rIdx = this.state.rIndex + 1
             this.setState({rIndex: rIdx})
         }
-        this.updateRoundPlayer(team, player, this.state.rIndex, this.state.bIndex)
-        this.setState({
-            currentPlayer: player,
-            currentTeam: team
-        })
-
+        this.state.ws_turn.onopen = () => {
+            this.updateRoundPlayer(team, player, this.state.rIndex, this.state.bIndex)
+            this.setState({
+                currentPlayer: player,
+                currentTeam: team
+            })
+        }
     }
 
     connectTurns = () => {
@@ -247,12 +239,16 @@ class Game extends Component {
             // console.log("received clue!")
             let nextPlayingTeam = data.nextTeam
             let nextUser= data.nextPlayer
-            this.setState(prevState => {
-                return {
-                    nextTeam: nextPlayingTeam,
-                    nextPlayer: nextUser
-                }
+            this.setState({
+                currentTeam: nextPlayingTeam,
+                currentPlayer: nextUser
             })
+            console.log("start printing out ws on message stuff")
+            console.log(nextPlayingTeam)
+            console.log(nextUser)
+            console.log(this.state.currentTeam)
+            console.log(this.state.currentPlayer)
+            console.log("finished printing out ws on message stuff")
         };
         this.setState(prevState => {
             return {
@@ -486,24 +482,8 @@ class Game extends Component {
         if (!ws_turn || ws_turn.readyState === WebSocket.CLOSED) this.connectTurns(); //check if websocket instance is closed, if so call `connect` function.
     };
 
-    // sendTurns = (team, player) => {
-    //     if(team !== null && player !== null ) {
-    //         console.log("in sendturns")
-    //         console.log(team)
-    //         console.log(player)
-    //         console.log("in sendturns")
-    //         if(player !== null && team !== null && this.state.ws_turn !== null) {
-    //             while(WebSocket.CONNECTING){}
-    //             if(WebSocket.OPEN){
-    //             this.state.ws_turn.send(JSON.stringify({
-    //                 'nextTeam': team,
-    //                 'nextPlayer': player
-    //             }))}
-    //         }
-    //     }
-    // }
-
     sendTurns = (team, player) => {
+
         console.log("sendturns")
         console.log(player)
         console.log("sendturns")
@@ -514,7 +494,6 @@ class Game extends Component {
             }))
         }
         
-        // console.log('this is the incoming players data', data);
     }
 
     updateRoundPlayer = (team, player, redIndex, blueIndex) => {
@@ -533,7 +512,6 @@ class Game extends Component {
         }
         this.state.wsp.send(JSON.stringify(data))
         
-        // console.log('this is the incoming players data', data);
     }
 
     connectPlayers = () => {
@@ -697,15 +675,15 @@ class Game extends Component {
 
                         <div>
                             <SpymastersGame 
-                                    room_key = {this.state.room_key}
-                                    gameWords = {this.state.gameWords}
-                                    increaseTeamPoints = {this.increaseTeamPoints}
-                                    redPoints = {this.state.red_score}
-                                    bluePoints = {this.state.blue_score}
-                                    playersdata = {this.state.playersdata}
-                                    gameid = {this.state.gameid}
-                                    currentTeam = {this.state.currentTeam}
-                                    currentPlayer = {this.state.currentPlayer}
+                                room_key = {this.state.room_key}
+                                gameWords = {this.state.gameWords}
+                                increaseTeamPoints = {this.increaseTeamPoints}
+                                redPoints = {this.state.red_score}
+                                bluePoints = {this.state.blue_score}
+                                playersdata = {this.state.playersdata}
+                                gameid = {this.state.gameid}
+                                currentTeam = {this.state.currentTeam}
+                                currentPlayer = {this.state.currentPlayer}
                             />
                         </div>
                         }
