@@ -140,7 +140,7 @@ class Card extends Component{
         if (!ws || ws.readyState === WebSocket.CLOSED) this.connect(); //check if websocket instance is closed, if so call `connect` function.
     };
 
-    handleChange = () => {
+    handleChange = (e) => {
 
         if(this.props.currentAllowedPlayer !== null && this.props.currentAllowedPlayer.user_id !== null) {
             if(!this.state.checked && this.props.currentAllowedPlayer.user_id === this.props.thisPlayer) {
@@ -153,16 +153,15 @@ class Card extends Component{
                 localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
                 this.socketSend() 
             }
-        } else {
+        } else { 
+            e.target.checked = false
             this.setState({
                 checked: false      
             })
         }
 
     }
-
     
-
     render(){
         return(
             <div>
