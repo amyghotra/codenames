@@ -174,6 +174,7 @@ class Card extends Component{
                         id = "checkbox"
                         type = "checkbox"
 						checked = {this.state.checked}
+                        disabled = {this.props.currentAllowedPlayer === null ? true : this.props.thisPlayer === this.props.currentAllowedPlayer.user_id}
                         onChange={this.handleChange}/><br/> {/* onChange */}
                 <div>
                 {(!this.state.checked) ?

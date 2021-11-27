@@ -471,13 +471,13 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             increaseTeamPoints={this.props.increaseTeamPoints}
                                             thisPlayer = {this.props.playerid}
                                             currentAllowedPlayer = {this.props.currentPlayer} />
-                                    <div className="row">
+                                    {this.props.currentPlayer.user_id === this.props.playerid && <div className="row">
                                         <div className="col-md-12">
                                             <div className="d-flex justify-content-end">
                                                 <button className="btn" onClick={this.handleEndTurn}>End Turn</button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>}
                                     
                                 </div>  {/* Changed back to div from a form */}
                             </div>
