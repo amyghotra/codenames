@@ -310,6 +310,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     }
 
     
+    
     render() {
         return (
             <div>
@@ -362,6 +363,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             </div>
                                         </div>
                                         <div className="col-md-7">  {/* Changed back to div from a form */}
+                                        {/* {!this.props.winningScreenIsOpen ? */}
                                             <div className="row">
                                                 <div className="col-md-12">
                                                     <div className="clueBody">
@@ -371,7 +373,8 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     </div>
                                                 </div>
                                             </div>
-                                            <Row task={this.state.task}
+                                            <div className="cardsContainer">
+                                                <Row task={this.state.task}
                                                     rowWords={[this.state.gameWords[0],
                                                     this.state.gameWords[1],
                                                     this.state.gameWords[2],
@@ -411,6 +414,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     this.state.gameWords[24]]}
                                                     cardNumbers={[20,21,22,23,24]}
                                                     increaseTeamPoints={this.props.increaseTeamPoints} />
+                                            </div>
                                             {!this.props.winningScreenIsOpen ?
                                             <div className="row">
                                                 <div className="col-md-12">
@@ -419,15 +423,23 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     </div>
                                                 </div>
                                             </div>
+                                            
                                             :
-                                            <div className="popUp" >
+                                            <div className="popContainer" >
+                                                <div className="winBox">
                                                 {this.props.team === this.props.winningTeam ? 
-                                                <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
+                                                <div className="won">
+                                                    <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
+                                                </div>
                                                 :
-                                                <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
+                                                <div className="lost">
+                                                    <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
+                                                </div>
                                                 }
+                                                </div>
                                             </div>
                                             }
+    
                                         </div>  {/* Changed back to div from a form */}
                                     </div>
                                     
@@ -436,7 +448,15 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                         </div>
                 </div>
                 :
-                <div>Waiting for players!</div>
+                <div className="waitingScreen">
+                    <div className= "waitingContainer">
+                        <div class="spinner"></div>
+                        <h4 className="waitingText">
+                            Waiting for players
+                            <span class="one">.</span><span class="two">.</span><span class="three">.</span>
+                        </h4>
+                    </div>
+                </div>
                 }
             </div>
         )
