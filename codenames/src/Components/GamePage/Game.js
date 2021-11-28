@@ -295,6 +295,9 @@ class Game extends Component {
                         losingTeam: "R",
                     }) 
                     let winningTeam = "B"
+                    let win = 'B'
+                    let lose = 'R'
+                    this.socketSendWinLose(win, lose)
                     this.showPopUp(winningTeam)
                 }
                 else if(this.state.team === 'B'){
@@ -303,6 +306,9 @@ class Game extends Component {
                         losingTeam: "B",
                     })
                     let winningTeam= "R"
+                    let win = 'R'
+                    let lose = 'B'
+                    this.socketSendWinLose(win, lose)
                     this.showPopUp(winningTeam)
                 }
 
