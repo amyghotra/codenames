@@ -148,6 +148,7 @@ class WinLoseConsumer(WebsocketConsumer):
         print('this is the incoming data for win or lose, ', text_data_json)
         winningTeam = text_data_json['winningTeam']
         losingTeam = text_data_json['losingTeam']
+
         async_to_sync(self.channel_layer.group_send)(
             self.both_win_lose,
             {
@@ -164,6 +165,7 @@ class WinLoseConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             'winningTeam': winningTeam,
             'losingTeam': losingTeam,
+            # 'statusMessage': statusMessage,
         }))
         print('SENT WIN LOSE !!!!!!!!!!!!!!')
 

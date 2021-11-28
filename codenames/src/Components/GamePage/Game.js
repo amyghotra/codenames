@@ -46,7 +46,7 @@ class Game extends Component {
             winningScreenIsOpen: false,
             statusMessage: '',
 
-            currentTeam: 'B',
+            // currentTeam: '',
             assassinGuessed: false,
         }
     }
@@ -281,15 +281,15 @@ class Game extends Component {
         // if assassin card is guessed
         else if( team === 'A'){
             let wordObj = this.state.gameWords.find(w => w.word_id === word);
-            let currentTeam = this.state.currentTeam;
-            console.log(currentTeam);
+            // let currentTeam = this.state.currentTeam;
+            // console.log(currentTeam);
             if(wordObj.guessed === false) {
                 // bluePoints += 1
                 this.setState({
                     assassinGuessed: true,
                 })
 
-                if (this.state.currentTeam === 'R'){
+                if (this.state.team === 'R'){
                     this.setState({
                         winningTeam: "B",
                         losingTeam: "R",
@@ -297,7 +297,7 @@ class Game extends Component {
                     let winningTeam = "B"
                     this.showPopUp(winningTeam)
                 }
-                else if(this.state.currentTeam === 'B'){
+                else if(this.state.team === 'B'){
                     this.setState({
                         winningTeam: "R",
                         losingTeam: "B",
@@ -409,7 +409,7 @@ class Game extends Component {
                         statusMessage: 'CONGRATS! YOUR TEAM WON!'
                     })
                 }
-                else if(team === 'B'){
+                else {
                     //console.log("winning team is Blue has been called!")
                     //let statusMessage = 'SORRY! YOUR TEAM LOST!'
                     this.setState({
@@ -425,7 +425,7 @@ class Game extends Component {
                         statusMessage: 'CONGRATS! YOUR TEAM WON!'
                     })
                 }
-                else if(team === 'R'){
+                else {
                     this.setState({
                         statusMessage: 'SORRY! YOUR TEAM LOST!'
                     })
@@ -626,7 +626,9 @@ class Game extends Component {
             this.setState(prevState => {
                 return{
                     winningTeam: winningTeam,
-                    losingTeam: losingTeam
+                    losingTeam: losingTeam,
+                    winningScreenIsOpen: true,
+                    // statusMessage: statusMessage,
                 }
             })
         }
@@ -665,10 +667,13 @@ class Game extends Component {
                         gameid = {this.state.gameid}
                         winningScreenIsOpen = {this.state.winningScreenIsOpen}
                         statusMessage= {this.state.statusMessage}
-                    />
-                    : 
-
-                    <OperativesGame 
+                        team = {this.state.team}
+                        winningTeam = {this.state.winningTeam}
+                        showPopUp = {this.showPopUp}
+                        />
+                        : 
+                        
+                        <OperativesGame 
                         doubleAgent ={this.state.doubleAgent}
                         doubleAgentIndex = {this.state.doubleAgentIndex}
                         room_key = {this.state.room_key}
@@ -680,7 +685,9 @@ class Game extends Component {
                         playersdata = {this.state.playersdata}
                         winningScreenIsOpen = {this.state.winningScreenIsOpen}
                         statusMessage= {this.state.statusMessage}
-                        
+                        team = {this.state.team}
+                        winningTeam = {this.state.winningTeam}
+                        showPopUp = {this.showPopUp}
                     />
                 }
             </div>

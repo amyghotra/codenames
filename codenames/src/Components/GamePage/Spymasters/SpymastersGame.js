@@ -474,8 +474,12 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                             </div>
                                                         </form>
                                                         :
-                                                        <div className='popUp'>
-                                                            <h4>{this.props.statusMessage}</h4>
+                                                        <div className="popUp" >
+                                                        {this.props.team === this.props.winningTeam ? 
+                                                        <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
+                                                        :
+                                                        <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
+                                                        }
                                                         </div>
                                                         }
                                                     </div>

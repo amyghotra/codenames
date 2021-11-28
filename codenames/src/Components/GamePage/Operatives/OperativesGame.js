@@ -39,6 +39,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     }
     componentDidMount = () => { // Doesn't fire?
         this.connect();
+        
     }
 
     /**
@@ -420,7 +421,11 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             </div>
                                             :
                                             <div className="popUp" >
-                                                <h4 className="Status">{this.props.statusMessage}</h4>
+                                                {this.props.team === this.props.winningTeam ? 
+                                                <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
+                                                :
+                                                <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
+                                                }
                                             </div>
                                             }
                                         </div>  {/* Changed back to div from a form */}
