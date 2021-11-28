@@ -116,7 +116,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                     blueteamid: this.props.blueteamid
                 }
             })
-            this.connect();
+            if (this.state.ws === null) {
+                this.connect();
+            }
         }
 
         if (event.playersdata !== this.props.playersdata) {

@@ -55,7 +55,7 @@ class Card extends Component{
                     checked: wordGuessed
                 })
             }
-            if (this.props.task === "O") {
+            if (this.props.task === "O" && this.state.ws === null) {
                 this.connect();
             }
         }
@@ -91,8 +91,8 @@ class Card extends Component{
                 e.reason
             );
 
-            that.timeout = that.timeout + that.timeout; //increment retry interval
-            connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
+            that.timeout = that.timeout + that.timeout; // increment retry interval
+            connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); // call check function after timeout
         };
 
         // websocket onerror event listener
@@ -119,10 +119,6 @@ class Card extends Component{
                         checked: checked
                     }
                 })
-                // Points weren't updating correctly so I'm just pasting this from handleChange
-                this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id) // Race conditions?
-                // This doesn't update it for spymaster's view - but i think they should have checkbox channels
-                // anyway since they're gonna need to see which cards have already been chosen anyways, that'll solve it
             }
         };
         this.setState(prevState => {
@@ -137,7 +133,8 @@ class Card extends Component{
      */
     check = () => {
         const { ws } = this.state.ws;
-        if (!ws || ws.readyState === WebSocket.CLOSED) this.connect(); //check if websocket instance is closed, if so call `connect` function.
+        if (!ws || ws.readyState === WebSocket.CLOSED) this.connect(); 
+        // Check if websocket instance is closed, if so call `connect` function.
     };
 
     handleChange = () => {
@@ -148,11 +145,10 @@ class Card extends Component{
                 turn: !this.state.turn            
             })
             console.log(this.state.checked)
-            this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id) // Moved to Socket's onmessage
+            this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
             localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
             this.socketSend() 
         }
-
     }
 
     
