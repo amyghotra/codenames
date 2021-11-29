@@ -34,15 +34,23 @@ class Game extends Component {
             //Websocket Players
             wsp: null,
             //WebSocket Double Agent
-            doubleAgentWS: ''
+            doubleAgentWS: '',
+
+            ws_turn: null,
+            currentTeam: 'R',
+            currentPlayer: null,
+
+            blueOperatives: [],
+            bIndex: 0,
+            redOperatives: [],
+            rIndex: 0,
+
+            wantedFirst: 'R'
         }
     }
 
-    
+    componentDidMount = async () => {
 
-
-
-    componentDidMount = async () =>{
         let gameWords = this.props.location.state.gameWords;
         for(let i = 0; i < gameWords.length; i++) {
             if(gameWords[i].category === 'D') {
@@ -72,7 +80,18 @@ class Game extends Component {
                     room: this.props.location.state.room_key,
                     game_id: this.props.location.state.gameid,
                     user_id: this.props.location.state.playerid
-                }).then(response =>{
+                }).then(response => {
+
+                    if(this.props.location.state.team === 'B' && this.props.location.state.task === 'O') {
+                        this.setState({
+                            blueOperatives: [...this.state.blueOperatives, response.data]
+                        })
+                    } else if(this.props.location.state.team === 'R' && this.props.location.state.task === 'O') {
+                        this.setState({
+                            redOperatives: [...this.state.redOperatives, response.data]
+                        })
+                    }
+
                     this.setState({
                         playersdata: [...this.state.playersdata, response.data],
                     })
@@ -95,6 +114,7 @@ class Game extends Component {
         })
 
         this.updateGameWords(this.props.location.state.gameid)
+        this.connectTurns()
 
         await axios.get(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`)
         .then(response => {
@@ -123,10 +143,28 @@ class Game extends Component {
         this.connectTeamPoints();
         this.connectPlayers();  
         this.connectDoubleAgent();
+        // if(this.state.currentPlayer === null) {this.setIntial()}
+        // this.setIntial()
 
     }
 
     componentDidUpdate = (prevProps, prevState) => {
+
+        // if(this.state.currentPlayer === null) {
+        //     this.connectTeamPoints();
+        //     this.setIntial()
+        // }
+
+        // if(this.state.currentPlayer === null) {
+        //     console.log("attempt to select initial player")
+        //     this.setIntial()
+        // } else if(this.state.currentPlayer !== null) {
+        //     console.log("player was already set")
+        //     console.log(this.state.currentPlayer)
+        // } else {
+        //     console.log("compdidupdate else stmnt")
+        // }
+
         if(this.state.wsp && this.state.wsp.readyState === 1 && this.state.loadedPlayers === false) {
             console.log('the ready state is working', this.state.playersdata[this.state.playersdata.length-1])
             this.socketSendPlayers(this.state.playersdata[this.state.playersdata.length-1]);
@@ -134,7 +172,95 @@ class Game extends Component {
                 loadedPlayers: true
             })
         }
-    }    
+    }
+
+    setIntial = () => {
+
+        console.log(this.state.redOperatives.length)
+
+        var player;
+        var team;
+        
+        if(this.state.wantedFirst === 'B' && this.state.blueOperatives.length > 0) {
+            player = this.state.blueOperatives[this.state.bIndex].player_id
+            team = 'B'
+            var bIdx = this.state.bIndex + 1
+            this.setState({bIndex: bIdx})
+        } else if(this.state.wantedFirst === 'R' && this.state.redOperatives.length > 0) {
+            player = this.state.redOperatives[this.state.rIndex].player_id
+            team = 'R'
+            var rIdx = this.state.rIndex + 1
+            this.setState({rIndex: rIdx})
+        }
+        this.updateRoundPlayer(team, player, this.state.rIndex, this.state.bIndex)
+        this.setState({
+            currentPlayer: player,
+            currentTeam: team
+        })
+
+    }
+
+    connectTurns = () => {
+        var ws_turn = new WebSocket('ws://localhost:8000/turns/turns/' + this.state.gameid + '/');
+        let that = this; //cache the this
+        var connectInterval;
+
+        //websocket onopen event listener
+        ws_turn.onopen = () => {
+            // console.log('connect team points component');
+            this.setState({ ws_turn: ws_turn });
+
+            that.timeout = 250;
+            clearTimeout(connectInterval);
+        }
+
+        ws_turn.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in ${Math.min(
+                    10000 / 1000,
+                    (that.timeout + that.timeout) / 1000
+                )} second.`,
+                e.reason
+            );
+
+            that.timeout = that.timeout + that.timeout; //increment retry interval
+            connectInterval = setTimeout(this.checkTurns, Math.min(1000, that.timeout));
+        }
+
+        // websocket onerror event listener
+        ws_turn.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            ws_turn.close();
+        };
+
+        ws_turn.onmessage = evt => {
+            // listen to data sent from the websocket server
+            const data = JSON.parse(evt.data)
+            console.log(data)
+            console.log("tryeng to print event out")
+            console.log(evt)
+            // console.log("received clue!")
+            let nextPlayingTeam = data.nextTeam
+            let nextUser= data.nextPlayer
+            this.setState(prevState => {
+                return {
+                    nextTeam: nextPlayingTeam,
+                    nextPlayer: nextUser
+                }
+            })
+        };
+        this.setState(prevState => {
+            return {
+                ws_turn: ws_turn
+            }
+        })
+    }
+
     
     setDoubleAgent = () => {
         let doubleAgent = { ...this.state.doubleAgent}; 
@@ -296,6 +422,49 @@ class Game extends Component {
         const { wstp } = this.state.wstp;
         if (!wstp || wstp.readyState === WebSocket.CLOSED) this.connectTeamPoints(); //check if websocket instance is closed, if so call `connect` function.
     };
+
+    checkTurns = () => {
+        const { ws_turn } = this.state.ws_turn;
+        if (!ws_turn || ws_turn.readyState === WebSocket.CLOSED) this.connectTurns(); //check if websocket instance is closed, if so call `connect` function.
+    };
+
+    // sendTurns = (team, player) => {
+    //     if(team !== null && player !== null ) {
+    //         console.log("in sendturns")
+    //         console.log(team)
+    //         console.log(player)
+    //         console.log("in sendturns")
+    //         if(player !== null && team !== null && this.state.ws_turn !== null) {
+    //             while(WebSocket.CONNECTING){}
+    //             if(WebSocket.OPEN){
+    //             this.state.ws_turn.send(JSON.stringify({
+    //                 'nextTeam': team,
+    //                 'nextPlayer': player
+    //             }))}
+    //         }
+    //     }
+    // }
+
+    sendTurns = (team, player) => {
+        if(player !== null){
+            this.state.ws_turn.send(JSON.stringify({
+                'nextTeam': team,
+                'nextPlayer': player
+            }))
+        }
+        
+        // console.log('this is the incoming players data', data);
+    }
+
+    updateRoundPlayer = (team, player, redIndex, blueIndex) => {
+        this.setState({
+            currentPlayer: player,
+            currentTeam: team,
+            rIndex: redIndex,
+            bIndex: blueIndex
+        })
+        this.sendTurns(team, player)
+    }
     
     socketSendPlayers = (player) => {
         var data = {
@@ -477,6 +646,8 @@ class Game extends Component {
                                     bluePoints = {this.state.blue_score}
                                     playersdata = {this.state.playersdata}
                                     gameid = {this.state.gameid}
+                                    currentTeam = {this.state.currentTeam}
+                                    currentPlayer = {this.state.currentPlayer}
                             />
                         </div>
                         } */}
@@ -515,6 +686,13 @@ class Game extends Component {
                         redPoints = {this.state.red_score}
                         bluePoints = {this.state.blue_score}
                         playersdata = {this.state.playersdata}
+                        gameid = {this.state.gameid}
+                        currentTeam = {this.state.currentTeam}
+                        currentPlayer = {this.state.currentPlayer}
+                        updateRoundPlayer = {this.updateRoundPlayer}
+                        playerid = {this.state.playerid}
+                        bIndex = {this.state.bIndex}
+                        rIndex = {this.state.rIndex}
                     />
                 }
             </div>

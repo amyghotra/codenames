@@ -32,12 +32,14 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             //websocket
             ws: null,
             spymasterClueCount: '0',
-            spymasterClueWord: 'WAITING...'
+            spymasterClueWord: 'WAITING...',
 
         }
 
     }
     componentDidMount = () => { // Doesn't fire?
+        // this.connect();
+        // this.setIntial()
     }
 
     /**
@@ -46,13 +48,13 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
      * constant reconnection if connection closes
      */
      connect = () => {
-        var ws = new WebSocket('ws://localhost:8000/cluebox/cluebox/' + this.props.gameid + '/');
+        var ws = new WebSocket('ws://localhost:8000/ws/game/');
         let that = this; // cache the this
         var connectInterval;
 
         // websocket onopen event listener
         ws.onopen = () => {
-            console.log("connected websocket main component");
+            // console.log("connected websocket main component");
             this.setState({ ws: ws });
 
             that.timeout = 250; // reset timer to 250 on open of websocket connection 
@@ -106,6 +108,22 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     componentDidUpdate = (event) => {
 
+        // console.log("compdidupdate func in op js")
+
+        // if(this.props.currentPlayer !== null && this.state.turn === true) {
+        //     if(this.props.playerid !== this.props.currentPlayer.user_id) {
+        //         this.setState({turn: false})
+        //         console.log("ths player should not be playing right now")
+        //     } else {
+        //         this.setState({turn: true})
+        //         console.log("this player should be playing")
+        //     }
+        // }
+
+        // console.log(this.props.playerid)
+        // console.log(this.props.currentPlayer.user_id)
+
+
         if (event.gameWords !== this.props.gameWords) {
             this.setState(prevState => {
                 return {
@@ -116,9 +134,11 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                     blueteamid: this.props.blueteamid
                 }
             })
+
             if (this.state.ws === null) {
                 this.connect();
             }
+
         }
 
         if (event.playersdata !== this.props.playersdata) {
@@ -288,11 +308,59 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     // For handling the players' submitting their guesses / word picks
     handleEndTurn = () => {
-        this.setState = {
-            turn: !this.state.turn
+        // this.setState = {
+        //     turn: !this.state.turn
+        // }
+        // console.log((this.state.turn) ? "Blue turn" : "Red turn")
+
+        // if(this.props.currentPlayer !== null) {
+        //     if(this.props.playerid !== this.props.currentPlayer.user_id) {
+        //         console.log("ths player should not be playing right now")
+        //         console.log(this.props.playerid)
+        //         console.log(this.props.currentPlayer.user_id)
+        //     } else {
+        //         console.log("this player should be playing")
+        //     }
+        // }
+
+        
+
+        // console.log(this.props.playerid)
+        // console.log(this.props.currentPlayer)
+
+        console.log("handleendturn function")
+
+        var team;
+        var player;
+        var blueIndex = this.props.bIndex
+        var redIndex = this.props.rIndex
+
+        if(this.props.currentTeam === 'R') {
+            team = 'B'
+            console.log("tryig to fetch a blue player")
+            console.log(this.state.blueOperatives.length)
+            player = this.state.blueOperatives[blueIndex]
+            blueIndex += 1
+            if(blueIndex === this.state.blueOperatives.length) {blueIndex = 0}
+
+            this.props.updateRoundPlayer(team, player, redIndex, blueIndex)
+            
+        } else if(this.props.currentTeam === 'B') {
+            team = 'R'
+            console.log("tryig to fetch a red player")
+            console.log(this.state.redOperatives.length)
+            player = this.state.redOperatives[redIndex]
+            redIndex += 1
+            if(redIndex === this.state.redOperatives.length) {redIndex = 0}
+
+            this.props.updateRoundPlayer(team, player, redIndex, blueIndex)
         }
-        console.log((this.state.turn) ? "Blue turn" : "Red turn")
+
+        
+
     }
+
+    
 
     render() {
         return (
@@ -360,7 +428,6 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             this.state.gameWords[3],
                                             this.state.gameWords[4]]}
                                             cardNumbers={[0,1,2,3,4]} // Add in card numbers to distinguish
-                                            gameid={this.state.gameid} // Add in gameid for card websocket
                                             increaseTeamPoints={this.props.increaseTeamPoints} />
                                         <Row task={this.state.task}
                                             rowWords={[this.state.gameWords[5],
@@ -369,7 +436,6 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             this.state.gameWords[8],
                                             this.state.gameWords[9]]}
                                             cardNumbers={[5,6,7,8,9]}
-                                            gameid={this.state.gameid}
                                             increaseTeamPoints={this.props.increaseTeamPoints} />
                                         <Row task={this.state.task}
                                             rowWords={[this.state.gameWords[10],
@@ -378,7 +444,6 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             this.state.gameWords[13],
                                             this.state.gameWords[14]]}
                                             cardNumbers={[10,11,12,13,14]}
-                                            gameid={this.state.gameid}
                                             increaseTeamPoints={this.props.increaseTeamPoints} />
                                         <Row task={this.state.task}
                                             rowWords={[this.state.gameWords[15],
@@ -387,7 +452,6 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             this.state.gameWords[18],
                                             this.state.gameWords[19]]}
                                             cardNumbers={[15,16,17,18,19]}
-                                            gameid={this.state.gameid}
                                             increaseTeamPoints={this.props.increaseTeamPoints} />
                                         <Row task={this.state.task}
                                             rowWords={[this.state.gameWords[20],
@@ -396,16 +460,15 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             this.state.gameWords[23],
                                             this.state.gameWords[24]]}
                                             cardNumbers={[20,21,22,23,24]}
-                                            gameid={this.state.gameid}
                                             increaseTeamPoints={this.props.increaseTeamPoints} />
-
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="d-flex justify-content-end">
-                                                <button className="btn" onChange={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
+                                                <button className="btn" onClick={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
                                             </div>
                                         </div>
                                     </div>
+                                    
                                 </div>  {/* Changed back to div from a form */}
                             </div>
                         </div>
