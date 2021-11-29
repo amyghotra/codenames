@@ -1,6 +1,6 @@
 .game{
     background-image: url(../../../Images/game.png);
-    display: table; 
+    display: table;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -164,26 +164,4 @@ html, body{ /* Add this to fill out the page without using px */
     background-color: rgb(196, 205, 117);
     color:black;
     border: 4px solid rgb(228, 235, 190);
-}
-
-/* .winBox{
-    background-color: white;
-    font-family: "FreeMono", monospace;
-    display:center;
-} */
-.winBox{
-    background:  white;
-    font-family: "FreeMono", monospace;
-    border-radius: 25px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 4px solid rgb(255, 255, 255);
-    padding: 30px;
-    background-size: cover;
-}
-
-.popContainer{
-    height:530px;
 }

@@ -33,22 +33,6 @@ class Game extends Component {
             wstp: null,
             //Websocket Players
             wsp: null,
-
-            //Websocket Win Lose Prompt
-            wswl: null,
-
-            totalBlueCards: 0,
-            totalRedCards: 0,
-
-            winningTeam: '',
-            losingTeam: '',
-
-            winningScreenIsOpen: false,
-            statusMessage: '',
-
-            // currentTeam: '',
-            assassinGuessed: false,
-            
             //WebSocket Double Agent
             doubleAgentWS: ''
         }
@@ -68,7 +52,6 @@ class Game extends Component {
                 })
             }
         }
-        this.setTotalCards(); 
 
         await axios.get('http://127.0.0.1:8000/codenames/players').then(res => {
             this.setState({
@@ -138,36 +121,9 @@ class Game extends Component {
         }
 
         this.connectTeamPoints();
-        this.connectPlayers(); 
-
-        // ATTEMP WS FOR WIN LOSE PROMPT
-        this.connectWinLose(); 
-        
+        this.connectPlayers();  
         this.connectDoubleAgent();
-        
-        /* Just in case of refresh */
-        let totalBlueCards = this.state.totalBlueCards
-        let totalRedCards = this.state.totalRedCards
-        let redPoints = this.state.red_score
-        let bluePoints = this.state.blue_score
 
-
-        if(redPoints === totalRedCards){
-            this.setState({
-                winningTeam: "R",
-                losingTeam: "B",
-            }) 
-            let winningTeam = "R"
-            this.showPopUp(winningTeam)
-        }
-        else if(bluePoints === totalBlueCards){
-            this.setState({
-                winningTeam: "B",
-                losingTeam: "R",
-            })
-            let winningTeam = "B"
-            this.showPopUp(winningTeam)
-        }
     }
 
     componentDidUpdate = (prevProps, prevState) => {
@@ -181,7 +137,6 @@ class Game extends Component {
     }    
     
     setDoubleAgent = () => {
-
         let doubleAgent = { ...this.state.doubleAgent}; 
         doubleAgent.category = this.state.team;
         let agentClicked = this.state.agentClicked;
@@ -191,30 +146,18 @@ class Game extends Component {
             agentClicked
         })
 
-        // localStorage.setItem(this.state.gameid, agentClicked)
-        
-
         axios.put(`http://127.0.0.1:8000/codenames/games/word/${this.state.doubleAgent.word_id}`, doubleAgent)
             .then(res => {
                 console.log(res)
                 this.updateGameWords(this.state.gameid)
-        })
-        if(doubleAgent.category === 'R'){
-            this.setState(prevState => {
-                return {
-                    totalRedCards: prevState.totalRedCards+1,
-                }
             })
-        }
-        else if(doubleAgent.category === 'B'){
-            this.setState(prevState => {
-                return {
-                    totalBlueCards: prevState.totalBlueCards+1,
-                }
-            })
-        }
 
-
+        var data = {
+            "number": this.state.doubleAgentIndex,
+            "team": this.state.team
+        }
+        this.state.doubleAgentWS.send(JSON.stringify(data)) // send to channel
+        console.log(data)
     }
 
     updateGameWords = (gameid) => {
@@ -228,11 +171,6 @@ class Game extends Component {
 
     //from the card component, the words id and its corresponding team will be sent here to increase the points and change the guess to true accordingly
     increaseTeamPoints = (team, word) => {
-        let totalBlueCards = this.state.totalBlueCards
-        let totalRedCards = this.state.totalRedCards
-        let win = this.state.winningTeam
-        let lose = this.state.losingTeam
-
         let redPoints = this.state.red_score
         let bluePoints = this.state.blue_score
         if(team === 'R'){
@@ -277,170 +215,10 @@ class Game extends Component {
                     console.log(response.data)
                 })
 
-
             }
             this.socketSendTeamPoints(redPoints, bluePoints);
         }
-        // if assassin card is guessed
-        else if( team === 'A'){
-            let wordObj = this.state.gameWords.find(w => w.word_id === word);
-            // let currentTeam = this.state.currentTeam;
-            // console.log(currentTeam);
-            if(wordObj.guessed === false) {
-                // bluePoints += 1
-                this.setState({
-                    assassinGuessed: true,
-                })
 
-                if (this.state.team === 'R'){
-                    this.setState({
-                        winningTeam: "B",
-                        losingTeam: "R",
-                    }) 
-                    let winningTeam = "B"
-                    let win = 'B'
-                    let lose = 'R'
-                    this.socketSendWinLose(win, lose)
-                    this.showPopUp(winningTeam)
-                }
-                else if(this.state.team === 'B'){
-                    this.setState({
-                        winningTeam: "R",
-                        losingTeam: "B",
-                    })
-                    let winningTeam= "R"
-                    let win = 'R'
-                    let lose = 'B'
-                    this.socketSendWinLose(win, lose)
-                    this.showPopUp(winningTeam)
-                }
-
-                // localStorage.setItem(this.state.blueteamid, JSON.stringify(bluePoints));
-
-                axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
-                    console.log(response.data)
-                })
-            }
-        }
-
-        if(redPoints === totalRedCards){
-            this.setState({
-                winningTeam: "R",
-                losingTeam: "B",
-            }) 
-            let winningTeam = "R"
-            win = 'R'
-            lose = 'B'
-            
-            // ATTEMPT
-            this.socketSendWinLose(win, lose)
-            console.log('RED WIN')
-
-            this.showPopUp(winningTeam)
-
-        }
-        else if(bluePoints === totalBlueCards){
-            this.setState({
-                winningTeam: "B",
-                losingTeam: "R",
-            })
-            win = 'B'
-            lose = 'R'
-            let winningTeam= "B"
-            // ATTEMPT
-            this.socketSendWinLose(win, lose)
-            console.log('BLUE WIN')
-
-            this.showPopUp(winningTeam)
-
-        }
-
-    }
-
-    // ATTEMPT
-    socketSendWinLose = (winningTeam, losingTeam) => {
-        var data = {
-            "winningTeam": winningTeam,
-            "losingTeam": losingTeam
-        }
-        this.state.wswl.send(JSON.stringify(data))
-        console.log('SENT WIN LOSE TO OTHERS!!!!!!!!!')
-        
-    }
-
-
-    setTotalCards = () => {
-        let gameWords = this.props.location.state.gameWords;
-        for(let i = 0; i < gameWords.length; i++) {
-            if(gameWords[i].category === 'R') {
-                // this.setState({
-                //     doubleAgent: gameWords[i],
-                //     doubleAgentIndex: i
-                // })
-                this.setState(prevState => {
-                    return {
-                        totalRedCards: prevState.totalRedCards+1,
-                    }
-                })
-            }
-            else if(gameWords[i].category === 'B') {
-                // this.setState({
-                //     doubleAgent: gameWords[i],
-                //     doubleAgentIndex: i
-                // })
-                this.setState(prevState => {
-                    return {
-                        totalBlueCards: prevState.totalBlueCards+1,
-                    }
-                })
-            }
-        }
-        //this.showPopUp()
-    }
-
-    showPopUp = (winningTeam) => {
-        //let winningScreenIsOpen = this.state.winningScreenIsOpen
-        let team = this.props.location.state.team
-        console.log(winningTeam)
-        //console.log(winningScreenIsOpen)
-
-        //if there is a winning team
-        if(winningTeam !== ""){
-            this.setState({
-                winningScreenIsOpen: true
-            })//this works
-
-            if(winningTeam === "R"){
-                if(team === 'R'){
-                    //console.log("winning team is R has been called!")
-                    //let statusMessage = 'CONGRATS! YOUR TEAM WON!'
-                    this.setState({
-                        statusMessage: 'CONGRATS! YOUR TEAM WON!'
-                    })
-                }
-                else {
-                    //console.log("winning team is Blue has been called!")
-                    //let statusMessage = 'SORRY! YOUR TEAM LOST!'
-                    this.setState({
-                        statusMessage: 'SORRY! YOUR TEAM LOST!'
-                    })
-                }
-            }
-            else if (winningTeam === "B"){
-                //console.log("winning team is B has been called!")
-                if(team === 'B'){
-                    console.log("winning team is Blue has been called!")
-                    this.setState({
-                        statusMessage: 'CONGRATS! YOUR TEAM WON!'
-                    })
-                }
-                else {
-                    this.setState({
-                        statusMessage: 'SORRY! YOUR TEAM LOST!'
-                    })
-                }
-            }
-        }
     }
 
     socketSendTeamPoints = (red_team_points, blue_team_points) => {
@@ -592,68 +370,12 @@ class Game extends Component {
         if(!wsp || wsp.readyState === WebSocket.CLOSED) this.connectPlayers();
     }
 
-
-    // ATTEMPT WS FOR WIN/LOSE PROMPT 
-    connectWinLose = () => {
-        var wswl = new WebSocket('ws://localhost:8000/winlose/winlose/' + this.state.gameid + '/');
-        let that = this;
-        var connectInterval;
-        wswl.onopen = () => {
-            this.setState({ wswl: wswl})
-            that.timeout = 250
-            clearTimeout(connectInterval)
-        }
-
-        wswl.onclose = e => {
-            console.log(
-                `Socket is closed. Reconnect will be attempted in ${Math.min(
-                    10000 / 1000,
-                    (that.timeout + that.timeout) / 1000
-                )} second.`,
-                e.reason
-            )
-            
-            // increment retry interval
-            that.timeout = that.timeout + that.timeout 
-            connectInterval = setTimeout(this.checkWinLose, Math.min(1000, that.timeout))
-        }
-
-        wswl.onerror = err => {
-            console.error(
-                "Socket encountered error: ",
-                err.message,
-                "Closing socket"
-            )
-
-            wswl.close()
-        }
-        wswl.onmessage = evt => {
-            const data = JSON.parse(evt.data)
-            console.log(data)
-            let winningTeam = data.winningTeam
-            let losingTeam = data.losingTeam
-            this.setState(prevState => {
-                return{
-                    winningTeam: winningTeam,
-                    losingTeam: losingTeam,
-                    winningScreenIsOpen: true,
-                    // statusMessage: statusMessage,
-                }
-            })
-        }
-        this.setState(prevState => {
-            return{
-                wswl: wswl
-            }
-        })
-    }
-
-    checkWinLose = () => {
-        const {wswl} = this.state.wswl
-        if(!wswl || wswl.readyState === WebSocket.CLOSED) this.connectWinLose();
-    }
-
-    connectDoubleAgent = () => {
+    /**
+     * @function connectDoubleAgent
+     * This function establishes the connect with the websocket and also ensures 
+     * constant reconnection if connection closes
+     */
+     connectDoubleAgent = () => {
         var ws = new WebSocket('ws://localhost:8000/doubleagent/doubleagent/' + this.state.gameid + '/');
         let that = this; // cache the this
         var connectInterval;
@@ -718,7 +440,6 @@ class Game extends Component {
         })
     };
 
-
     render() {
         
         return(
@@ -727,41 +448,47 @@ class Game extends Component {
 
                     this.state.task === 'S' ?   
                     
-                    
-                    <SpymastersGame 
-                        doubleAgent ={this.state.doubleAgent}
-                        doubleAgentIndex = {this.state.doubleAgentIndex}
-                        setDoubleAgent = {this.setDoubleAgent}
+                    <div>
+                        {
+                        this.state.agentClicked === false ?
+                        <div>
+                            <button onClick={this.setDoubleAgent}>I WANT FIRST</button> 
+                            <SpymastersGame 
+                                room_key = {this.state.room_key}
+                                gameWords = {this.state.gameWords}
+                                increaseTeamPoints = {this.increaseTeamPoints}
+                                redPoints = {this.state.red_score}
+                                bluePoints = {this.state.blue_score}
+                                playersdata = {this.state.playersdata}
+                                gameid = {this.state.gameid}
+                            />
+                        </div>
+
+                        :
+
+                        <div>
+                            <SpymastersGame 
+                                    room_key = {this.state.room_key}
+                                    gameWords = {this.state.gameWords}
+                                    increaseTeamPoints = {this.increaseTeamPoints}
+                                    redPoints = {this.state.red_score}
+                                    bluePoints = {this.state.blue_score}
+                                    playersdata = {this.state.playersdata}
+                                    gameid = {this.state.gameid}
+                            />
+                        </div>
+                        }
+                    </div>
+                    : 
+
+                    <OperativesGame 
                         room_key = {this.state.room_key}
                         gameWords = {this.state.gameWords}
+                        gameid = {this.state.gameid}
                         increaseTeamPoints = {this.increaseTeamPoints}
                         redPoints = {this.state.red_score}
                         bluePoints = {this.state.blue_score}
                         playersdata = {this.state.playersdata}
-                        gameid = {this.state.gameid}
-                        winningScreenIsOpen = {this.state.winningScreenIsOpen}
-                        statusMessage= {this.state.statusMessage}
-                        team = {this.state.team}
-                        winningTeam = {this.state.winningTeam}
-                        showPopUp = {this.showPopUp}
-                        />
-                        : 
-                        
-                        <OperativesGame 
-                        doubleAgent ={this.state.doubleAgent}
-                        doubleAgentIndex = {this.state.doubleAgentIndex}
-                        room_key = {this.state.room_key}
-                        gameWords = {this.state.gameWords}
-                        gameid = {this.state.gameid}
-                        increaseTeamPoints = {this.increaseTeamPoints}
-                        redPoints = {this.state.red_score}
-                        bluePoints = {this.state.blue_score}
-                        playersdata = {this.state.playersdata}
-                        winningScreenIsOpen = {this.state.winningScreenIsOpen}
-                        statusMessage= {this.state.statusMessage}
-                        team = {this.state.team}
-                        winningTeam = {this.state.winningTeam}
-                        showPopUp = {this.showPopUp}
                     />
                 }
             </div>
