@@ -48,13 +48,13 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
      * constant reconnection if connection closes
      */
      connect = () => {
-        var ws = new WebSocket('ws://localhost:8000/ws/game/');
+        var ws = new WebSocket('ws://localhost:8000/cluebox/cluebox/' + this.props.gameid + '/');
         let that = this; // cache the this
         var connectInterval;
 
         // websocket onopen event listener
         ws.onopen = () => {
-            // console.log("connected websocket main component");
+            console.log("connected websocket main component");
             this.setState({ ws: ws });
 
             that.timeout = 250; // reset timer to 250 on open of websocket connection 
@@ -118,6 +118,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                     blueteamid: this.props.blueteamid
                 }
             })
+            this.connect();
         }
 
         if (event.playersdata !== this.props.playersdata) {

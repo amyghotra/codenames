@@ -48,6 +48,9 @@ class Game extends Component {
 
             // currentTeam: '',
             assassinGuessed: false,
+            
+            //WebSocket Double Agent
+            doubleAgentWS: ''
         }
     }
 
@@ -163,8 +166,7 @@ class Game extends Component {
             let winningTeam = "B"
             this.showPopUp(winningTeam)
         }
-
-        
+        this.connectDoubleAgent();
     }
 
     componentDidUpdate = (prevProps, prevState) => {
@@ -512,7 +514,7 @@ class Game extends Component {
     /**
      * utilited by the @function connect to check if the connection is close, if so attempts to reconnect
      */
-     checkTeamPoints = () => {
+    checkTeamPoints = () => {
         const { wstp } = this.state.wstp;
         if (!wstp || wstp.readyState === WebSocket.CLOSED) this.connectTeamPoints(); //check if websocket instance is closed, if so call `connect` function.
     };
@@ -650,6 +652,71 @@ class Game extends Component {
         if(!wswl || wswl.readyState === WebSocket.CLOSED) this.connectWinLose();
     }
 
+    connectDoubleAgent = () => {
+        var ws = new WebSocket('ws://localhost:8000/doubleagent/doubleagent/' + this.state.gameid + '/');
+        let that = this; // cache the this
+        var connectInterval;
+
+        // websocket onopen event listener
+        ws.onopen = () => {
+            console.log("connected websocket main component");
+            this.setState({ doubleAgentWS: ws });
+
+            that.timeout = 250; // reset timer to 250 on open of websocket connection 
+            clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+        };
+
+        // websocket onclose event listener
+        ws.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in ${Math.min(
+                    10000 / 1000,
+                    (that.timeout + that.timeout) / 1000
+                )} second.`,
+                e.reason
+            );
+
+            that.timeout = that.timeout + that.timeout; //increment retry interval
+            connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
+        };
+
+        // websocket onerror event listener
+        ws.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            ws.close();
+        };
+        ws.onmessage = evt => {
+            // listen to data sent from the websocket server
+            const data = JSON.parse(evt.data)
+            console.log(data)
+            console.log("received clue!")
+            let team = data.team
+
+            let doubleAgent = { ...this.state.doubleAgent}; 
+            doubleAgent.category = team;
+
+            this.setState(prevState => {
+                return {
+                    // Add
+                    agentClicked: true, // Make it so the I WANT FIRST goes away
+                    doubleAgent: doubleAgent
+
+                }
+            })
+            this.updateGameWords(this.state.gameid)
+        };
+        this.setState(prevState => {
+            return {
+                doubleAgentWS: ws
+            }
+        })
+    };
+
 
     render() {
         
@@ -657,7 +724,7 @@ class Game extends Component {
             <div>
                 {
 
-                    this.state.task === 'S' ?
+                    this.state.task === 'S' ?   
                     
                     
                     <SpymastersGame 

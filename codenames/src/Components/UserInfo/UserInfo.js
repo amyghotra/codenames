@@ -23,6 +23,9 @@ class UserInfo extends Component {
             connected_room_key: '',
             redTeamExist: false,
             blueTeamExist: false,
+
+            redTeamSpyMaster: false,
+            blueTeamSpyMaster: false,
         }
     }
 
@@ -74,8 +77,20 @@ class UserInfo extends Component {
                     this.renderTeamId(res.data.game_id)
                 })
             }
+            axios.get('http://127.0.0.1:8000/codenames/players').then(response => {
+                for(let i = 0; i < response.data.length; i++) {
+                    if(response.data[i].game_id === this.state.gameid) {
+                        console.log(response.data[i]);
+                        if(response.data[i].team === "R" && response.data[i].role === "S") {
+                            this.setState({redTeamSpyMaster: true})
+                        }
+                        if(response.data[i].team === "B" && response.data[i].role === "S") {
+                            this.setState({blueTeamSpyMaster: true})
+                        }
+                    }
+                }
+            })
         })
-
 
     }
 
@@ -129,21 +144,24 @@ class UserInfo extends Component {
    
     submitUserInfo = () => {        
         if(this.state.room_key !== null && this.state.nickname !== null && this.state.team !== null && this.state.task !== null) {
-            axios.post('http://127.0.0.1:8000/codenames/userInfo', {
-                connected_room_key:this.props.location.state.room_key,
-                nickname: this.state.nickname, 
-                team: this.state.team,
-                task: this.state.task
-            })
-            .then(response => {
-                this.setState({
-                    playerid: response.data.id
+            if((this.state.team === 'R' && this.state.task === 'S' && this.state.redTeamSpyMaster === false) || (this.state.team === 'B' && this.state.task === 'S' && this.state.blueTeamSpyMaster === false) || (this.state.task === 'O')) {
+                axios.post('http://127.0.0.1:8000/codenames/userInfo', {
+                    connected_room_key:this.props.location.state.room_key,
+                    nickname: this.state.nickname, 
+                    team: this.state.team,
+                    task: this.state.task
                 })
-                this.createGame()
-            })
-            .catch(error => {
-                console.log(error)
-            })
+                .then(response => {
+                    this.setState({
+                        playerid: response.data.id
+                    })
+                    this.createGame()
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            }
+
         }
 
 
@@ -239,7 +257,11 @@ class UserInfo extends Component {
                         spellCheck="false" 
                         onChange={this.handleChange}/><br/>
                         <label className="prompt">Select task</label><br/>
-                        <button className="task" type="button" onClick={this.setSpy}>spymaster</button><br/>
+                        {
+                            (((this.state.team === 'R') && (this.state.redTeamSpyMaster === false)) || ((this.state.team === 'B') && (this.state.blueTeamSpyMaster === false))) ? 
+                            <button className="task" type="button" onClick={this.setSpy}>spymaster</button> : null
+                        }
+                        {/* <br/> */}
                         <button className="task" type="button" onClick={this.setOper}>operator</button>
 
                     </div>

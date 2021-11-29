@@ -54,7 +54,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             "count": this.state.spymasterClueCount,
             "clue": this.state.spymasterClueWord
         }
-        this.state.ws.send(JSON.stringify(data)) // Testing send
+        this.state.ws.send(JSON.stringify(data)) // send to channel
         console.log(data)
     }
 
@@ -64,7 +64,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
      * constant reconnection if connection closes
      */
      connect = () => {
-        var ws = new WebSocket('ws://localhost:8000/ws/game/');
+        var ws = new WebSocket('ws://localhost:8000/cluebox/cluebox/' + this.props.gameid + '/');
         let that = this; // cache the this
         var connectInterval;
 
@@ -151,6 +151,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     
                 }
             })
+            this.connect();
         }
 
         if(event.playersdata !== this.props.playersdata){
@@ -172,7 +173,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         })
         //console.log(players)
 
-        // console.log("Checking how many times this will call the update players!")
+        console.log("Checking how many times this will call the update players!")
         this.updatePlayers(players.playersdata)
     }
 
@@ -213,7 +214,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         //console.log('Update Players Called!');
         let room_key = this.props.room_key;
         //let players = this.props.playersdata;
-        // console.log("Players data: ", players)
+        console.log("Players data: ", players)
         //if(this.state.renderPlayers === true){
 
         for(let i = 0; i < players.length; i++){
