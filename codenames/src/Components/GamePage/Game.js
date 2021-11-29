@@ -489,7 +489,6 @@ class Game extends Component {
                         redPoints = {this.state.red_score}
                         bluePoints = {this.state.blue_score}
                         playersdata = {this.state.playersdata}
-                        gameid = {this.state.gameid}
                     />
                 }
             </div>
