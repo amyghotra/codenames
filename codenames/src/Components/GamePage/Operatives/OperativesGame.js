@@ -39,6 +39,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     }
     componentDidMount = () => { // Doesn't fire?
         this.connect();
+        
     }
 
     /**
@@ -290,120 +291,173 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             turn: !this.state.turn
         }
         console.log((this.state.turn) ? "Blue turn" : "Red turn")
+
     }
 
+    incrementClueCount = () => {
+        this.setState(prevState => { // Update with inline function
+            return {
+                spymasterClueCount: prevState.spymasterClueCount + 1
+            }
+        })
+    }
+    decrementClueCount = () => {
+        this.setState(prevState => {
+            return {
+                spymasterClueCount: prevState.spymasterClueCount - 1
+            }
+        })
+    }
+
+    
+    
     render() {
         return (
-            <div className="game">
-                <br />
-                <h6>OPERATORS</h6>
-                <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-md-12">
+            <div>
+                {(this.state.showredOperatives.length >= 1 && this.state.showblueOperatives.length >=1 && this.state.showredSpymasters.length >= 1 && this.state.showblueSpymasters.length >= 1 ) ?
+                <div className="game">
+                        <br />
+                        <h6>OPERATORS</h6>
+                        <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                        <div className="container-fluid">
                             <div className="row">
-                                <div className="col-md-4">
-                                    <div className="gameScores">
-                                        <div className="redTeam">
-                                            <div>
-                                                <h6 className="teamTitle">Red Team</h6>
-                                                <h6 className="teamScore">{this.props.redPoints}</h6>
-                                            </div>
-                                            <br />
-                                            <br />
-                                            <h6 className="teamContent"> Spymasters:</h6>
-                                            {this.state.showredSpymasters.map((player, index) => (
-                                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
-                                            ))}
-                                            {this.showRedSpymasters}
-
-                                            <h6 className="teamContent"> Operatives:</h6>
-                                            {this.state.showredOperatives.map((player, index) => (
-                                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
-                                            ))}
-                                        </div>
-                                        <br />
-                                        <div className="blueTeam">
-                                            <div>
-                                                <h6 className="teamTitle">Blue Team</h6>
-                                                <h6 className="teamScore">{this.props.bluePoints}</h6>
-                                            </div>
-                                            <br />
-                                            <br />
-                                            <h6 className="teamContent"> Spymasters:</h6>
-                                            {this.state.showblueSpymasters.map((player, index) => (
-                                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
-                                            ))}
-                                            <h6 className="teamContent"> Operatives:</h6>
-                                            {this.state.showblueOperatives.map((player, index) => (
-                                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-7">  {/* Changed back to div from a form */}
+                                <div className="col-md-12">
                                     <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="clueBody">
-                                            <h5 className="clue">Clue: 
-                                                 {' ' + this.state.spymasterClueCount} Card(s)
-                                                 {' ' + this.state.spymasterClueWord}</h5>
+                                        <div className="col-md-4">
+                                            <div className="gameScores">
+                                                <div className="redTeam">
+                                                    <div>
+                                                        <h6 className="teamTitle">Red Team</h6>
+                                                        <h6 className="teamScore">{this.props.redPoints}</h6>
+                                                    </div>
+                                                    <br />
+                                                    <br />
+                                                    <h6 className="teamContent"> Spymasters:</h6>
+                                                    {this.state.showredSpymasters.map((player, index) => (
+                                                        <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                                                    ))}
+                                                    {this.showRedSpymasters}
+        
+                                                    <h6 className="teamContent"> Operatives:</h6>
+                                                    {this.state.showredOperatives.map((player, index) => (
+                                                        <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                                                    ))}
+                                                </div>
+                                                <br />
+                                                <div className="blueTeam">
+                                                    <div>
+                                                        <h6 className="teamTitle">Blue Team</h6>
+                                                        <h6 className="teamScore">{this.props.bluePoints}</h6>
+                                                    </div>
+                                                    <br />
+                                                    <br />
+                                                    <h6 className="teamContent"> Spymasters:</h6>
+                                                    {this.state.showblueSpymasters.map((player, index) => (
+                                                        <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                                                    ))}
+                                                    <h6 className="teamContent"> Operatives:</h6>
+                                                    {this.state.showblueOperatives.map((player, index) => (
+                                                        <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                                                    ))}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <Row task={this.state.task}
-                                            rowWords={[this.state.gameWords[0],
-                                            this.state.gameWords[1],
-                                            this.state.gameWords[2],
-                                            this.state.gameWords[3],
-                                            this.state.gameWords[4]]}
-                                            cardNumbers={[0,1,2,3,4]} // Add in card numbers to distinguish
-                                            increaseTeamPoints={this.props.increaseTeamPoints} />
-                                        <Row task={this.state.task}
-                                            rowWords={[this.state.gameWords[5],
-                                            this.state.gameWords[6],
-                                            this.state.gameWords[7],
-                                            this.state.gameWords[8],
-                                            this.state.gameWords[9]]}
-                                            cardNumbers={[5,6,7,8,9]}
-                                            increaseTeamPoints={this.props.increaseTeamPoints} />
-                                        <Row task={this.state.task}
-                                            rowWords={[this.state.gameWords[10],
-                                            this.state.gameWords[11],
-                                            this.state.gameWords[12],
-                                            this.state.gameWords[13],
-                                            this.state.gameWords[14]]}
-                                            cardNumbers={[10,11,12,13,14]}
-                                            increaseTeamPoints={this.props.increaseTeamPoints} />
-                                        <Row task={this.state.task}
-                                            rowWords={[this.state.gameWords[15],
-                                            this.state.gameWords[16],
-                                            this.state.gameWords[17],
-                                            this.state.gameWords[18],
-                                            this.state.gameWords[19]]}
-                                            cardNumbers={[15,16,17,18,19]}
-                                            increaseTeamPoints={this.props.increaseTeamPoints} />
-                                        <Row task={this.state.task}
-                                            rowWords={[this.state.gameWords[20],
-                                            this.state.gameWords[21],
-                                            this.state.gameWords[22],
-                                            this.state.gameWords[23],
-                                            this.state.gameWords[24]]}
-                                            cardNumbers={[20,21,22,23,24]}
-                                            increaseTeamPoints={this.props.increaseTeamPoints} />
-
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="d-flex justify-content-end">
-                                                <button className="btn" onChange={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
+                                        <div className="col-md-7">  {/* Changed back to div from a form */}
+                                        {/* {!this.props.winningScreenIsOpen ? */}
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    <div className="clueBody">
+                                                    <h5 className="clue">Clue: 
+                                                        {' ' + this.state.spymasterClueCount} Card(s)
+                                                        {' ' + this.state.spymasterClueWord}</h5>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div className="cardsContainer">
+                                                <Row task={this.state.task}
+                                                    rowWords={[this.state.gameWords[0],
+                                                    this.state.gameWords[1],
+                                                    this.state.gameWords[2],
+                                                    this.state.gameWords[3],
+                                                    this.state.gameWords[4]]}
+                                                    cardNumbers={[0,1,2,3,4]} // Add in card numbers to distinguish
+                                                    increaseTeamPoints={this.props.increaseTeamPoints} />
+                                                <Row task={this.state.task}
+                                                    rowWords={[this.state.gameWords[5],
+                                                    this.state.gameWords[6],
+                                                    this.state.gameWords[7],
+                                                    this.state.gameWords[8],
+                                                    this.state.gameWords[9]]}
+                                                    cardNumbers={[5,6,7,8,9]}
+                                                    increaseTeamPoints={this.props.increaseTeamPoints} />
+                                                <Row task={this.state.task}
+                                                    rowWords={[this.state.gameWords[10],
+                                                    this.state.gameWords[11],
+                                                    this.state.gameWords[12],
+                                                    this.state.gameWords[13],
+                                                    this.state.gameWords[14]]}
+                                                    cardNumbers={[10,11,12,13,14]}
+                                                    increaseTeamPoints={this.props.increaseTeamPoints} />
+                                                <Row task={this.state.task}
+                                                    rowWords={[this.state.gameWords[15],
+                                                    this.state.gameWords[16],
+                                                    this.state.gameWords[17],
+                                                    this.state.gameWords[18],
+                                                    this.state.gameWords[19]]}
+                                                    cardNumbers={[15,16,17,18,19]}
+                                                    increaseTeamPoints={this.props.increaseTeamPoints} />
+                                                <Row task={this.state.task}
+                                                    rowWords={[this.state.gameWords[20],
+                                                    this.state.gameWords[21],
+                                                    this.state.gameWords[22],
+                                                    this.state.gameWords[23],
+                                                    this.state.gameWords[24]]}
+                                                    cardNumbers={[20,21,22,23,24]}
+                                                    increaseTeamPoints={this.props.increaseTeamPoints} />
+                                            </div>
+                                            {!this.props.winningScreenIsOpen ?
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    <div className="d-flex justify-content-end">
+                                                        <button className="btn" onChange={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            :
+                                            <div className="popContainer" >
+                                                <div className="winBox">
+                                                {this.props.team === this.props.winningTeam ? 
+                                                <div className="won">
+                                                    <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
+                                                </div>
+                                                :
+                                                <div className="lost">
+                                                    <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
+                                                </div>
+                                                }
+                                                </div>
+                                            </div>
+                                            }
+    
+                                        </div>  {/* Changed back to div from a form */}
                                     </div>
-                                </div>  {/* Changed back to div from a form */}
+                                    
+                                </div> 
                             </div>
                         </div>
+                </div>
+                :
+                <div className="waitingScreen">
+                    <div className= "waitingContainer">
+                        <div class="spinner"></div>
+                        <h4 className="waitingText">
+                            Waiting for players
+                            <span class="one">.</span><span class="two">.</span><span class="three">.</span>
+                        </h4>
                     </div>
                 </div>
+                }
             </div>
         )
     }
