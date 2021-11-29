@@ -35,6 +35,7 @@ class ClueBoxConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+
     def receive(self, text_data):
         """
         Receive a message and broadcast it to a room group

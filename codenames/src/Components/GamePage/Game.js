@@ -277,7 +277,6 @@ class Game extends Component {
                 console.log(res)
                 this.updateGameWords(this.state.gameid)
             })
-
         var data = {
             "number": this.state.doubleAgentIndex,
             "team": this.state.team
@@ -588,19 +587,22 @@ class Game extends Component {
             console.log(data)
             console.log("received clue!")
             let team = data.team
-
-            let doubleAgent = { ...this.state.doubleAgent}; 
-            doubleAgent.category = team;
-
-            this.setState(prevState => {
-                return {
-                    // Add
-                    agentClicked: true, // Make it so the I WANT FIRST goes away
-                    doubleAgent: doubleAgent
-
-                }
-            })
-            this.updateGameWords(this.state.gameid)
+            if (this.state.agentClicked === false && 
+                this.state.gameWords[this.state.doubleAgentIndex].category === 'D') {
+                let doubleAgent = { ...this.state.doubleAgent}; 
+                doubleAgent.category = team;
+                let gameWords = this.state.gameWords;
+                gameWords[this.state.doubleAgentIndex] = doubleAgent;
+                this.setState(prevState => {
+                    return {
+                        // Add
+                        agentClicked: true, // Make it so the I WANT FIRST goes away
+                        doubleAgent: doubleAgent,
+                        gameWords: gameWords
+                    }
+                })
+            }
+            
         };
         this.setState(prevState => {
             return {
@@ -618,7 +620,7 @@ class Game extends Component {
                     this.state.task === 'S' ?   
                     
                     <div>
-                        {
+                        {/* {
                         this.state.agentClicked === false ?
                         <div>
                             <button onClick={this.setDoubleAgent}>I WANT FIRST</button> 
@@ -648,8 +650,32 @@ class Game extends Component {
                                     currentPlayer = {this.state.currentPlayer}
                             />
                         </div>
-                        }
+                        } */}
+
+                        {/* Changed this section so that Spymaster doesn't re-render when FIRST 
+                        button is clicked - ie it has to reload all sockets 
+                        Actually I don't think this does anything but it works and it's more
+                        concise than the above*/}
+                        <div>
+                            {
+                            (this.state.agentClicked === false && 
+                             this.state.gameWords[this.state.doubleAgentIndex].category === 'D') ?
+                             // Adding && ... above makes button not reappear on reload of page
+                                <button onClick={this.setDoubleAgent}>I WANT FIRST</button> :
+                                null
+                            } 
+                            <SpymastersGame 
+                                    room_key = {this.state.room_key}
+                                    gameWords = {this.state.gameWords}
+                                    increaseTeamPoints = {this.increaseTeamPoints}
+                                    redPoints = {this.state.red_score}
+                                    bluePoints = {this.state.blue_score}
+                                    playersdata = {this.state.playersdata}
+                                    gameid = {this.state.gameid}
+                            />
+                        </div>                        
                     </div>
+
                     : 
 
                     <OperativesGame 
