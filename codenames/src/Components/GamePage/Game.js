@@ -142,7 +142,9 @@ class Game extends Component {
 
         // ATTEMP WS FOR WIN LOSE PROMPT
         this.connectWinLose(); 
-
+        
+        this.connectDoubleAgent();
+        
         /* Just in case of refresh */
         let totalBlueCards = this.state.totalBlueCards
         let totalRedCards = this.state.totalRedCards
@@ -166,7 +168,6 @@ class Game extends Component {
             let winningTeam = "B"
             this.showPopUp(winningTeam)
         }
-        this.connectDoubleAgent();
     }
 
     componentDidUpdate = (prevProps, prevState) => {

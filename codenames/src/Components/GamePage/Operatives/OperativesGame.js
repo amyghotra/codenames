@@ -314,7 +314,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     render() {
         return (
             <div>
-                {(this.state.showredOperatives.length >= 1 && this.state.showblueOperatives.length >=1 && this.state.showredSpymasters.length >= 1 && this.state.showblueSpymasters.length >= 1 ) ?
+                {(this.state.showredOperatives.length >= 1 && this.state.showblueOperatives.length >=1 && this.state.showredSpymasters.length === 1 && this.state.showblueSpymasters.length === 1 ) ?
                 <div className="game">
                         <br />
                         <h6>OPERATORS</h6>
