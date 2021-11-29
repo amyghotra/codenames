@@ -50,7 +50,7 @@ class UserInfo extends Component {
     renderGameId = (roomid) => {
 
         let roomidexist = false;
-
+        // Checks to see if the game associated with the room key is created
         axios.get('http://127.0.0.1:8000/codenames/games').then(res => {
             for(let i = 0; i < res.data.length; i++) {
                 if(res.data[i].connected_room_key === roomid) {
@@ -62,6 +62,7 @@ class UserInfo extends Component {
                     this.renderTeamId(res.data[i].game_id)
                 }
             }
+            // if its not already, make a new game
             if(roomidexist === false) {
                 axios.post('http://127.0.0.1:8000/codenames/games', {
                     connected_room_key: roomid
@@ -77,6 +78,7 @@ class UserInfo extends Component {
                     this.renderTeamId(res.data.game_id)
                 })
             }
+            // check to see if the players from the game has any spymasters
             axios.get('http://127.0.0.1:8000/codenames/players').then(response => {
                 for(let i = 0; i < response.data.length; i++) {
                     if(response.data[i].game_id === this.state.gameid) {
@@ -145,6 +147,7 @@ class UserInfo extends Component {
     submitUserInfo = () => {        
         if(this.state.room_key !== null && this.state.nickname !== null && this.state.team !== null && this.state.task !== null) {
             if((this.state.team === 'R' && this.state.task === 'S' && this.state.redTeamSpyMaster === false) || (this.state.team === 'B' && this.state.task === 'S' && this.state.blueTeamSpyMaster === false) || (this.state.task === 'O')) {
+                // add new user
                 axios.post('http://127.0.0.1:8000/codenames/userInfo', {
                     connected_room_key:this.props.location.state.room_key,
                     nickname: this.state.nickname, 
