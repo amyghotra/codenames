@@ -13,6 +13,7 @@ html, body{ /* Add this to fill out the page without using px */
     height: 100%; 
 }
 
+
 .checkboxStructure{
     float: right; /* Get checkbox all the way to the right of the card */
     margin-left: 100%; /* Take up all the space on the left so the word cannot fit next to the box */

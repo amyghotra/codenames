@@ -195,8 +195,118 @@ class DoubleAgentConsumer(WebsocketConsumer):
 
         print("sent double agent") # Each instance of the socket should print this out
 
+class UserInfoConsumer(WebsocketConsumer):
+    def connect(self):
+        """
+        Connect to a chat room
+        Spaces are replaced like this: 'My new room' -> 'My_new_room'
+        """
+         # Get the type of websocket that we called it in routing
+        self.type_name = self.scope['url_route']['kwargs']['type_name']
+        self.type_name = self.type_name.replace(' ', '_')
+        # Get the game id for each game being played
+        self.gameid = self.scope['url_route']['kwargs']['gameid']
+        self.gameid = self.gameid.replace(' ', '_')
+        # Create the full group name
+        self.room_group_name = 'userinfo_' + self.type_name + '_' + self.gameid 
+        # each consumer needs their own separate name
+        # add in game code to the room group here so it creates different channels for each room
 
-#Consumer for Team Points     
+        # Join room group
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+        )
+        self.accept()
+        print("added to userinfo group ", self.room_group_name)
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    def receive(self, text_data):
+        """
+        Receive a message and broadcast it to a room group
+        """   
+        text_data_json = json.loads(text_data)
+        # print(text_data_json)
+        spymasterTeam = text_data_json['spymasterTeam']
+        exists = text_data_json['exists']
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "updateSpymaster", # same as message defined below
+                "spymasterTeam": spymasterTeam,
+                "exists": exists,
+            }
+        )
+
+    def updateSpymaster(self, event): # must be same as 'type': 'updateSpymaster', ~6 lines above
+        """
+        Receive a broadcast message and send it over a websocket
+        """
+        spymasterTeam = event['spymasterTeam']
+        exists = event['exists']
+        self.send(text_data=json.dumps({
+            'spymasterTeam': spymasterTeam,
+            'exists': exists,
+        }))
+
+        # print("sent spymaster") # Each instance of the socket should print this out
+
+
+# ATTEMPT
+class WinLoseConsumer(WebsocketConsumer):
+    def connect(self):
+        self.type_name = self.scope['url_route']['kwargs']['type_name']
+        self.type_name = self.type_name.replace(' ', '_')
+        
+        self.gameid = self.scope['url_route']['kwargs']['gameid']
+        self.gameid = self.gameid.replace(' ', '_')
+
+        self.both_win_lose = 'winlose_' + self.type_name + '_' + self.gameid
+
+        async_to_sync(self.channel_layer.group_add)(
+            self.both_win_lose,
+            self.channel_name
+        )
+        self.accept()
+        print('add both winning and losing team here ', self.both_win_lose)
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)(
+            self.both_win_lose,
+            self.channel_name
+        )
+
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        print('this is the incoming data for win or lose, ', text_data_json)
+        winningTeam = text_data_json['winningTeam']
+        losingTeam = text_data_json['losingTeam']
+
+        async_to_sync(self.channel_layer.group_send)(
+            self.both_win_lose,
+            {
+                "type": "promptWinLose",
+                "winningTeam": winningTeam,
+                "losingTeam": losingTeam
+            }
+        )
+    
+    def promptWinLose(self, event):
+        winningTeam = event['winningTeam']
+        losingTeam = event['losingTeam']
+
+        self.send(text_data=json.dumps({
+            'winningTeam': winningTeam,
+            'losingTeam': losingTeam,
+            # 'statusMessage': statusMessage,
+        }))
+        print('SENT WIN LOSE !!!!!!!!!!!!!!')
+
 class TeamPointsConsumer(WebsocketConsumer):
     def connect(self):
         # Get the type of websocket that we called it in routing
