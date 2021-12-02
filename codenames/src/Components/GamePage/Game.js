@@ -36,9 +36,12 @@ class Game extends Component {
             //WebSocket Double Agent
             doubleAgentWS: '',
 
+            // WebSocket turns
             ws_turn: null,
             currentTeam: 'R',
             currentPlayer: null,
+
+            wsClue: null,
 
             blueOperatives: [],
             bIndex: 0,
@@ -83,10 +86,12 @@ class Game extends Component {
                 }).then(response => {
 
                     if(this.props.location.state.team === 'B' && this.props.location.state.task === 'O') {
+                        console.log("new blue operative")
                         this.setState({
                             blueOperatives: [...this.state.blueOperatives, response.data]
                         })
                     } else if(this.props.location.state.team === 'R' && this.props.location.state.task === 'O') {
+                        console.log("new red operative")
                         this.setState({
                             redOperatives: [...this.state.redOperatives, response.data]
                         })
@@ -141,7 +146,7 @@ class Game extends Component {
         }
 
         this.connectTeamPoints();
-        this.connectPlayers();  
+        this.connectPlayers();
         this.connectDoubleAgent();
         if(this.state.currentPlayer === null) {
             console.log("trying to set initial player")
@@ -152,6 +157,7 @@ class Game extends Component {
             console.log(this.state.currentTeam)
             console.log("was already set")
         }
+        this.connectClue()
         // this.setIntial()
 
     }
@@ -177,13 +183,27 @@ class Game extends Component {
             team = 'B'
             var bIdx = this.state.bIndex + 1
             this.setState({bIndex: bIdx})
-        } else if(this.state.wantedFirst === 'R' && this.state.redOperatives.length > 0) {
-            player = this.state.redOperatives[this.state.rIndex].player_id
+        } else if(this.state.wantedFirst === 'R') {
+            console.log("red team wanted first")
+            console.log(this.state.redOperatives)
+            if(this.state.redOperatives.length == 0) {
+                player = {
+                    operative_screen_name: this.props.location.state.nickname,
+                    team: this.props.location.state.team,
+                    role: this.props.location.state.task,
+                    room: this.props.location.state.room_key,
+                    game_id: this.props.location.state.gameid,
+                    user_id: this.props.location.state.playerid
+                }
+            } else {
+                player = this.state.redOperatives[this.state.rIndex].player_id
+            }
             team = 'R'
             var rIdx = this.state.rIndex + 1
             this.setState({rIndex: rIdx})
         }
         this.state.ws_turn.onopen = () => {
+            console.log("line 187 -- ws open")
             this.updateRoundPlayer(team, player, this.state.rIndex, this.state.bIndex)
             this.setState({
                 currentPlayer: player,
@@ -256,7 +276,6 @@ class Game extends Component {
             }
         })
     }
-
     
     setDoubleAgent = () => {
         let doubleAgent = { ...this.state.doubleAgent}; 
@@ -291,7 +310,8 @@ class Game extends Component {
         })
     }
 
-    canPlay = (team, word) => {
+    //from the card component, the words id and its corresponding team will be sent here to increase the points and change the guess to true accordingly
+    increaseTeamPoints = (team, word) => {
         let redPoints = this.state.red_score
         let bluePoints = this.state.blue_score
         if(team === 'R'){
@@ -339,64 +359,9 @@ class Game extends Component {
             }
             this.socketSendTeamPoints(redPoints, bluePoints);
         }
-    }
-
-    //from the card component, the words id and its corresponding team will be sent here to increase the points and change the guess to true accordingly
-    increaseTeamPoints = (team, word) => {
-        if(this.state.currentTeam === this.state.team) {
-            console.log("user can play")
-            this.canPlay(team, word)
-        } else {
-            console.log("user cannot play")
+        if(team !== this.state.currentTeam) {
+            this.endRoundEarly()
         }
-
-        // let redPoints = this.state.red_score
-        // let bluePoints = this.state.blue_score
-        // if(team === 'R'){
-        //     let wordObj = this.state.gameWords.find(w => w.word_id === word);
-        //     if(wordObj.guessed === false) {
-        //         this.setState(prevState => {
-        //             return {
-        //                 red_score: prevState.red_score+1,
-        //             }
-        //         })
-        //         redPoints += 1
-    
-        //         localStorage.setItem(this.state.redteamid, JSON.stringify(redPoints));
-
-        //         axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
-        //             console.log(response.data)
-        //         })
-        //         axios.patch(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`, {red_team_score: redPoints}).then(response => {
-        //             console.log(response.data)
-        //         })
-        //     }
-            
-        //     this.socketSendTeamPoints(redPoints, bluePoints);
-        //     // this.socketSendPlayers(this.state.playersdata[this.state.playersdata.length-1]);
-        // }
-        // else if(team === 'B'){
-        //     let wordObj = this.state.gameWords.find(w => w.word_id === word);
-        //     if(wordObj.guessed === false) {
-        //         this.setState(prevState => {
-        //             return {
-        //                 blue_score: prevState.blue_score+1,
-        //             }
-        //         })
-        //         bluePoints += 1
-
-        //         localStorage.setItem(this.state.blueteamid, JSON.stringify(bluePoints));
-
-        //         axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
-        //             console.log(response.data)
-        //         })
-        //         axios.patch(`http://127.0.0.1:8000/codenames/blueTeam/${this.state.blueteamid}`, {blue_team_score: bluePoints}).then(response => {
-        //             console.log(response.data)
-        //         })
-
-        //     }
-        //     this.socketSendTeamPoints(redPoints, bluePoints);
-        // }
 
     }
 
@@ -486,6 +451,8 @@ class Game extends Component {
 
         console.log("sendturns")
         console.log(player)
+        console.log(team)
+        console.log(player)
         console.log("sendturns")
         if(player !== null){
             this.state.ws_turn.send(JSON.stringify({
@@ -504,6 +471,35 @@ class Game extends Component {
             bIndex: blueIndex
         })
         this.sendTurns(team, player)
+        // this.clueSocketSend()
+    }
+
+    endRoundEarly = () => {
+        var team;
+        var player;
+        var blueIndex = this.state.bIndex
+        var redIndex = this.state.rIndex
+
+        if(this.state.currentTeam === 'R') {
+            team = 'B'
+            console.log("tryig to fetch a blue player")
+            console.log(this.state.blueOperatives.length)
+            player = this.state.blueOperatives[blueIndex]
+            blueIndex += 1
+            if(blueIndex === this.state.blueOperatives.length) {blueIndex = 0}
+
+            this.updateRoundPlayer(team, player, redIndex, blueIndex)
+            
+        } else if(this.state.currentTeam === 'B') {
+            team = 'R'
+            console.log("tryig to fetch a red player")
+            console.log(this.state.redOperatives.length)
+            player = this.state.redOperatives[redIndex]
+            redIndex += 1
+            if(redIndex === this.state.redOperatives.length) {redIndex = 0}
+
+            this.updateRoundPlayer(team, player, redIndex, blueIndex)
+        }
     }
     
     socketSendPlayers = (player) => {
@@ -575,6 +571,80 @@ class Game extends Component {
     checkPlayers = () => {
         const { wsp } = this.state.wsp;
         if(!wsp || wsp.readyState === WebSocket.CLOSED) this.connectPlayers();
+    }
+
+    connectClue = () => {
+        var wsClue = new WebSocket('ws://localhost:8000/cluebox/cluebox/' + this.props.gameid + '/');
+        let that = this; // cache the this
+        var connectInterval;
+
+        // websocket onopen event listener
+        wsClue.onopen = () => {
+            console.log("connected websocket main component");
+            this.setState({ wsClue: wsClue });
+
+            that.timeout = 250; // reset timer to 250 on open of websocket connection 
+            clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+        };
+
+        // websocket onclose event listener
+        wsClue.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in ${Math.min(
+                    10000 / 1000,
+                    (that.timeout + that.timeout) / 1000
+                )} second.`,
+                e.reason
+            );
+
+            that.timeout = that.timeout + that.timeout; //increment retry interval
+            connectInterval = setTimeout(this.checkClueSocket, Math.min(10000, that.timeout)); //call check function after timeout
+        };
+
+        // websocket onerror event listener
+        wsClue.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            wsClue.close();
+        };
+
+        wsClue.onmessage = evt => {
+            // listen to data sent from the websocket server
+            const data = JSON.parse(evt.data)
+            console.log(data)
+            console.log("received clue!")
+            let count = data.count
+            let clue = data.clue
+            this.setState(prevState => {
+                return {
+                    spymasterClueCount: count,
+                    spymasterClueWord: clue
+                }
+            })
+        };
+        this.setState(prevState => {
+            return {
+                wsClue: wsClue
+            }
+        })
+    };
+    
+    checkClueSocket = () => {
+        const { wsClue } = this.state.wsClue;
+        if (!wsClue || wsClue.readyState === WebSocket.CLOSED) this.connectClue(); //check if websocket instance is closed, if so call `connect` function.
+    };
+
+    clueSocketSend = () => {
+        var data = {
+            "count": 0,
+            "clue": "Waiting..."
+        }
+        this.state.wsClue.send(JSON.stringify(data)) // send to channel
+        console.log(data)
     }
 
     /**

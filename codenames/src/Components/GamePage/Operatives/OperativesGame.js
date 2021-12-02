@@ -34,6 +34,8 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             spymasterClueCount: '0',
             spymasterClueWord: 'WAITING...',
 
+            guessesLeft: 0
+
         }
 
     }
@@ -97,7 +99,8 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             this.setState(prevState => {
                 return {
                     spymasterClueCount: count,
-                    spymasterClueWord: clue
+                    spymasterClueWord: clue,
+                    guessesLeft: count
                 }
             })
         };
@@ -113,20 +116,12 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
         console.log("compdidupdate func in op js START")
         console.log(this.props.currentPlayer)
         console.log(this.props.currentTeam)
+        console.log(this.state.redOperatives)
         console.log("compdidupdate func in op js END")
 
-        // if(this.props.currentPlayer !== null && this.state.turn === true) {
-        //     if(this.props.playerid !== this.props.currentPlayer.user_id) {
-        //         this.setState({turn: false})
-        //         console.log("ths player should not be playing right now")
-        //     } else {
-        //         this.setState({turn: true})
-        //         console.log("this player should be playing")
-        //     }
-        // }
-
-        // console.log(this.props.playerid)
-        // console.log(this.props.currentPlayer.user_id)
+        if(this.state.guessesLeft === 0 && this.state.spymasterClueCount !== '0') {
+            this.handleEndTurn()
+        }
 
 
         if (event.gameWords !== this.props.gameWords) {
@@ -471,13 +466,15 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                             increaseTeamPoints={this.props.increaseTeamPoints}
                                             thisPlayer = {this.props.playerid}
                                             currentAllowedPlayer = {this.props.currentPlayer} />
-                                    {this.props.currentPlayer.user_id === this.props.playerid && <div className="row">
+                                    {/* {this.props.currentPlayer.user_id === this.props.playerid &&  */}
+                                    <div className="row">
                                         <div className="col-md-12">
                                             <div className="d-flex justify-content-end">
                                                 <button className="btn" onClick={this.handleEndTurn}>End Turn</button>
                                             </div>
                                         </div>
-                                    </div>}
+                                    </div>
+                                    {/* } */}
                                     
                                 </div>  {/* Changed back to div from a form */}
                             </div>
