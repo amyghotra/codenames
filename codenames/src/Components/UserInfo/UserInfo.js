@@ -144,7 +144,7 @@ class UserInfo extends Component {
     }
  
     submitUserInfo = () => {        
-        if(this.state.room_key !== null && this.state.nickname !== null && this.state.team !== null && this.state.task !== null) {
+        if(this.state.room_key !== null && this.state.nickname.length > 0 && this.state.team !== null && this.state.task !== null) {
             if((this.state.team === 'R' && this.state.task === 'S' && this.state.redTeamSpyMaster === false) || 
                (this.state.team === 'B' && this.state.task === 'S' && this.state.blueTeamSpyMaster === false) || 
                (this.state.task === 'O')) {
