@@ -7,6 +7,7 @@ from rest_framework import status, viewsets
 from django.http import Http404
 
 # Create your views here.
+
 class RoomList(APIView):
 
     def get(self, request):
