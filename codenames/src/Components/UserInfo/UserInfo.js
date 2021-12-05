@@ -23,6 +23,10 @@ class UserInfo extends Component {
             connected_room_key: '',
             redTeamExist: false,
             blueTeamExist: false,
+
+            redTeamSpyMaster: false,
+            blueTeamSpyMaster: false,
+            userinfoWS: null,
         }
     }
 
@@ -40,7 +44,9 @@ class UserInfo extends Component {
             })
             this.renderGameId(this.props.location.state.roomid)
         })
-
+        if (this.state.userinfoWS === null) {
+            this.connectUserInfo()
+        }
     }
 
     //make the game as long as the roomid exist and if there isnt a game that matches the roomid already
@@ -74,18 +80,29 @@ class UserInfo extends Component {
                     this.renderTeamId(res.data.game_id)
                 })
             }
+            axios.get('http://127.0.0.1:8000/codenames/players').then(response => {
+                for(let i = 0; i < response.data.length; i++) {
+                    if(response.data[i].game_id === this.state.gameid) {
+                        console.log(response.data[i]);
+                        if(response.data[i].team === "R" && response.data[i].role === "S") {
+                            this.setState({redTeamSpyMaster: true})
+                        }
+                        if(response.data[i].team === "B" && response.data[i].role === "S") {
+                            this.setState({blueTeamSpyMaster: true})
+                        }
+                    }
+                }
+            })
         })
-
-
     }
 
     renderTeamId = (gameid) => {
-        console.log('double checking ', gameid);
+        // console.log('double checking ', gameid);
 
         axios.get('http://127.0.0.1:8000/codenames/redTeam').then(res => {
             for(let i = 0; i < res.data.length; i++) {
                 if(res.data[i].game_id === gameid) {
-                    console.log(res.data[i].game_id, ' COMPARED TO ', gameid)
+                    // console.log(res.data[i].game_id, ' COMPARED TO ', gameid)
                     this.setState({
                         redteamid: res.data[i].red_team_id,
                         redTeamExist: true,
@@ -125,34 +142,57 @@ class UserInfo extends Component {
             team: 'B'
         })
     }
-
-   
+ 
     submitUserInfo = () => {        
-        if(this.state.room_key !== null && this.state.nickname !== null && this.state.team !== null && this.state.task !== null) {
-            axios.post('http://127.0.0.1:8000/codenames/userInfo', {
-                connected_room_key:this.props.location.state.room_key,
-                nickname: this.state.nickname, 
-                team: this.state.team,
-                task: this.state.task
-            })
-            .then(response => {
-                this.setState({
-                    playerid: response.data.id
+        if(this.state.room_key !== null && this.state.nickname.length > 0 && this.state.team !== null && this.state.task !== null) {
+            if((this.state.team === 'R' && this.state.task === 'S' && this.state.redTeamSpyMaster === false) || 
+               (this.state.team === 'B' && this.state.task === 'S' && this.state.blueTeamSpyMaster === false) || 
+               (this.state.task === 'O')) {
+                // Socket send here if task is S 
+                if (this.state.task === 'S') {
+                    if (this.state.team === 'R') {
+                        this.setState(prevState => {
+                            return {
+                                redTeamSpyMaster: true
+                            }
+                        })
+                    }
+                    else if (this.state.team === 'B') {
+                        this.setState(prevState => {
+                            return {
+                                blueTeamSpyMaster: true
+                            }
+                        })
+                    }
+                    var data = {
+                        "spymasterTeam": this.state.team,
+                        "exists": true
+                    }
+                    this.state.userinfoWS.send(JSON.stringify(data)) // send to channel
+                    console.log(data)
+                }
+                axios.post('http://127.0.0.1:8000/codenames/userInfo', {
+                    connected_room_key:this.props.location.state.room_key,
+                    nickname: this.state.nickname, 
+                    team: this.state.team,
+                    task: this.state.task
                 })
-                this.createGame()
-            })
-            .catch(error => {
-                console.log(error)
-            })
+                .then(response => {
+                    this.setState({
+                        playerid: response.data.id
+                    })
+                    this.createGame()
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            }
         }
-
-
     }
 
 
     createGame = async () => {
         if (this.state.redTeamExist === false) {
-
             await axios.post('http://127.0.0.1:8000/codenames/redTeam', {
                 game_id: this.state.gameid,
                 connected_room_key: this.state.roomid
@@ -220,10 +260,113 @@ class UserInfo extends Component {
         })
     }
 
+    /**
+     * @function connect
+     * This function establishes the connect with the websocket and also ensures 
+     * constant reconnection if connection closes
+     */
+     connectUserInfo = () => {
+         // Using roomid instead of game id because that doesn't exist yet
+        var ws = new WebSocket('ws://localhost:8000/userinfo/userinfo/' + this.props.location.state.roomid + '/');
+        let that = this; // cache the this
+        var connectInterval;
+
+        // websocket onopen event listener
+        ws.onopen = () => {
+            console.log("connected websocket main component");
+            this.setState({ userinfoWS: ws });
+
+            that.timeout = 250; // reset timer to 250 on open of websocket connection 
+            clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+        };
+
+        // websocket onclose event listener
+        ws.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in ${Math.min(
+                    10000 / 1000,
+                    (that.timeout + that.timeout) / 1000
+                )} second.`,
+                e.reason
+            );
+
+            that.timeout = that.timeout + that.timeout; //increment retry interval
+            connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
+        };
+
+        // websocket onerror event listener
+        ws.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            ws.close();
+        };
+
+        ws.onmessage = evt => {
+            // listen to data sent from the websocket server
+            const data = JSON.parse(evt.data)
+            console.log(data)
+            console.log("received clue!")
+            let spymasterTeam = data.spymasterTeam
+            let exists = data.exists
+            if (spymasterTeam === 'R' && this.state.redTeamSpyMaster !== exists) {
+                if (this.state.team === spymasterTeam) {
+                    this.setState(prevState => {
+                        return {
+                            redTeamSpyMaster: exists,
+                            task: 'O' // Another gameview claimed S on this team already
+                        }
+                    })
+                }
+                else {
+                    this.setState(prevState => {
+                        return {
+                            redTeamSpyMaster: exists
+                        }
+                    })
+                }
+            }
+            else if (spymasterTeam === 'B' && this.state.blueTeamSpyMaster !== exists) {
+                if (this.state.team === spymasterTeam) {
+                    this.setState(prevState => {
+                        return {
+                            blueTeamSpyMaster: exists,
+                            task: 'O'
+                        }
+                    })
+                }
+                else {
+                    this.setState(prevState => {
+                        return {
+                            blueTeamSpyMaster: exists
+                        }
+                    })
+                }
+            }
+        };
+        this.setState(prevState => {
+            return {
+                userinfoWS: ws
+            }
+        })
+    };
+
+    /**
+     * utilited by the @function connect to check if the connection is close, if so attempts to reconnect
+     */
+    checkUserInfo = () => {
+        const { ws } = this.state.ws;
+        if (!ws || ws.readyState === WebSocket.CLOSED) this.connectUserInfo(); //check if websocket instance is closed, if so call `connect` function.
+    };
+
     
     render() {
-        
+
         // const text = this.state.blue_team ? "blue team" : "red Team"
+        
         return(
             <div className="userInfo">
                 <br />
@@ -240,7 +383,11 @@ class UserInfo extends Component {
                         spellCheck="false" 
                         onChange={this.handleChange}/><br/>
                         <label className="prompt">Select task</label><br/>
-                        <button className="task" type="button" onClick={this.setSpy}>spymaster</button><br/>
+                        {
+                            (((this.state.team === 'R') && (this.state.redTeamSpyMaster === false)) || ((this.state.team === 'B') && (this.state.blueTeamSpyMaster === false))) ? 
+                            <button className="task" type="button" onClick={this.setSpy}>spymaster</button> : null
+                        }
+                        {/* <br/> */}
                         <button className="task" type="button" onClick={this.setOper}>operator</button>
 
                     </div>

@@ -61,7 +61,6 @@ CHANNEL_LAYERS = { # ADDED for channels this whole section to settings, not sure
     },
 } 
 
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

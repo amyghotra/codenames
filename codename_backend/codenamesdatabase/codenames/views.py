@@ -7,8 +7,6 @@ from rest_framework import status, viewsets
 from django.http import Http404
 
 # Create your views here.
-def room(request, room_name): # Added for django channels
-    return render(request, 'frontend/room.html') # Not sure if needed at all
 
 class RoomList(APIView):
 

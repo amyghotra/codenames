@@ -1,0 +1,27 @@
+To get Django channels going, install all 3:
+
+$ pip install channels (or pip3)
+$ sudo apt-get install redis
+$ pip install channels_redis (or pip3)
+
+Redis version 5 and above should definitely work, 
+but first test out redis using:
+
+$ redis-cli ping
+PONG (should get this as a response)
+
+$ redis-server
+This will start redis and show its version, at first 
+I had to start redis and keep it up in another terminal 
+whenever I needed to use channels, but now I don't need 
+to do that, I'm not sure why.
+
+I had to update my redis to Redis 6.2.6 (00000000/0) 64 bit
+(I had an error resolving some 'BZPOPMIN' before updating)
+To get a more recent version of redis: 
+
+$ sudo add-apt-repository ppa:redislabs/redis
+$ sudo apt-get update
+$ sudo apt-get install redis
+
+That should be it, just run everything like normal.
