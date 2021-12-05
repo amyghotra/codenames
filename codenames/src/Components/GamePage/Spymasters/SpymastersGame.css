@@ -114,10 +114,10 @@ html, body{ /* Add this to fill out the page without using px */
 .spymasterClue{
     width: 80%;
     height: 100%;
-    border: 15px black;
-    position: relative;
-    background-color: rgba(255,255,255);
+    margin-bottom:10px;
+    background:transparent;
 }
+
 
 .spymasterClue input {
     float: left;
@@ -126,57 +126,62 @@ html, body{ /* Add this to fill out the page without using px */
     position: relative;
     padding: 0px 16px;
     border-radius: 5px;
-    color: black;
-    font-size: 16px;
+    color: white;
+    font-size: 18px;
     font-weight: 400;
     line-height: normal;
     background-color: transparent;
+    transform: translateY(8px);
 }
 
+.clueInput{
+    margin: 5px;
+}
+.clueContainer{
+    background-color: yellow;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    position: relative;
+    /* transform:translateX(650px); */
+    font-size:18px;
+    transform:translate(610px, -20px)
+}
+
+
+
 .counter{
-    background-color: gray;
-    float: right;
+    background-color: rgba(128, 128, 128, 0.813);
+    /* float: right; */
     width: 20%;
-    height: 100%;
+    height: 40px;
+    transform:translateX(5%);
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px
 }
 
 .counter h6{
-    font-size: 20px;
-    text-align: left;
+    font-size: 25px;
+    position: absolute;
+    transform: translateX(20px);
+    margin-top: 5px;
+    /* text-align: center; */
 }
 .counter button{
     float: right;
+    width: 25px;
+    margin: 5px;
+
 }
 
-/*Cards Styling*/
-
-/*.card-style{ /* Not used yet still in progress, trying to get that stylish inner border like in figma 
-    position: relative;
-    background: rgba(255, 255, 255, .0);
-    border: 3px solid rgb(186, 196, 129);
-    border-radius: 12px;
-    height: 30%;
-    width: 80%;
-    margin: 10%;
-} */
-
-.card-deck{
-    height: 90%;
-    background-color: rgb(228, 235, 190);
-    border-radius: 10px;
-    width: 105%;
-}
-
-.card-text{
-    text-align: left;
-    font-family: "FreeMono", monospace;
-}
 
 .btn{
     background-color: rgb(196, 205, 117);
     color:black;
     border: 4px solid rgb(228, 235, 190);
 }
+
 
 
 

@@ -99,51 +99,6 @@ html, body{ /* Add this to fill out the page without using px */
     color: black;
 }
 
-.spymasterClue{
-    width: 80%;
-    height: 100%;
-    border: 15px black;
-    position: relative;
-    background-color: rgba(255,255,255);
-}
-
-.spymasterClue input {
-    float: left;
-    width: 80%;
-    height: 100%;
-    position: relative;
-    padding: 0px 16px;
-    border-radius: 5px;
-    color: black;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: normal;
-    background-color: transparent;
-}
-
-.counter{
-    background-color: gray;
-    float: right;
-    width: 20%;
-    height: 100%;
-}
-
-.counter h6{
-    font-size: 20px;
-    text-align: left;
-}
-.counter button{
-    float: right;
-}
-
-
-.btn{
-    background-color: rgb(196, 205, 117);
-    color:black;
-    border: 4px solid rgb(228, 235, 190);
-}
-
-
 
 /*-----------------------------STATUS BOX-----------------------------------------*/
 .winBox{

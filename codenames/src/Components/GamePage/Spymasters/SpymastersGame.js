@@ -479,6 +479,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                         {!this.props.winningScreenIsOpen ? 
                                                         <form>
                                                             <div className="spymasterClue">
+                                                                <div className= "clueInput">
                                                                 <input
                                                                     type="text"
                                                                     value={this.state.spymasterClueWord}
@@ -486,6 +487,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                                     placeholder="Type clue here"
                                                                     onChange={this.handleChange}
                                                                 />
+                                                                </div>
                                                                 <div className="counter">
                                                                     {/* type = "button" to NOT make it submit the form */}
                                                                     <button type="button" onClick={this.incrementClueCount}>+</button>
@@ -494,9 +496,9 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                                 </div>
     
                                                                 {/* <input type="button" onClick={this.socketSend}>Submit Clue</input> */}
-                                                                <input type="button" onClick={this.socketSend}/>
     
                                                             </div>
+                                                            <input className="clueContainer" type="button" onClick={this.socketSend} value="Submit"/>
                                                         </form>
                                                         :
                                                         <div className="popContainer" >
