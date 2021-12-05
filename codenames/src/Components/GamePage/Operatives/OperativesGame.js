@@ -428,12 +428,18 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                 </div>
                                             </div>
                                             :
-                                            <div className="popUp" >
+                                            <div className="popContainer" >
+                                                <div className="winBox">
                                                 {this.props.team === this.props.winningTeam ? 
-                                                <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
+                                                <div className="won">
+                                                    <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
+                                                </div>
                                                 :
-                                                <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
+                                                <div className="lost">
+                                                    <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
+                                                </div>
                                                 }
+                                                </div>
                                             </div>
                                             }
                                         </div>  {/* Changed back to div from a form */}
@@ -444,7 +450,15 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                         </div>
                 </div>
                 :
-                <div>Waiting for players!</div>
+                <div className="waitingScreen" >
+                    <div className= "waitingContainer">
+                        <div class="spinner"></div>
+                        <h4 className="waitingText">
+                            Waiting for players
+                            <span class="one">.</span><span class="two">.</span><span class="three">.</span>
+                        </h4>
+                    </div>
+                </div>
                 }
             </div>
         )

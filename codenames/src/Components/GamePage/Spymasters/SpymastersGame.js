@@ -499,12 +499,18 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                             </div>
                                                         </form>
                                                         :
-                                                        <div className="popUp" >
-                                                        {this.props.team === this.props.winningTeam ? 
-                                                        <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
-                                                        :
-                                                        <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
-                                                        }
+                                                        <div className="popContainer" >
+                                                            <div className="winBox">
+                                                                {this.props.team === this.props.winningTeam ? 
+                                                                <div className="won">
+                                                                    <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
+                                                                </div>
+                                                                :
+                                                                <div className="lost">
+                                                                    <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
+                                                                </div>
+                                                                }
+                                                            </div>
                                                         </div>
                                                         }
                                                     </div>
@@ -517,8 +523,16 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     </div> 
                     :
                     <div>
-                    <button onClick={this.props.setDoubleAgent}>I want first</button>
-                    <div>Waiting for players!</div>
+                    <div className="waitingScreen">
+                    <div className= "waitingContainer">
+                        <div class="spinner"></div>
+                        <h4 className="waitingText">
+                            Waiting for players
+                            <span class="one">.</span><span class="two">.</span><span class="three">.</span>
+                        </h4>
+                        <button className="waitingButton" onClick={this.props.setDoubleAgent}>I want first</button>
+                    </div>
+                    </div>
                     </div>
                 } 
 
