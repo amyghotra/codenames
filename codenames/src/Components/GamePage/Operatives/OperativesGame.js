@@ -96,6 +96,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                     spymasterClueWord: clue
                 }
             })
+            this.props.setGuessCount(count + 1)
         };
         this.setState(prevState => {
             return {
@@ -288,10 +289,6 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     // For handling the players' submitting their guesses / word picks
     handleEndTurn = () => {
-        // this.setState = {
-        //     turn: !this.state.turn
-        // }
-        // console.log((this.state.turn) ? "Blue turn" : "Red turn")
 
         console.log("handleendturn function")
 

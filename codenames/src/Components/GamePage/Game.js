@@ -57,21 +57,17 @@ class Game extends Component {
             currentTeam: 'R',
             currentPlayer: null,
 
-            wsClue: null,
-
             redOperatives: [],
             blueOperatives: [],
 
             wantedFirst: 'R',
 
             //Ready state for turns
-            turnsReadyState: false
+            turnsReadyState: false,
+
+            guessesLeft: 0
         }
     }
-
-    
-
-
 
     componentDidMount = async () =>{
         let gameWords = this.props.location.state.gameWords;
@@ -217,45 +213,6 @@ class Game extends Component {
                 loadedPlayers: true
             })
         }
-    }
-    
-    setIntial = () => {
-
-        var player;
-        var team;
-
-        if(this.state.wantedFirst === 'B' && this.state.blueOperatives.length > 0) {
-            player = this.state.blueOperatives[this.state.bIndex].player_id
-            team = 'B'
-            var bIdx = this.state.bIndex + 1
-            this.setState({bIndex: bIdx})
-        } else if(this.state.wantedFirst === 'R') {
-            console.log("red team wanted first")
-            console.log(this.state.redOperatives)
-            if(this.state.redOperatives.length === 0) {
-                player = {
-                    operative_screen_name: this.props.location.state.nickname,
-                    team: this.props.location.state.team,
-                    role: this.props.location.state.task,
-                    room: this.props.location.state.room_key,
-                    game_id: this.props.location.state.gameid,
-                    user_id: this.props.location.state.playerid
-                }
-            } else {
-                player = this.state.redOperatives[this.state.rIndex].player_id
-            }
-            team = 'R'
-            var rIdx = this.state.rIndex + 1
-            this.setState({rIndex: rIdx})
-        }
-        // this.state.ws_turn.onopen = () => {
-        //     console.log("line 187 -- ws open")
-            this.updateRoundPlayer(team, player, this.state.rIndex, this.state.bIndex)
-            this.setState({
-                currentPlayer: player,
-                currentTeam: team
-            })
-        // }
     }
 
     connectTurns = () => {
@@ -505,7 +462,12 @@ class Game extends Component {
 
         }
 
-        if(team !== this.state.currentTeam && team !== "A") {
+        var updatedGuesses = this.state.guessesLeft - 1
+        this.setState({
+            guessesLeft: updatedGuesses
+        })
+
+        if((team !== this.state.currentTeam && team !== "A") || updatedGuesses === 0) {
             if(this.state.currentTeam === "B") {
                 this.updateRoundPlayer("R");
             }
@@ -700,8 +662,6 @@ class Game extends Component {
 
     }
 
-    
-
     updateRoundPlayer = (team) => {
         var player;
         var playerlist = [];
@@ -740,7 +700,6 @@ class Game extends Component {
         this.sendTurns(team, player)
         // this.clueSocketSend()
     }
-    
 
     socketSendPlayers = (player) => {
         var data = {
@@ -813,81 +772,6 @@ class Game extends Component {
         const { wsp } = this.state.wsp;
         if(!wsp || wsp.readyState === WebSocket.CLOSED) this.connectPlayers();
     }
-
-    connectClue = () => {
-        var wsClue = new WebSocket('ws://localhost:8000/cluebox/cluebox/' + this.props.gameid + '/');
-        let that = this; // cache the this
-        var connectInterval;
-
-        // websocket onopen event listener
-        wsClue.onopen = () => {
-            console.log("connected websocket main component");
-            this.setState({ wsClue: wsClue });
-
-            that.timeout = 250; // reset timer to 250 on open of websocket connection 
-            clearTimeout(connectInterval); // clear Interval on on open of websocket connection
-        };
-
-        // websocket onclose event listener
-        wsClue.onclose = e => {
-            console.log(
-                `Socket is closed. Reconnect will be attempted in ${Math.min(
-                    10000 / 1000,
-                    (that.timeout + that.timeout) / 1000
-                )} second.`,
-                e.reason
-            );
-
-            that.timeout = that.timeout + that.timeout; //increment retry interval
-            connectInterval = setTimeout(this.checkClueSocket, Math.min(10000, that.timeout)); //call check function after timeout
-        };
-
-        // websocket onerror event listener
-        wsClue.onerror = err => {
-            console.error(
-                "Socket encountered error: ",
-                err.message,
-                "Closing socket"
-            );
-
-            wsClue.close();
-        };
-
-        wsClue.onmessage = evt => {
-            // listen to data sent from the websocket server
-            const data = JSON.parse(evt.data)
-            console.log(data)
-            console.log("received clue!")
-            let count = data.count
-            let clue = data.clue
-            this.setState(prevState => {
-                return {
-                    spymasterClueCount: count,
-                    spymasterClueWord: clue
-                }
-            })
-        };
-        this.setState(prevState => {
-            return {
-                wsClue: wsClue
-            }
-        })
-    };
-
-    checkClueSocket = () => {
-        const { wsClue } = this.state.wsClue;
-        if (!wsClue || wsClue.readyState === WebSocket.CLOSED) this.connectClue(); //check if websocket instance is closed, if so call `connect` function.
-    };
-
-    clueSocketSend = () => {
-        var data = {
-            "count": 0,
-            "clue": "Waiting..."
-        }
-        this.state.wsClue.send(JSON.stringify(data)) // send to channel
-        console.log(data)
-    }
-
 
     // ATTEMPT WS FOR WIN/LOSE PROMPT 
     connectWinLose = () => {
@@ -1035,11 +919,16 @@ class Game extends Component {
     /**
      * utilited by the @function connect to check if the connection is close, if so attempts to reconnect
      */
-     checkDA = () => {
+    checkDA = () => {
         const { ws } = this.state.doubleAgentWS;
         if (!ws || ws.readyState === WebSocket.CLOSED) this.connectDoubleAgent(); //check if websocket instance is closed, if so call `connect` function.
     };
 
+    setGuessCount = (count) => {
+        this.setState({
+            guessesLeft: count
+        })
+    }
 
     render() {
         
@@ -1095,8 +984,7 @@ class Game extends Component {
                         wsturns = {this.state.ws_turn}
                         playerid = {this.state.playerid}
                         playerTeam = {this.state.team}
-                        bIndex = {this.state.bIndex}
-                        rIndex = {this.state.rIndex}
+                        setGuessCount = {this.setGuessCount}
                     />
                 }
             </div>
