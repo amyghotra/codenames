@@ -334,7 +334,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     </div>
                                                     <br />
                                                     <br />
-                                                    <h6 className="teamContent"> Spymasters:</h6>
+                                                    <h6 className="teamContent"> Spymaster:</h6>
                                                     {this.state.showredSpymasters.map((player, index) => (
                                                         <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                                                     ))}
@@ -353,7 +353,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     </div>
                                                     <br />
                                                     <br />
-                                                    <h6 className="teamContent"> Spymasters:</h6>
+                                                    <h6 className="teamContent"> Spymaster:</h6>
                                                     {this.state.showblueSpymasters.map((player, index) => (
                                                         <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                                                     ))}
@@ -455,7 +455,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                             </div>
                             <br />
                             <br />
-                            <h6 className="teamContent"> Spymasters:</h6>
+                            <h6 className="teamContent"> Spymaster:</h6>
                             {this.state.showredSpymasters.map((player, index) => (
                                 <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                             ))}
@@ -473,7 +473,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                             </div>
                             <br />
                             <br />
-                            <h6 className="teamContent"> Spymasters:</h6>
+                            <h6 className="teamContent"> Spymaster:</h6>
                             {this.state.showblueSpymasters.map((player, index) => (
                                 <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                             ))}
