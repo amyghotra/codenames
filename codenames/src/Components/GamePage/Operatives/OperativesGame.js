@@ -288,11 +288,22 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
     // For handling the players' submitting their guesses / word picks
     handleEndTurn = () => {
-        this.setState = {
-            turn: !this.state.turn
-        }
-        console.log((this.state.turn) ? "Blue turn" : "Red turn")
+        // this.setState = {
+        //     turn: !this.state.turn
+        // }
+        // console.log((this.state.turn) ? "Blue turn" : "Red turn")
 
+        console.log("handleendturn function")
+
+        if(this.props.currentTeam === 'R' && this.props.wsturns.readyState === 1) {
+
+            this.props.updateRoundPlayer('B')
+            
+        } else if(this.props.currentTeam === 'B' && this.props.wsturns.readyState === 1) {
+
+            this.props.updateRoundPlayer('R')
+
+        }
     }
 
     incrementClueCount = () => {
@@ -320,7 +331,10 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                 <div className="game">
                         <br />
                         <h6>OPERATORS</h6>
-                        <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                        <div>
+                            {this.props.currentPlayer ? <h6 style={{color: "white", fontSize: "78px"}}>{this.props.currentPlayer.operative_screen_name}</h6> : null}
+                            <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                        </div>
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-md-12">
@@ -382,7 +396,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     this.state.gameWords[4]]}
                                                     cardNumbers={[0,1,2,3,4]} // Add in card numbers to distinguish
                                                     gameid={this.state.gameid} // Add in gameid for card websocket
-                                                    increaseTeamPoints={this.props.increaseTeamPoints} />
+                                                    increaseTeamPoints={this.props.increaseTeamPoints}
+                                                    thisPlayer = {this.props.playerid}
+                                                    currentAllowedPlayer = {this.props.currentPlayer} />
                                                 <Row task={this.state.task}
                                                     rowWords={[this.state.gameWords[5],
                                                     this.state.gameWords[6],
@@ -391,7 +407,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     this.state.gameWords[9]]}
                                                     cardNumbers={[5,6,7,8,9]}
                                                     gameid={this.state.gameid} // Add in gameid for card websocket
-                                                    increaseTeamPoints={this.props.increaseTeamPoints} />
+                                                    increaseTeamPoints={this.props.increaseTeamPoints}
+                                                    thisPlayer = {this.props.playerid}
+                                                    currentAllowedPlayer = {this.props.currentPlayer} />
                                                 <Row task={this.state.task}
                                                     rowWords={[this.state.gameWords[10],
                                                     this.state.gameWords[11],
@@ -400,7 +418,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     this.state.gameWords[14]]}
                                                     cardNumbers={[10,11,12,13,14]}
                                                     gameid={this.state.gameid} // Add in gameid for card websocket
-                                                    increaseTeamPoints={this.props.increaseTeamPoints} />
+                                                    increaseTeamPoints={this.props.increaseTeamPoints}
+                                                    thisPlayer = {this.props.playerid}
+                                                    currentAllowedPlayer = {this.props.currentPlayer} />
                                                 <Row task={this.state.task}
                                                     rowWords={[this.state.gameWords[15],
                                                     this.state.gameWords[16],
@@ -409,7 +429,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     this.state.gameWords[19]]}
                                                     cardNumbers={[15,16,17,18,19]}
                                                     gameid={this.state.gameid} // Add in gameid for card websocket
-                                                    increaseTeamPoints={this.props.increaseTeamPoints} />
+                                                    increaseTeamPoints={this.props.increaseTeamPoints}
+                                                    thisPlayer = {this.props.playerid}
+                                                    currentAllowedPlayer = {this.props.currentPlayer} />
                                                 <Row task={this.state.task}
                                                     rowWords={[this.state.gameWords[20],
                                                     this.state.gameWords[21],
@@ -418,14 +440,19 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     this.state.gameWords[24]]}
                                                     cardNumbers={[20,21,22,23,24]}
                                                     gameid={this.state.gameid} // Add in gameid for card websocket
-                                                    increaseTeamPoints={this.props.increaseTeamPoints} />
+                                                    increaseTeamPoints={this.props.increaseTeamPoints}
+                                                    thisPlayer = {this.props.playerid}
+                                                    currentAllowedPlayer = {this.props.currentPlayer} />
                                             {!this.props.winningScreenIsOpen ?
                                             <div className="row">
-                                                <div className="col-md-12">
-                                                    <div className="d-flex justify-content-end">
-                                                        <button className="btn" onChange={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
+                                                {
+                                                    this.props.playerid && this.props.currentPlayer && this.props.playerid === this.props.currentPlayer.user_id &&
+                                                    <div className="col-md-12">
+                                                        <div className="d-flex justify-content-end">
+                                                            <button className="btn" onClick={this.handleEndTurn}>End Turn</button> {/*  onSubmit / onClick ? */}
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                }
                                             </div>
                                             :
                                             <div className="popUp" >

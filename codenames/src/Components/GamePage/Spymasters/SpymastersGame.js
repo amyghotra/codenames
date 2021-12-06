@@ -161,6 +161,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                 }
             })
         }
+
     }
 
     /*This one will call updatePlayers twice therefore adds it twice but will show normal when refreshed. 
@@ -173,7 +174,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         })
         //console.log(players)
 
-        console.log("Checking how many times this will call the update players!")
+        // console.log("Checking how many times this will call the update players!")
         this.updatePlayers(players.playersdata)
     }
 
@@ -231,7 +232,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         //console.log('Update Players Called!');
         let room_key = this.props.room_key;
         //let players = this.props.playersdata;
-        console.log("Players data: ", players)
+        // console.log("Players data: ", players)
         //if(this.state.renderPlayers === true){
 
         for(let i = 0; i < players.length; i++){
@@ -377,7 +378,10 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     <div className="game" >
                         <br />
                         <h6>SPYMASTERS</h6>
-                        <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                        <div>
+                            {this.props.currentPlayer ? <h6 style={{color: "white", fontSize: "78px"}}>{this.props.currentPlayer.operative_screen_name}</h6> : null}
+                            <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                        </div>
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-md-12">
@@ -478,7 +482,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                     <div className="col-md-12">
                                                         {!this.props.winningScreenIsOpen ? 
                                                         <form>
-                                                            <div className="spymasterClue">
+                                                            {this.props.myTeam === this.props.currentTeam &&<div className="spymasterClue">
                                                                 <input
                                                                     type="text"
                                                                     value={this.state.spymasterClueWord}
@@ -496,7 +500,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                                 {/* <input type="button" onClick={this.socketSend}>Submit Clue</input> */}
                                                                 <input type="button" onClick={this.socketSend}/>
     
-                                                            </div>
+                                                            </div>}
                                                         </form>
                                                         :
                                                         <div className="popUp" >

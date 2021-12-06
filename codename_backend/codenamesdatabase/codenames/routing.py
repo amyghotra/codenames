@@ -3,7 +3,7 @@
 from django.urls import path, re_path
 from .consumers import ClueBoxConsumer, CheckBoxConsumer, DoubleAgentConsumer
 from .consumers import TeamPointsConsumer, PlayersConsumer, UserInfoConsumer 
-from .consumers import WinLoseConsumer, UserInfoConsumer # import all consumers here
+from .consumers import WinLoseConsumer, UserInfoConsumer, TurnConsumer # import all consumers here
 
 ws_urlpatterns = [ # List for path function
     re_path(r'cluebox/(?P<type_name>\w+)/(?P<gameid>(\w|-)+)/$', ClueBoxConsumer.as_asgi()),
@@ -13,4 +13,5 @@ ws_urlpatterns = [ # List for path function
     re_path(r'players/(?P<type_name>\w+)/(?P<gameid>(\w|-)+)/$', PlayersConsumer.as_asgi()),
     re_path(r'winlose/(?P<type_name>\w+)/(?P<gameid>(\w|-)+)/$', WinLoseConsumer.as_asgi()),
     re_path(r'userinfo/(?P<type_name>\w+)/(?P<gameid>(\w|-)+)/$', UserInfoConsumer.as_asgi()),
+    re_path(r'turns/(?P<room_name>(\w|-)+)/$', TurnConsumer.as_asgi()),
 ]

@@ -49,7 +49,10 @@ class Row extends Component{
                             <Card task={this.props.task} word={this.state.rowWords[0]}
                             increaseTeamPoints = {this.props.increaseTeamPoints} 
                             gameid={this.props.gameid}
-                            number={this.state.cardNumbers[0]}/>
+                            number={this.state.cardNumbers[0]}
+                            thisPlayer = {this.props.thisPlayer}
+                            currentAllowedPlayer = {this.props.currentAllowedPlayer}
+                            />
                         </div></div>
                     </div>
 
@@ -59,7 +62,10 @@ class Row extends Component{
                             <Card task={this.props.task} word={this.state.rowWords[1]}
                             increaseTeamPoints = {this.props.increaseTeamPoints}
                             gameid={this.props.gameid}
-                            number={this.state.cardNumbers[1]}/>
+                            number={this.state.cardNumbers[1]}
+                            thisPlayer = {this.props.thisPlayer}
+                            currentAllowedPlayer = {this.props.currentAllowedPlayer}
+                            />
                         </div></div>
                     </div>
 
@@ -70,7 +76,10 @@ class Row extends Component{
                             <Card task={this.props.task} word={this.state.rowWords[2]}
                             increaseTeamPoints = {this.props.increaseTeamPoints}
                             gameid={this.props.gameid}
-                            number={this.state.cardNumbers[2]}/>
+                            number={this.state.cardNumbers[2]}
+                            thisPlayer = {this.props.thisPlayer}
+                            currentAllowedPlayer = {this.props.currentAllowedPlayer}
+                            />
                         </div></div> 
                     </div>
 
@@ -81,7 +90,10 @@ class Row extends Component{
                             <Card task={this.props.task} word={this.state.rowWords[3]}
                             increaseTeamPoints = {this.props.increaseTeamPoints}
                             gameid={this.props.gameid}
-                            number={this.state.cardNumbers[3]}/>
+                            number={this.state.cardNumbers[3]}
+                            thisPlayer = {this.props.thisPlayer}
+                            currentAllowedPlayer = {this.props.currentAllowedPlayer}
+                            />
                         </div></div>
                     </div>
 
@@ -92,7 +104,10 @@ class Row extends Component{
                             <Card task={this.props.task} word={this.state.rowWords[4]}
                             increaseTeamPoints = {this.props.increaseTeamPoints}
                             gameid={this.props.gameid}
-                            number={this.state.cardNumbers[4]}/>
+                            number={this.state.cardNumbers[4]}
+                            thisPlayer = {this.props.thisPlayer}
+                            currentAllowedPlayer = {this.props.currentAllowedPlayer}
+                            />
                         </div></div>
                     </div>
                     </div>
