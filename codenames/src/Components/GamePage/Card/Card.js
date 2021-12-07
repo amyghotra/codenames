@@ -139,17 +139,35 @@ class Card extends Component{
         // Check if websocket instance is closed, if so call `connect` function.
     };
 
-    handleChange = () => {
+    handleChange = (e) => {
 
-        if(!this.state.checked) {
+        // if(!this.state.checked) {
+        //     this.setState({
+        //         checked: true,
+        //         turn: !this.state.turn            
+        //     })
+        //     console.log(this.state.checked)
+        //     this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
+        //     localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
+        //     this.socketSend() 
+        // }
+
+        if(this.props.currentAllowedPlayer !== null && this.props.currentAllowedPlayer.user_id !== null) {
+            if(!this.state.checked && this.props.currentAllowedPlayer.user_id === this.props.thisPlayer) {
+                this.setState({
+                    checked: true,
+                    turn: !this.state.turn            
+                })
+                console.log(this.state.checked)
+                this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id) // Moved to Socket's onmessage
+                localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
+                this.socketSend() 
+            }
+        } else { 
+            e.target.checked = false
             this.setState({
-                checked: true,
-                turn: !this.state.turn            
+                checked: false      
             })
-            console.log(this.state.checked)
-            this.props.increaseTeamPoints(this.state.content.category, this.state.content.word_id)
-            localStorage.setItem(this.state.content.word_id, JSON.stringify(true))
-            this.socketSend() 
         }
 
     }
@@ -167,6 +185,8 @@ class Card extends Component{
                         id = "checkbox"
                         type = "checkbox"
 						checked = {this.state.checked}
+                        disabled = {this.props.currentAllowedPlayer && this.props.thisPlayer !== this.props.currentAllowedPlayer.user_id}
+                        // disabled = {false}
                         onChange={this.handleChange}/><br/> {/* onChange */}
                 <div>
                 {(!this.state.checked) ?
