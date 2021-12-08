@@ -129,7 +129,7 @@ class Landing extends Component {
                                 value={this.state.inputValue} 
                                 onChange={this.handleChange}/>
                                 <div className="input-group-append">
-                                    <button className="btn btn-outline-secondary" type="button" onClick={this.submitInput}>Button</button>
+                                    <button className="btn btn-outline-secondary" type="button" onClick={this.submitInput}>Join</button>
                                 </div>
                             </div>
 

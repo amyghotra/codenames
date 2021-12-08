@@ -372,7 +372,7 @@ class UserInfo extends Component {
                 <br />
                 <h6 className="gameCode"> Game Code: {this.state.room_key} </h6>
                 <form className="container">
-                    <div className="box-userInfo-left">
+                    <div className="box-userName">
                         <label className="prompt">Enter nickname</label><br/><br/>
                         <input 
                         className="nickname" 
@@ -382,21 +382,22 @@ class UserInfo extends Component {
                         placeholder="Nickname" 
                         spellCheck="false" 
                         onChange={this.handleChange}/><br/>
-                        <label className="prompt">Select task</label><br/>
-                        {
-                            (((this.state.team === 'R') && (this.state.redTeamSpyMaster === false)) || ((this.state.team === 'B') && (this.state.blueTeamSpyMaster === false))) ? 
-                            <button className="task" type="button" onClick={this.setSpy}>spymaster</button> : null
-                        }
-                        {/* <br/> */}
-                        <button className="task" type="button" onClick={this.setOper}>operator</button>
 
                     </div>
-                    <div className="box-userInfo-right">
+                    <div className="box-userTeam">
                         <label className="prompt">Choose a team</label><br/>
                         <input className="red" type="button" onClick={this.setRed}></input><br/>
                         {/* <p>{text}</p> */}
                         <input className="blue" type="button" onClick={this.setBlue}></input><br/>
                         
+                    </div>
+                    <div className="box-userTask">
+                        <label className="prompt">Select task</label><br/>
+                        {
+                            (((this.state.team === 'R') && (this.state.redTeamSpyMaster === false)) || ((this.state.team === 'B') && (this.state.blueTeamSpyMaster === false))) ? 
+                            <button className="task" type="button" onClick={this.setSpy}>spymaster</button> : null
+                        }
+                        <button className="task" type="button" onClick={this.setOper}>operator</button>
                     </div>
                     {this.renderRedirect()}
                     <button className="startBtn" type="button" onClick={this.submitUserInfo}>Start!</button>
