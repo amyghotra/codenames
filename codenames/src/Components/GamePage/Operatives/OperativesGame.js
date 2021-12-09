@@ -31,9 +31,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
             //websocket
             ws: null,
-            spymasterClueCount: '0',
-            spymasterClueWord: 'WAITING...'
-
+            spymasterClueCount: 0,
+            spymasterClueWord: 'WAITING FOR CLUE...', 
+            resetClue: false,
         }
 
     }
@@ -129,6 +129,22 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                 }
             })
         }
+        if (this.state.resetClue !== this.props.resetClue) {
+            this.setState(prevState => {
+                return {
+                    resetClue: this.props.resetClue,
+                    spymasterClueCount: 0,
+                    spymasterClueWord: 'WAITING FOR CLUE...'
+                }
+            })
+            var data = {
+                "count": 0,
+                "clue": 'WAITING FOR CLUE...'
+            }
+            this.state.ws.send(JSON.stringify(data)) // send to channel
+            console.log(data)
+        }
+        
     }
 
     /*This one will call updatePlayers twice therefore adds it twice but will show normal when refreshed. 
@@ -324,7 +340,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             <div>
                 {(this.state.showredOperatives.length >= 1 && this.state.showblueOperatives.length >=1 && 
                   this.state.showredSpymasters.length === 1 && this.state.showblueSpymasters.length === 1) && 
-                  (this.props.agentClicked === true || this.props.gameWords[this.props.doubleAgentIndex].category !== 'D') ?
+                  (this.props.agentClicked === true || this.props.gameWords[this.props.doubleAgentIndex].category !== 'D') ? // Causing a bug???
                 <div className="game">
                         <br />
                         <h6>OPERATORS</h6>
@@ -345,7 +361,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     </div>
                                                     <br />
                                                     <br />
-                                                    <h6 className="teamContent"> Spymasters:</h6>
+                                                    <h6 className="teamContent"> Spymaster:</h6>
                                                     {this.state.showredSpymasters.map((player, index) => (
                                                         <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                                                     ))}
@@ -364,7 +380,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     </div>
                                                     <br />
                                                     <br />
-                                                    <h6 className="teamContent"> Spymasters:</h6>
+                                                    <h6 className="teamContent"> Spymaster:</h6>
                                                     {this.state.showblueSpymasters.map((player, index) => (
                                                         <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                                                     ))}
@@ -395,7 +411,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     gameid={this.state.gameid} // Add in gameid for card websocket
                                                     increaseTeamPoints={this.props.increaseTeamPoints}
                                                     thisPlayer = {this.props.playerid}
-                                                    currentAllowedPlayer = {this.props.currentPlayer} />
+                                                    currentAllowedPlayer = {this.props.currentPlayer}
+                                                    spymasterClueCount = {this.state.spymasterClueCount}
+                                                    spymasterClueWord = {this.state.spymasterClueWord} />
                                                 <Row task={this.state.task}
                                                     rowWords={[this.state.gameWords[5],
                                                     this.state.gameWords[6],
@@ -406,7 +424,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     gameid={this.state.gameid} // Add in gameid for card websocket
                                                     increaseTeamPoints={this.props.increaseTeamPoints}
                                                     thisPlayer = {this.props.playerid}
-                                                    currentAllowedPlayer = {this.props.currentPlayer} />
+                                                    currentAllowedPlayer = {this.props.currentPlayer} 
+                                                    spymasterClueCount = {this.state.spymasterClueCount}
+                                                    spymasterClueWord = {this.state.spymasterClueWord} />
                                                 <Row task={this.state.task}
                                                     rowWords={[this.state.gameWords[10],
                                                     this.state.gameWords[11],
@@ -417,7 +437,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     gameid={this.state.gameid} // Add in gameid for card websocket
                                                     increaseTeamPoints={this.props.increaseTeamPoints}
                                                     thisPlayer = {this.props.playerid}
-                                                    currentAllowedPlayer = {this.props.currentPlayer} />
+                                                    currentAllowedPlayer = {this.props.currentPlayer}
+                                                    spymasterClueCount = {this.state.spymasterClueCount}
+                                                    spymasterClueWord = {this.state.spymasterClueWord} />
                                                 <Row task={this.state.task}
                                                     rowWords={[this.state.gameWords[15],
                                                     this.state.gameWords[16],
@@ -428,7 +450,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     gameid={this.state.gameid} // Add in gameid for card websocket
                                                     increaseTeamPoints={this.props.increaseTeamPoints}
                                                     thisPlayer = {this.props.playerid}
-                                                    currentAllowedPlayer = {this.props.currentPlayer} />
+                                                    currentAllowedPlayer = {this.props.currentPlayer}
+                                                    spymasterClueCount = {this.state.spymasterClueCount}
+                                                    spymasterClueWord = {this.state.spymasterClueWord} />
                                                 <Row task={this.state.task}
                                                     rowWords={[this.state.gameWords[20],
                                                     this.state.gameWords[21],
@@ -439,7 +463,9 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     gameid={this.state.gameid} // Add in gameid for card websocket
                                                     increaseTeamPoints={this.props.increaseTeamPoints}
                                                     thisPlayer = {this.props.playerid}
-                                                    currentAllowedPlayer = {this.props.currentPlayer} />
+                                                    currentAllowedPlayer = {this.props.currentPlayer}
+                                                    spymasterClueCount = {this.state.spymasterClueCount}
+                                                    spymasterClueWord = {this.state.spymasterClueWord} />
                                             {!this.props.winningScreenIsOpen ?
                                             <div className="row">
                                                 {
@@ -468,7 +494,46 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                         </div>
                 </div>
                 :
-                <div>Waiting for players!</div>
+                <div className="game">
+                    <h6 className="popUp"> Waiting for players, operative! </h6>
+                    <br />
+                    <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                    <div className="gameScores">
+                        <div className="redTeam">
+                            <div>
+                                <h6 className="teamTitle">Red Team</h6>
+                            </div>
+                            <br />
+                            <br />
+                            <h6 className="teamContent"> Spymaster:</h6>
+                            {this.state.showredSpymasters.map((player, index) => (
+                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                            ))}
+                            {this.showRedSpymasters}
+
+                            <h6 className="teamContent"> Operatives:</h6>
+                            {this.state.showredOperatives.map((player, index) => (
+                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                            ))}
+                        </div>
+                        <br />
+                        <div className="blueTeam">
+                            <div>
+                                <h6 className="teamTitle">Blue Team</h6>
+                            </div>
+                            <br />
+                            <br />
+                            <h6 className="teamContent"> Spymaster:</h6>
+                            {this.state.showblueSpymasters.map((player, index) => (
+                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                            ))}
+                            <h6 className="teamContent"> Operatives:</h6>
+                            {this.state.showblueOperatives.map((player, index) => (
+                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                            ))}
+                        </div>
+                    </div>
+                </div>
                 }
             </div>
         )

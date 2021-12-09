@@ -65,7 +65,8 @@ class Game extends Component {
             //Ready state for turns
             turnsReadyState: false,
 
-            guessesLeft: 0
+            guessesLeft: 0, 
+            resetClue: false,
         }
     }
 
@@ -659,6 +660,9 @@ class Game extends Component {
                 'nextPlayer': player
             }))
         }
+        this.setState({
+            resetClue: true
+        })
 
     }
 
@@ -985,6 +989,8 @@ class Game extends Component {
                         playerid = {this.state.playerid}
                         playerTeam = {this.state.team}
                         setGuessCount = {this.setGuessCount}
+                        resetClue = {this.state.resetClue}
+                        guessesLeft = {this.state.guessesLeft}
                     />
                 }
             </div>
