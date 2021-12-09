@@ -35,6 +35,7 @@ class ClueBoxConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+
     def receive(self, text_data):
         """
         Receive a message and broadcast it to a room group
@@ -194,6 +195,67 @@ class DoubleAgentConsumer(WebsocketConsumer):
 
         print("sent double agent") # Each instance of the socket should print this out
 
+class UserInfoConsumer(WebsocketConsumer):
+    def connect(self):
+        """
+        Connect to a chat room
+        Spaces are replaced like this: 'My new room' -> 'My_new_room'
+        """
+         # Get the type of websocket that we called it in routing
+        self.type_name = self.scope['url_route']['kwargs']['type_name']
+        self.type_name = self.type_name.replace(' ', '_')
+        # Get the game id for each game being played
+        self.gameid = self.scope['url_route']['kwargs']['gameid']
+        self.gameid = self.gameid.replace(' ', '_')
+        # Create the full group name
+        self.room_group_name = 'userinfo_' + self.type_name + '_' + self.gameid 
+        # each consumer needs their own separate name
+        # add in game code to the room group here so it creates different channels for each room
+
+        # Join room group
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+        )
+        self.accept()
+        print("added to userinfo group ", self.room_group_name)
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    def receive(self, text_data):
+        """
+        Receive a message and broadcast it to a room group
+        """   
+        text_data_json = json.loads(text_data)
+        # print(text_data_json)
+        spymasterTeam = text_data_json['spymasterTeam']
+        exists = text_data_json['exists']
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "updateSpymaster", # same as message defined below
+                "spymasterTeam": spymasterTeam,
+                "exists": exists,
+            }
+        )
+
+    def updateSpymaster(self, event): # must be same as 'type': 'updateSpymaster', ~6 lines above
+        """
+        Receive a broadcast message and send it over a websocket
+        """
+        spymasterTeam = event['spymasterTeam']
+        exists = event['exists']
+        self.send(text_data=json.dumps({
+            'spymasterTeam': spymasterTeam,
+            'exists': exists,
+        }))
+
+        # print("sent spymaster") # Each instance of the socket should print this out
+
 
 # ATTEMPT
 class WinLoseConsumer(WebsocketConsumer):
@@ -341,3 +403,53 @@ class PlayersConsumer(WebsocketConsumer):
         }))
 
         print('sent all players')
+
+
+    # Websocket for turns
+class TurnConsumer(WebsocketConsumer):
+
+    def connect(self):
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        self.room_name = self.room_name.replace(' ', '_')
+        self.room_group_name = 'clue_%s' % self.room_name # each consumer needs their own separate name
+
+        # Join room group
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+        )
+        self.accept()
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    def receive(self, text_data):
+        print("received turn data")
+        print(text_data)
+        text_data_json = json.loads(text_data)
+        nextTeam = text_data_json['nextTeam']
+        nextPlayer = text_data_json['nextPlayer']
+
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                "type": "turnChange", # same as message defined below
+                "nextTeam": nextTeam,
+                "nextPlayer": nextPlayer
+            }
+        )
+
+    def turnChange(self, event):
+        print("turnchange function called")
+        nextTeam = event['nextTeam']
+        nextPlayer = event['nextPlayer']
+
+        self.send(text_data=json.dumps({
+            'nextTeam': nextTeam,
+            'nextPlayer': nextPlayer,
+        }))
+
+        print("finished sending data to other players")

@@ -45,9 +45,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     }
 
     componentDidMount = () => {
-        this.connect();
-       
-    }
+    } // Don't add this.connect()
 
     socketSend = () => {
         var data = {
@@ -151,7 +149,9 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     
                 }
             })
-            this.connect();
+            if (this.state.ws === null) {
+                this.connect();
+            }
         }
 
         if(event.playersdata !== this.props.playersdata){
@@ -161,6 +161,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                 }
             })
         }
+
     }
 
     /*This one will call updatePlayers twice therefore adds it twice but will show normal when refreshed. 
@@ -173,7 +174,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         })
         //console.log(players)
 
-        console.log("Checking how many times this will call the update players!")
+        // console.log("Checking how many times this will call the update players!")
         this.updatePlayers(players.playersdata)
     }
 
@@ -193,18 +194,35 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         console.log(this.state.spymasterClueWord, this.state.spymasterClueCount)
     }
     incrementClueCount = () => {
-        this.setState(prevState => { // Update with inline function
-            return {
-                spymasterClueCount: prevState.spymasterClueCount + 1
+        if (this.props.team === 'R') {
+            if (this.state.spymasterClueCount + 1 <= 8 - (this.props.redPoints) + 
+               (this.state.gameWords[this.props.doubleAgentIndex].category === 'R')) {
+                this.setState(prevState => { // Update with inline function
+                    return {
+                        spymasterClueCount: prevState.spymasterClueCount + 1
+                    }
+                })
             }
-        })
+        }
+        else if (this.props.team === 'B') {
+            if (this.state.spymasterClueCount + 1 <= 8 - (this.props.bluePoints) + 
+               (this.state.gameWords[this.props.doubleAgentIndex].category === 'B')) {
+                this.setState(prevState => { // Update with inline function
+                    return {
+                        spymasterClueCount: prevState.spymasterClueCount + 1
+                    }
+                })
+            }
+        }
     }
     decrementClueCount = () => {
-        this.setState(prevState => {
-            return {
-                spymasterClueCount: prevState.spymasterClueCount - 1
-            }
-        })
+        if (this.state.spymasterClueCount - 1 >= 0) {
+            this.setState(prevState => {
+                return {
+                    spymasterClueCount: prevState.spymasterClueCount - 1
+                }
+            })
+        }
     }
 
     /*Issues: Being called twice so it adds double the amount until you refresh the page.
@@ -214,7 +232,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         //console.log('Update Players Called!');
         let room_key = this.props.room_key;
         //let players = this.props.playersdata;
-        console.log("Players data: ", players)
+        // console.log("Players data: ", players)
         //if(this.state.renderPlayers === true){
 
         for(let i = 0; i < players.length; i++){
@@ -354,11 +372,16 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         
         return(
             <div>
-                {(this.state.showredOperatives.length >= 1 && this.state.showblueOperatives.length >=1 && this.state.showredSpymasters.length >= 1 && this.state.showblueSpymasters.length >= 1) ?
+                {(this.state.showredOperatives.length >= 1 && this.state.showblueOperatives.length >=1 && 
+                  this.state.showredSpymasters.length === 1 && this.state.showblueSpymasters.length === 1) && 
+                  (this.props.agentClicked === true || this.props.gameWords[this.props.doubleAgentIndex].category !== 'D') ?
                     <div className="game" >
                         <br />
                         <h6>SPYMASTERS</h6>
-                        <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                        <div>
+                            {this.props.currentPlayer ? <h6 style={{color: "white", fontSize: "78px"}}>{this.props.currentPlayer.operative_screen_name}</h6> : null}
+                            <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                        </div>
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-md-12">
@@ -414,6 +437,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                             this.state.gameWords[3],
                                                             this.state.gameWords[4]]}
                                                             cardNumbers={[0,1,2,3,4]} // Add in card numbers to distinguish
+                                                            gameid={this.state.gameid} // Add in gameid for card websocket
                                                             increaseTeamPoints={this.props.increaseTeamPoints} />
                                                         <Row task={this.state.task}
                                                             rowWords={[this.state.gameWords[5],
@@ -422,6 +446,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                             this.state.gameWords[8],
                                                             this.state.gameWords[9]]}
                                                             cardNumbers={[5,6,7,8,9]}
+                                                            gameid={this.state.gameid} // Add in gameid for card websocket
                                                             increaseTeamPoints={this.props.increaseTeamPoints} />
                                                         <Row task={this.state.task}
                                                             rowWords={[this.state.gameWords[10],
@@ -430,6 +455,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                             this.state.gameWords[13],
                                                             this.state.gameWords[14]]}
                                                             cardNumbers={[10,11,12,13,14]}
+                                                            gameid={this.state.gameid} // Add in gameid for card websocket
                                                             increaseTeamPoints={this.props.increaseTeamPoints} />
                                                         <Row task={this.state.task}
                                                             rowWords={[this.state.gameWords[15],
@@ -438,6 +464,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                             this.state.gameWords[18],
                                                             this.state.gameWords[19]]}
                                                             cardNumbers={[15,16,17,18,19]}
+                                                            gameid={this.state.gameid} // Add in gameid for card websocket
                                                             increaseTeamPoints={this.props.increaseTeamPoints} />
                                                         <Row task={this.state.task}
                                                             rowWords={[this.state.gameWords[20],
@@ -446,6 +473,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                             this.state.gameWords[23],
                                                             this.state.gameWords[24]]}
                                                             cardNumbers={[20,21,22,23,24]}
+                                                            gameid={this.state.gameid} // Add in gameid for card websocket
                                                             increaseTeamPoints={this.props.increaseTeamPoints} />
     
                                                     </div>
@@ -454,7 +482,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                     <div className="col-md-12">
                                                         {!this.props.winningScreenIsOpen ? 
                                                         <form>
-                                                            <div className="spymasterClue">
+                                                            {this.props.myTeam === this.props.currentTeam &&<div className="spymasterClue">
                                                                 <input
                                                                     type="text"
                                                                     value={this.state.spymasterClueWord}
@@ -472,7 +500,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                                 {/* <input type="button" onClick={this.socketSend}>Submit Clue</input> */}
                                                                 <input type="button" onClick={this.socketSend}/>
     
-                                                            </div>
+                                                            </div>}
                                                         </form>
                                                         :
                                                         <div className="popUp" >
@@ -493,8 +521,8 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     </div> 
                     :
                     <div>
-                    <button onClick= {this.props.setDoubleAgent}>I want first </button>
-                    <div> Waiting for players!</div>
+                    <button onClick={this.props.setDoubleAgent}>I want first</button>
+                    <div>Waiting for players!</div>
                     </div>
                 } 
 
