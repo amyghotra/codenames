@@ -176,43 +176,63 @@ class Card extends Component{
     render(){
         return(
             <div>
-
                 {(this.state.task === 'O') ?
                 <div>
-                <div className="card-deck">
-                <div className="card-style"></div>    
-                <input  className = "checkboxStructure"
-                        id = "checkbox"
-                        type = "checkbox"
-						checked = {this.state.checked}
-                        disabled = {(this.props.currentAllowedPlayer && 
-                            this.props.thisPlayer !== this.props.currentAllowedPlayer.user_id) || 
-                            (this.props.currentAllowedPlayer && 
-                            this.props.thisPlayer === this.props.currentAllowedPlayer.user_id && 
-                            this.props.spymasterClueWord.indexOf(' ') >= 0)}
-                        // disabled = {false}
-                        onChange={this.handleChange}/><br/> {/* onChange */}
-                <div>
-                {(!this.state.checked) ?
-                <div>
-                    <h5 className="card-text">{this.state.content.word}</h5><br/>
+                    {(!this.state.checked) ?
+                    <div className="card-deck">
+                        <input  className = "checkboxStructure"
+                                id = "checkbox"
+                                type = "checkbox"
+                                name = "checkbox"
+                                checked = {this.state.checked}
+                                disabled = {(this.props.currentAllowedPlayer && 
+                                    this.props.thisPlayer !== this.props.currentAllowedPlayer.user_id) || 
+                                    (this.props.currentAllowedPlayer && 
+                                    this.props.thisPlayer === this.props.currentAllowedPlayer.user_id && 
+                                    this.props.spymasterClueWord.indexOf(' ') >= 0)}
+                                onChange={this.handleChange}/>
+                                <br/> 
+                        <h5 className="card-text" >{this.state.content.word}</h5><br/>
+                    </div>
+                    :
+                    <div className={`card-deck-${this.state.content.category}`}>
+                        <input  className = "checkboxStructure"
+                                id = "checkbox"
+                                type = "checkbox"
+                                name="checkbox-checked"
+                                checked = {this.state.checked}
+                                disabled = {(this.props.currentAllowedPlayer && 
+                                    this.props.thisPlayer !== this.props.currentAllowedPlayer.user_id) || 
+                                    (this.props.currentAllowedPlayer && 
+                                    this.props.thisPlayer === this.props.currentAllowedPlayer.user_id && 
+                                    this.props.spymasterClueWord.indexOf(' ') >= 0)}
+                                onChange={this.handleChange}/>
+                                <br/> 
+
+                        <h5 className={`card-text-${this.state.content.category}`} >{this.state.content.word}</h5><br/>
+                    </div>
+                    }
+
                 </div>
+
                 :
-                <div>
-                    <h5 className={`card-text-${this.state.content.category}`}>{this.state.content.word}</h5><br/>
-                </div>
-                }
-                </div>
-                </div>
-                </div>
-                :
-                <div>
-                    <br/>
-                    <h5 className={`card-deck-${this.state.content.category}`} >{this.state.content.word}</h5>
-                    <br/>
-                </div>
-                }
                 
+                <div>
+                    {(!this.state.checked) ?
+                        <div className={`card-deck-${this.state.content.category}`}>
+                            <br/>
+                            <h5>{this.state.content.word}</h5>
+                            <br/>
+                        </div>
+                        :
+                        <div className={`card-deck-revealed-${this.state.content.category}`}>
+                            <br/>
+                            <h5>{this.state.content.word}</h5>
+                            <br/>
+                        </div>
+                    }
+                </div>
+                }
 
             </div>
         )
