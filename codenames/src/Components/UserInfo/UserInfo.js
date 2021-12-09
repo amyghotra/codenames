@@ -168,7 +168,7 @@ class UserInfo extends Component {
                         "spymasterTeam": this.state.team,
                         "exists": true
                     }
-                    // this.state.userinfoWS.send(JSON.stringify(data)) // send to channel
+                    this.state.userinfoWS.send(JSON.stringify(data)) // send to channel
                     console.log(data)
                 }
                 axios.post('http://127.0.0.1:8000/codenames/userInfo', {

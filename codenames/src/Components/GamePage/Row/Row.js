@@ -52,7 +52,8 @@ class Row extends Component{
                             number={this.state.cardNumbers[0]}
                             thisPlayer = {this.props.thisPlayer}
                             currentAllowedPlayer = {this.props.currentAllowedPlayer}
-                            />
+                            spymasterClueCount = {this.props.spymasterClueCount}
+                            spymasterClueWord = {this.props.spymasterClueWord}/>
                         </div></div>
                     </div>
 
@@ -65,7 +66,8 @@ class Row extends Component{
                             number={this.state.cardNumbers[1]}
                             thisPlayer = {this.props.thisPlayer}
                             currentAllowedPlayer = {this.props.currentAllowedPlayer}
-                            />
+                            spymasterClueCount = {this.props.spymasterClueCount}
+                            spymasterClueWord = {this.props.spymasterClueWord}/>
                         </div></div>
                     </div>
 
@@ -79,7 +81,8 @@ class Row extends Component{
                             number={this.state.cardNumbers[2]}
                             thisPlayer = {this.props.thisPlayer}
                             currentAllowedPlayer = {this.props.currentAllowedPlayer}
-                            />
+                            spymasterClueCount = {this.props.spymasterClueCount}
+                            spymasterClueWord = {this.props.spymasterClueWord}/>
                         </div></div> 
                     </div>
 
@@ -93,7 +96,8 @@ class Row extends Component{
                             number={this.state.cardNumbers[3]}
                             thisPlayer = {this.props.thisPlayer}
                             currentAllowedPlayer = {this.props.currentAllowedPlayer}
-                            />
+                            spymasterClueCount = {this.props.spymasterClueCount}
+                            spymasterClueWord = {this.props.spymasterClueWord}/>
                         </div></div>
                     </div>
 
@@ -107,7 +111,8 @@ class Row extends Component{
                             number={this.state.cardNumbers[4]}
                             thisPlayer = {this.props.thisPlayer}
                             currentAllowedPlayer = {this.props.currentAllowedPlayer}
-                            />
+                            spymasterClueCount = {this.props.spymasterClueCount}
+                            spymasterClueWord = {this.props.spymasterClueWord}/>
                         </div></div>
                     </div>
                     </div>
