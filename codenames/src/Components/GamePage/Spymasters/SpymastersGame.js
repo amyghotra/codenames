@@ -12,7 +12,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             gameid: '',
             gameWords: '',
             playersdata: '',
-            spymasterClueWord: '',
+            spymasterClueWord: 'WAITING FOR CLUE...', 
             spymasterClueCount: 0,
             spymasterSentClue: false,
 

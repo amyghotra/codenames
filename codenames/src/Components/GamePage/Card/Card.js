@@ -189,7 +189,7 @@ class Card extends Component{
                             this.props.thisPlayer !== this.props.currentAllowedPlayer.user_id) || 
                             (this.props.currentAllowedPlayer && 
                             this.props.thisPlayer === this.props.currentAllowedPlayer.user_id && 
-                            this.props.spymasterClueWord === 'WAITING FOR CLUE...')}
+                            this.props.spymasterClueWord.indexOf(' ') >= 0)}
                         // disabled = {false}
                         onChange={this.handleChange}/><br/> {/* onChange */}
                 <div>
