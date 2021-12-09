@@ -14,6 +14,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             playersdata: '',
             spymasterClueWord: '',
             spymasterClueCount: 0,
+            spymasterSentClue: false,
 
             redScore: 0,
             blueScore: 0,
@@ -76,6 +77,12 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             this.state.ws.send(JSON.stringify(data)) // send to channel
             console.log(data)
         }
+        this.setState(prevState => {
+            return {
+                spymasterSentClue: true
+            }
+        })
+        
     }
 
     /**
