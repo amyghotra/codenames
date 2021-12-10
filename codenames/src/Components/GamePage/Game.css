@@ -1,7 +1,7 @@
 /* Not used in Game.js but I'm keeping this file for now in case it's needed */
 
 .game{
-    background-image: url(../../Images/game.png);
+    background-image: url(../../Images/boxes.jpeg);
     display: table;
     background-repeat: no-repeat;
     background-size: cover;
