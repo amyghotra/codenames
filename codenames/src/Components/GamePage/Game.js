@@ -647,6 +647,12 @@ class Game extends Component {
         if (!ws_turn || ws_turn.readyState === WebSocket.CLOSED) this.connectTurns(); //check if websocket instance is closed, if so call `connect` function.
     };
 
+    resetSpyMasterClue = () => {
+        this.setState({
+            resetClue: false
+        })
+    }
+
     sendTurns = (team, player) => {
 
         console.log("sendturns")
@@ -702,7 +708,6 @@ class Game extends Component {
             team, player, " loooooooooooooooooooooooooooooook hereeeeeeeeeeeeeeeeeeeeeeeee"
         )
         this.sendTurns(team, player)
-        // this.clueSocketSend()
     }
 
     socketSendPlayers = (player) => {
@@ -963,6 +968,7 @@ class Game extends Component {
                         myTeam = {this.state.team}
                         currentTeam = {this.state.currentTeam}
                         currentPlayer = {this.state.currentPlayer}
+                        
                         />
                         : 
                         
@@ -991,6 +997,7 @@ class Game extends Component {
                         setGuessCount = {this.setGuessCount}
                         resetClue = {this.state.resetClue}
                         guessesLeft = {this.state.guessesLeft}
+                        resetSpyMasterClue = {this.resetSpyMasterClue}
                     />
                 }
             </div>

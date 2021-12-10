@@ -12,7 +12,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             gameid: '',
             gameWords: '',
             playersdata: '',
-            spymasterClueWord: '',
+            spymasterClueWord: 'WAITING FOR CLUE...', 
             spymasterClueCount: 0,
 
             redScore: 0,
@@ -48,12 +48,34 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     } // Don't add this.connect()
 
     socketSend = () => {
-        var data = {
-            "count": this.state.spymasterClueCount,
-            "clue": this.state.spymasterClueWord
+        let clueword = this.state.spymasterClueWord
+        let cheater_flag = 0
+        if (clueword.length > 16) { // Restrict the amount of chars sent
+            clueword = clueword.slice(0, 16)
         }
-        this.state.ws.send(JSON.stringify(data)) // send to channel
-        console.log(data)
+        clueword = clueword.toUpperCase()
+        for (let i = 0; i < this.state.gameWords.length; i++) {
+            // Search if the clue matches any of the game words
+            if (clueword.search(this.state.gameWords[i].word) !== -1) {
+                cheater_flag = 1
+                break
+            }
+        }
+        if (cheater_flag === 1) { // If cheating
+            this.setState(prevState => {
+                return {
+                    spymasterClueWord: "NO CHEATING!" // No cheating!
+                }
+            })
+        }
+        else { // Finally, send regularly
+            var data = {
+                "count": this.state.spymasterClueCount,
+                "clue": clueword
+            }
+            this.state.ws.send(JSON.stringify(data)) // send to channel
+            // console.log(data)
+        }
     }
 
     /**
@@ -68,11 +90,11 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
 
         // websocket onopen event listener
         ws.onopen = () => {
-            console.log("connected websocket main component");
+            // console.log("connected websocket main component");
             this.setState({ ws: ws });
 
             that.timeout = 250; // reset timer to 250 on open of websocket connection 
-            clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+            // clearTimeout(connectInterval); // clear Interval on on open of websocket connection
         };
 
         // websocket onclose event listener
@@ -103,8 +125,8 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
         ws.onmessage = evt => {
             // listen to data sent from the websocket server
             const data = JSON.parse(evt.data)
-            console.log(data)
-            console.log("received clue!")
+            // console.log(data)
+            // console.log("received clue!")
             let count = data.count
             let clue = data.clue
             this.setState(prevState => {
@@ -191,7 +213,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     
     // For handling the players' submitting their guesses / word picks
     handleGuessSubmit = () => {
-        console.log(this.state.spymasterClueWord, this.state.spymasterClueCount)
+        // console.log(this.state.spymasterClueWord, this.state.spymasterClueCount)
     }
     incrementClueCount = () => {
         if (this.props.team === 'R') {
@@ -396,7 +418,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                     </div>
                                                     <br />
                                                     <br />
-                                                    <h6 className="teamContent"> Spymasters:</h6>
+                                                    <h6 className="teamContent"> Spymaster:</h6>
                                                         {this.state.showredSpymasters.map((player, index) => (
                                                             <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                                                         ))}
@@ -415,7 +437,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                     </div>
                                                     <br />
                                                     <br />
-                                                    <h6 className="teamContent"> Spymasters:</h6>
+                                                    <h6 className="teamContent"> Spymaster:</h6>
                                                         {this.state.showblueSpymasters.map((player, index) => (
                                                             <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                                                         ))}
@@ -521,8 +543,16 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     </div> 
                     :
                     <div>
-                    <button onClick={this.props.setDoubleAgent}>I want first</button>
-                    <div>Waiting for players!</div>
+                        <div className="waitingScreen">
+                            <div className= "waitingContainer">
+                                <div class="spinner"></div>
+                                <h4 className="waitingText">
+                                    Waiting for players
+                                    <span class="one">.</span><span class="two">.</span><span class="three">.</span>
+                                </h4>
+                                <button className="waitingButton" onClick={this.props.setDoubleAgent}>I want first</button>
+                            </div>
+                        </div>
                     </div>
                 } 
 

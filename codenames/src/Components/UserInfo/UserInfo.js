@@ -69,14 +69,14 @@ class UserInfo extends Component {
                 axios.post('http://127.0.0.1:8000/codenames/games', {
                     connected_room_key: roomid
                 }).then(res => {
-                    console.log('this is the game data: ', res.data);
+                    // console.log('this is the game data: ', res.data);
                     this.setState({
                         gameid: res.data.game_id,
                         gameData: res.data,
                         gameWords: res.data.gameWords,
                         connected_room_key: res.data.connected_room_key
                     })
-                    console.log('WE JUST MADE THIS GAME ID: ', res.data.game_id);
+                    // console.log('WE JUST MADE THIS GAME ID: ', res.data.game_id);
                     this.renderTeamId(res.data.game_id)
                 })
             }
@@ -169,7 +169,7 @@ class UserInfo extends Component {
                         "exists": true
                     }
                     this.state.userinfoWS.send(JSON.stringify(data)) // send to channel
-                    console.log(data)
+                    // console.log(data)
                 }
                 axios.post('http://127.0.0.1:8000/codenames/userInfo', {
                     connected_room_key:this.props.location.state.room_key,
@@ -277,7 +277,7 @@ class UserInfo extends Component {
             this.setState({ userinfoWS: ws });
 
             that.timeout = 250; // reset timer to 250 on open of websocket connection 
-            clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+            // clearTimeout(connectInterval); // clear Interval on on open of websocket connection
         };
 
         // websocket onclose event listener
@@ -308,8 +308,8 @@ class UserInfo extends Component {
         ws.onmessage = evt => {
             // listen to data sent from the websocket server
             const data = JSON.parse(evt.data)
-            console.log(data)
-            console.log("received clue!")
+            // console.log(data)
+            // console.log("received clue!")
             let spymasterTeam = data.spymasterTeam
             let exists = data.exists
             if (spymasterTeam === 'R' && this.state.redTeamSpyMaster !== exists) {

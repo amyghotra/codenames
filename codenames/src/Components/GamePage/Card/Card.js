@@ -51,14 +51,13 @@ class Card extends Component{
                 }
             })
 
-            if(this.props.word.category === 'A' || this.props.word.category === 'R' || this.props.word.category === 'B' ||this.props.word.category === 'C' ) {
+            if(this.props.word.category === 'A' || this.props.word.category === 'R' || this.props.word.category === 'B') {
                 let wordGuessed = localStorage.getItem(this.props.word.word_id);
                 this.setState({
                     checked: wordGuessed
                 })
             }
-            //Deleted this.props.task === "O" && so that the spymasters could also get the websocket of the words taht were checked.
-            if ( this.state.ws === null) {
+            if (this.props.task === "O" && this.state.ws === null) {
                 this.connect();
             }
         }
@@ -177,47 +176,63 @@ class Card extends Component{
     render(){
         return(
             <div>
-
                 {(this.state.task === 'O') ?
                 <div>
-                <div className="card-deck">
-                <div className="card-style"></div>    
-                <input  className = "checkboxStructure"
-                        id = "checkbox"
-                        type = "checkbox"
-						checked = {this.state.checked}
-                        disabled = {(this.props.currentAllowedPlayer && 
-                            this.props.thisPlayer !== this.props.currentAllowedPlayer.user_id) || 
-                            (this.props.currentAllowedPlayer && 
-                            this.props.thisPlayer === this.props.currentAllowedPlayer.user_id && 
-                            this.props.spymasterClueWord === 'WAITING FOR CLUE...')}
-                        // disabled = {false}
-                        onChange={this.handleChange}/><br/> {/* onChange */}
-                <div>
-                {(!this.state.checked) ?
-                <div>
-                    <h5 className="card-text">{this.state.content.word}</h5><br/>
+                    {(!this.state.checked) ?
+                    <div className="card-deck">
+                        <input  className = "checkboxStructure"
+                                id = "checkbox"
+                                type = "checkbox"
+                                name = "checkbox"
+                                checked = {this.state.checked}
+                                disabled = {(this.props.currentAllowedPlayer && 
+                                    this.props.thisPlayer !== this.props.currentAllowedPlayer.user_id) || 
+                                    (this.props.currentAllowedPlayer && 
+                                    this.props.thisPlayer === this.props.currentAllowedPlayer.user_id && 
+                                    this.props.spymasterClueWord.indexOf(' ') >= 0)}
+                                onChange={this.handleChange}/>
+                                <br/> 
+                        <h5 className="card-text" >{this.state.content.word}</h5><br/>
+                    </div>
+                    :
+                    <div className={`card-deck-${this.state.content.category}`}>
+                        <input  className = "checkboxStructure"
+                                id = "checkbox"
+                                type = "checkbox"
+                                name="checkbox-checked"
+                                checked = {this.state.checked}
+                                disabled = {(this.props.currentAllowedPlayer && 
+                                    this.props.thisPlayer !== this.props.currentAllowedPlayer.user_id) || 
+                                    (this.props.currentAllowedPlayer && 
+                                    this.props.thisPlayer === this.props.currentAllowedPlayer.user_id && 
+                                    this.props.spymasterClueWord.indexOf(' ') >= 0)}
+                                onChange={this.handleChange}/>
+                                <br/> 
+
+                        <h5 className={`card-text-${this.state.content.category}`} >{this.state.content.word}</h5><br/>
+                    </div>
+                    }
+
                 </div>
 
                 :
                 
                 <div>
-                {(!this.state.checked) ?
-                <div className={`card-deck-${this.state.content.category}`}>
-                    <br/>
-                    <h5>{this.state.content.word}</h5>
-                    <br/>
-                </div>
-                :
-                <div className={`card-deck-revealed-${this.state.content.category}`}>
-                    <br/>
-                    <h5>{this.state.content.word}</h5>
-                    <br/>
+                    {(!this.state.checked) ?
+                        <div className={`card-deck-${this.state.content.category}`}>
+                            <br/>
+                            <h5>{this.state.content.word}</h5>
+                            <br/>
+                        </div>
+                        :
+                        <div className={`card-deck-revealed-${this.state.content.category}`}>
+                            <br/>
+                            <h5>{this.state.content.word}</h5>
+                            <br/>
+                        </div>
+                    }
                 </div>
                 }
-                </div>
-                }
-                
 
             </div>
         )
