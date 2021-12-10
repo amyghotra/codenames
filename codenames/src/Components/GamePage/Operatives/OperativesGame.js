@@ -345,7 +345,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                         <br />
                         <h6>OPERATORS</h6>
                         <div>
-                            {this.props.currentPlayer ? <h6 style={{color: "white", fontSize: "78px"}}>{this.props.currentPlayer.operative_screen_name}</h6> : null}
+                            {this.props.currentPlayer ? <h6 style={{color: "white", fontSize: "48px"}}>{this.props.currentPlayer.operative_screen_name} can go after receiving a clue</h6> : null}
                             <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
                         </div>
                         <div className="container-fluid">
