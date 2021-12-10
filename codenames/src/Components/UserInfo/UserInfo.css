@@ -92,7 +92,8 @@ html, body{ /* Add this to fill out the page without using px */
 .startBtn{
     text-decoration: none;
     position: absolute;
-    bottom: 20%;
+    margin-top: 350px;
+    /* bottom: 20%; */
     left: 47%; /* Puts 47% of screen to the left of the start of the button. Not sure if this truly centers it */
     padding: 10px 20px;
     font-size: 1.25rem;
