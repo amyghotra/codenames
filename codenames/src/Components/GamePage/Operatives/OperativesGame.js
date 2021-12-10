@@ -478,12 +478,18 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                 }
                                             </div>
                                             :
-                                            <div className="popUp" >
+                                            <div className="popContainer" >
+                                                <div className="winBox">
                                                 {this.props.team === this.props.winningTeam ? 
-                                                <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
+                                                <div className="won">
+                                                    <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
+                                                </div>
                                                 :
-                                                <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
+                                                <div className="lost">
+                                                    <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
+                                                </div>
                                                 }
+                                                </div>
                                             </div>
                                             }
                                         </div>  {/* Changed back to div from a form */}

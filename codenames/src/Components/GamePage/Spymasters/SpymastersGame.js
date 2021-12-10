@@ -504,7 +504,9 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                     <div className="col-md-12">
                                                         {!this.props.winningScreenIsOpen ? 
                                                         <form>
-                                                            {this.props.myTeam === this.props.currentTeam &&<div className="spymasterClue">
+                                                            {this.props.myTeam === this.props.currentTeam &&
+                                                            <div className="spymasterClue">
+                                                                <div className= "clueInput">
                                                                 <input
                                                                     type="text"
                                                                     value={this.state.spymasterClueWord}
@@ -512,6 +514,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                                     placeholder="Type clue here"
                                                                     onChange={this.handleChange}
                                                                 />
+                                                                </div>
                                                                 <div className="counter">
                                                                     {/* type = "button" to NOT make it submit the form */}
                                                                     <button type="button" onClick={this.incrementClueCount}>+</button>
@@ -520,17 +523,23 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                                 </div>
     
                                                                 {/* <input type="button" onClick={this.socketSend}>Submit Clue</input> */}
-                                                                <input type="button" onClick={this.socketSend}/>
+                                                                <input className="clueContainer" type="button" onClick={this.socketSend} value="Submit"/>
     
                                                             </div>}
                                                         </form>
                                                         :
-                                                        <div className="popUp" >
-                                                        {this.props.team === this.props.winningTeam ? 
-                                                        <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
-                                                        :
-                                                        <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
-                                                        }
+                                                        <div className="popContainer" >
+                                                            <div className="winBox">
+                                                                {this.props.team === this.props.winningTeam ? 
+                                                                <div className="won">
+                                                                    <h4 className="Status">CONGRATS! YOUR TEAM WON!</h4>
+                                                                </div>
+                                                                :
+                                                                <div className="lost">
+                                                                    <h4 className="Status">SORRY! YOUR TEAM LOST!</h4>
+                                                                </div>
+                                                                }
+                                                            </div>
                                                         </div>
                                                         }
                                                     </div>
