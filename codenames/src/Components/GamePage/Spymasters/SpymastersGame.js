@@ -35,7 +35,8 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             showblueSpymasters: [],
 
             //Websocket
-            ws: null
+            ws: null, 
+            sentFlag: 0
         }
         // Need these statements since they set state - or use xxx = () => {}
         this.incrementClueCount = this.incrementClueCount.bind(this);
@@ -48,6 +49,11 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     } // Don't add this.connect()
 
     socketSend = () => {
+        // Do nothing if socket hasn't connected yet
+        // Also do nothing if a clue was already sent
+        if (this.state.ws === null || this.state.sentFlag) {
+            return
+        }
         let clueword = this.state.spymasterClueWord
         let cheater_flag = 0
         if (clueword.length > 16) { // Restrict the amount of chars sent
@@ -69,6 +75,11 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             })
         }
         else { // Finally, send regularly
+            this.setState(prevState => {
+                return {
+                    sentFlag: 1 // Signal that clue has already been sent
+                }
+            })
             var data = {
                 "count": this.state.spymasterClueCount,
                 "clue": clueword
@@ -135,6 +146,13 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     spymasterClueWord: clue
                 }
             })
+            if (count === 0 && clue === 'WAITING FOR CLUE...') {
+                this.setState(prevState => {
+                    return {
+                        sentFlag: 0
+                    }
+                })
+            }
         };
         this.setState(prevState => {
             return {
