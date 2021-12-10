@@ -14,7 +14,6 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             playersdata: '',
             spymasterClueWord: '',
             spymasterClueCount: 0,
-            spymasterSentClue: false,
 
             redScore: 0,
             blueScore: 0,
@@ -49,40 +48,12 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     } // Don't add this.connect()
 
     socketSend = () => {
-        let clueword = this.state.spymasterClueWord
-        let cheater_flag = 0
-        if (clueword.length > 16) { // Restrict the amount of chars sent
-            clueword = clueword.slice(0, 16)
+        var data = {
+            "count": this.state.spymasterClueCount,
+            "clue": this.state.spymasterClueWord
         }
-        clueword = clueword.toUpperCase()
-        for (let i = 0; i < this.state.gameWords.length; i++) {
-            // Search if the clue matches any of the game words
-            if (clueword.search(this.state.gameWords[i].word) !== -1) {
-                cheater_flag = 1
-                break
-            }
-        }
-        if (cheater_flag === 1) { // If cheating
-            this.setState(prevState => {
-                return {
-                    spymasterClueWord: "NO CHEATING!" // No cheating!
-                }
-            })
-        }
-        else { // Finally, send regularly
-            var data = {
-                "count": this.state.spymasterClueCount,
-                "clue": clueword
-            }
-            this.state.ws.send(JSON.stringify(data)) // send to channel
-            console.log(data)
-        }
-        this.setState(prevState => {
-            return {
-                spymasterSentClue: true
-            }
-        })
-        
+        this.state.ws.send(JSON.stringify(data)) // send to channel
+        console.log(data)
     }
 
     /**
@@ -425,7 +396,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                     </div>
                                                     <br />
                                                     <br />
-                                                    <h6 className="teamContent"> Spymaster:</h6>
+                                                    <h6 className="teamContent"> Spymasters:</h6>
                                                         {this.state.showredSpymasters.map((player, index) => (
                                                             <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                                                         ))}
@@ -444,7 +415,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                     </div>
                                                     <br />
                                                     <br />
-                                                    <h6 className="teamContent"> Spymaster:</h6>
+                                                    <h6 className="teamContent"> Spymasters:</h6>
                                                         {this.state.showblueSpymasters.map((player, index) => (
                                                             <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
                                                         ))}
@@ -549,46 +520,9 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                             </div>
                     </div> 
                     :
-                    <div className="game">
-                        <button className="btn" onClick={this.props.setDoubleAgent}> I want first! </button>
-                        <h6 className="popUp"> Waiting for players, spymaster! </h6>
-                        <br />
-                        <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
-                        <div className="gameScores">
-                            <div className="redTeam">
-                                <div>
-                                    <h6 className="teamTitle">Red Team</h6>
-                                </div>
-                                <br />
-                                <br />
-                                <h6 className="teamContent"> Spymaster:</h6>
-                                {this.state.showredSpymasters.map((player, index) => (
-                                    <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
-                                ))}
-                                {this.showRedSpymasters}
-
-                                <h6 className="teamContent"> Operatives:</h6>
-                                {this.state.showredOperatives.map((player, index) => (
-                                    <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
-                                ))}
-                            </div>
-                            <br />
-                            <div className="blueTeam">
-                                <div>
-                                    <h6 className="teamTitle">Blue Team</h6>
-                                </div>
-                                <br />
-                                <br />
-                                <h6 className="teamContent"> Spymaster:</h6>
-                                {this.state.showblueSpymasters.map((player, index) => (
-                                    <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
-                                ))}
-                                <h6 className="teamContent"> Operatives:</h6>
-                                {this.state.showblueOperatives.map((player, index) => (
-                                    <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
-                                ))}
-                            </div>
-                        </div>
+                    <div>
+                    <button onClick={this.props.setDoubleAgent}>I want first</button>
+                    <div>Waiting for players!</div>
                     </div>
                 } 
 
