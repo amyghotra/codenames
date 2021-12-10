@@ -52,7 +52,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
 
         // websocket onopen event listener
         ws.onopen = () => {
-            console.log("connected websocket main component");
+            // console.log("connected websocket main component");
             this.setState({ ws: ws });
 
             that.timeout = 250; // reset timer to 250 on open of websocket connection 
@@ -86,8 +86,8 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
         ws.onmessage = evt => {
             // listen to data sent from the websocket server
             const data = JSON.parse(evt.data)
-            console.log(data)
-            console.log("received clue!")
+            // console.log(data)
+            // console.log("received clue!")
             let count = data.count
             let clue = data.clue
             this.setState(prevState => {
@@ -142,7 +142,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                 "clue": 'WAITING FOR CLUE...'
             }
             this.state.ws.send(JSON.stringify(data)) // send to channel
-            console.log(data)
+            this.props.resetSpyMasterClue();
         }
         
     }
@@ -306,7 +306,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
     // For handling the players' submitting their guesses / word picks
     handleEndTurn = () => {
 
-        console.log("handleendturn function")
+        // console.log("handleendturn function")
 
         if(this.props.currentTeam === 'R' && this.props.wsturns.readyState === 1) {
 
@@ -494,44 +494,13 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                         </div>
                 </div>
                 :
-                <div className="game">
-                    <h6 className="popUp"> Waiting for players, operative! </h6>
-                    <br />
-                    <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
-                    <div className="gameScores">
-                        <div className="redTeam">
-                            <div>
-                                <h6 className="teamTitle">Red Team</h6>
-                            </div>
-                            <br />
-                            <br />
-                            <h6 className="teamContent"> Spymaster:</h6>
-                            {this.state.showredSpymasters.map((player, index) => (
-                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
-                            ))}
-                            {this.showRedSpymasters}
-
-                            <h6 className="teamContent"> Operatives:</h6>
-                            {this.state.showredOperatives.map((player, index) => (
-                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
-                            ))}
-                        </div>
-                        <br />
-                        <div className="blueTeam">
-                            <div>
-                                <h6 className="teamTitle">Blue Team</h6>
-                            </div>
-                            <br />
-                            <br />
-                            <h6 className="teamContent"> Spymaster:</h6>
-                            {this.state.showblueSpymasters.map((player, index) => (
-                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
-                            ))}
-                            <h6 className="teamContent"> Operatives:</h6>
-                            {this.state.showblueOperatives.map((player, index) => (
-                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
-                            ))}
-                        </div>
+                <div className="waitingScreen" >
+                    <div className= "waitingContainer">
+                        <div class="spinner"></div>
+                        <h4 className="waitingText">
+                            Waiting for players
+                            <span class="one">.</span><span class="two">.</span><span class="three">.</span>
+                        </h4>
                     </div>
                 </div>
                 }
