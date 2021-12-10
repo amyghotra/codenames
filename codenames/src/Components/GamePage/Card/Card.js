@@ -51,13 +51,14 @@ class Card extends Component{
                 }
             })
 
-            if(this.props.word.category === 'A' || this.props.word.category === 'R' || this.props.word.category === 'B') {
+            if(this.props.word.category === 'A' || this.props.word.category === 'R' || this.props.word.category === 'B' ||this.props.word.category === 'C' ) {
                 let wordGuessed = localStorage.getItem(this.props.word.word_id);
                 this.setState({
                     checked: wordGuessed
                 })
             }
-            if (this.props.task === "O" && this.state.ws === null) {
+            //Deleted this.props.task === "O" && so that the spymasters could also get the websocket of the words taht were checked.
+            if ( this.state.ws === null) {
                 this.connect();
             }
         }

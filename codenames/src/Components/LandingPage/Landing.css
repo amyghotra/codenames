@@ -21,7 +21,7 @@
     
 }
 
-.btn1{
+.btn1 {
     text-decoration: none;
     padding: 10px 20px;
     width: 69%;
@@ -31,6 +31,10 @@
     color: rgb(255, 255, 255);
 }
 
+.btn1:hover {
+    background-color: rgb(146, 142, 142);
+    transition-duration: 0.5s;
+}
 
 
 html, body{
@@ -40,7 +44,7 @@ html, body{
 }
 
 .Landing{
-    background-image: url(../../Images/landing.jpg);
+    background-image: url(../../Images/neon.jpeg);
     display:flex;
     background-repeat: no-repeat;
     background-size: cover;
