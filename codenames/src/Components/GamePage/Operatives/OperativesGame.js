@@ -343,7 +343,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                   (this.props.agentClicked === true || this.props.gameWords[this.props.doubleAgentIndex].category !== 'D') ? // Causing a bug???
                 <div className="game">
                         <br />
-                        <h6>OPERATORS</h6>
+                        <h6>OPERATIVE</h6>
                         <div>
                             {this.props.currentPlayer ? <h6 style={{color: "white", fontSize: "48px"}}>{this.props.currentPlayer.operative_screen_name} can go after receiving a clue</h6> : null}
                             <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
@@ -501,6 +501,42 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                 </div>
                 :
                 <div className="waitingScreen" >
+                    <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                    <div className="gameScores">
+                        <div className="redTeam">
+                            <div>
+                                <h6 className="teamTitle">Red Team</h6>
+                            </div>
+                            <br />
+                            <br />
+                            <h6 className="teamContent"> Spymaster:</h6>
+                            {this.state.showredSpymasters.map((player, index) => (
+                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                            ))}
+                            {this.showRedSpymasters}
+
+                            <h6 className="teamContent"> Operatives:</h6>
+                            {this.state.showredOperatives.map((player, index) => (
+                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                            ))}
+                        </div>
+                        <br />
+                        <div className="blueTeam">
+                            <div>
+                                <h6 className="teamTitle">Blue Team</h6>
+                            </div>
+                            <br />
+                            <br />
+                            <h6 className="teamContent"> Spymaster:</h6>
+                            {this.state.showblueSpymasters.map((player, index) => (
+                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                            ))}
+                            <h6 className="teamContent"> Operatives:</h6>
+                            {this.state.showblueOperatives.map((player, index) => (
+                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                            ))}
+                        </div>
+                    </div>
                     <div className= "waitingContainer">
                         <div class="spinner"></div>
                         <h4 className="waitingText">
