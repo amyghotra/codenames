@@ -10,7 +10,7 @@
 
 }
 .game{
-    background-image: url(../../../Images/game.png);
+    background-image: url(../../../Images/triangle.jpeg);
     display: table;
     background-repeat: no-repeat;
     background-size: cover;
@@ -251,6 +251,19 @@ html, body{ /* Add this to fill out the page without using px */
     width: 100vw;
     height: 100vh;
     background: #000000;
+}
+
+.currentPlayer {
+    border: 5px;
+    border-color: #ffffff;
+    border-style: solid;
+    border-radius: 15px;
+    height: fit-content;
+    color: white;
+    width: 210px;
+    margin-left: 10px;
+    margin-bottom: 22px;
+    padding: 0.5%;
 }
 
 .waitingContainer{

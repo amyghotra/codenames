@@ -400,9 +400,10 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     <div className="game" >
                         <br />
                         <h6>SPYMASTERS</h6>
-                        <div>
-                            {this.props.currentPlayer ? <h6 style={{color: "white", fontSize: "48px"}}>{this.props.currentPlayer.operative_screen_name} can go after receiving a clue</h6> : null}
-                            <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                        <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                        <div className="currentPlayer">
+                            {this.props.currentPlayer ? <h6> <strong>Current Player:</strong> {this.props.currentPlayer.operative_screen_name}</h6> : null}
+                            
                         </div>
                         <div className="container-fluid">
                             <div className="row">
