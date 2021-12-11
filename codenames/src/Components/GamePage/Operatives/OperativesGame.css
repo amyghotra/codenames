@@ -118,6 +118,7 @@ html, body{ /* Add this to fill out the page without using px */
 }
 
 .clueBody{
+    margin-top: -50px;
     background-color: white;
     width:fit-content;
     border-radius: 5px;
@@ -125,8 +126,10 @@ html, body{ /* Add this to fill out the page without using px */
 }
 
 .clue{
+    background-color: white;
     padding: 20px;
     color: black;
+    border-radius: 10px;
 }
 
 

@@ -53,7 +53,7 @@ html, body{
     display: flex;
     background-color: transparent;
     align-items: center;
-    text-align: center;
+    /* text-align: center; */
 }
 
 .Landing{
