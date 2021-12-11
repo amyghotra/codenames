@@ -4,13 +4,14 @@ from rest_framework.response import Response
 from django.utils.crypto import get_random_string
 import random
 import csv
+import os
 
 ###################################### WORDS #############################################
 
 def getGameWords():
     print("trying to get words for the game")
     allWords = set()
-    with open('/mnt/c/Users/micha/Codenames/codenames/codename_backend/codenamesdatabase/codenames/words.csv', newline='') as csvfile:
+    with open( os.path.dirname(os.path.realpath(__file__)) + '/words.csv', newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in spamreader:
             allWords.add(', '.join(row))
