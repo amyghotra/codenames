@@ -78,13 +78,12 @@ input[type="checkbox"] {
     
 }
 
-.card-deck:hover,
+/* .card-deck:hover,
 .card-deck:focus,
 .card-deck:active {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
-  
-}
+} */
 
 .card-deck-C{
     height: 90%;

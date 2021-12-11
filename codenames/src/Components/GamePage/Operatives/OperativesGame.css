@@ -1,5 +1,5 @@
 .game{
-    background-image: url(../../../Images/game.png);
+    background-image: url(../../../Images/triangle.jpeg);
     display: table; 
     background-repeat: no-repeat;
     background-size: cover;
@@ -11,6 +11,19 @@
 html, body{ /* Add this to fill out the page without using px */
     margin: 0;
     height: 100%; 
+}
+
+.currentPlayer {
+    border: 5px;
+    border-color: #ffffff;
+    border-style: solid;
+    border-radius: 15px;
+    height: fit-content;
+    color: white;
+    width: 210px;
+    margin-left: 10px;
+    margin-bottom: 22px;
+    padding: 0.5%;
 }
 
 .checkboxStructure{
