@@ -55,12 +55,29 @@ html, body{ /* Add this to fill out the page without using px */
     border-radius: 15px;
     padding: 0.5%;
 }
+.redTeam-selected{
+    background: rgb(253, 63, 63); /* Copied rbg values from UserInfo page */
+    width: 210px;
+    height: fit-content;
+    border-radius: 15px;
+    padding: 0.5%;
+    border: 1.3px solid white;
+}
+
 .blueTeam{
     background: rgb(87, 143, 248); /* Copied rbg values from UserInfo page */
     width: 210px;
     height: fit-content;
     border-radius: 15px;
     padding: 0.5%;
+}
+.blueTeam-selected{
+    background: rgb(87, 143, 248); /* Copied rbg values from UserInfo page */
+    width: 210px;
+    height: fit-content;
+    border-radius: 15px;
+    padding: 0.5%;
+    border: 1.3px solid white;
 }
 
 .teamTitle{

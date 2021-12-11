@@ -355,7 +355,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                     <div className="row">
                                         <div className="col-md-4">
                                             <div className="gameScores">
-                                                <div className="redTeam">
+                                                <div className={this.props.currentTeam === 'R' ? "redTeam-selected" : "redTeam"}>
                                                     <div>
                                                         <h6 className="teamTitle">Red Team</h6>
                                                         <h6 className="teamScore">{this.props.redPoints}</h6>
@@ -374,7 +374,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                                                     ))}
                                                 </div>
                                                 <br />
-                                                <div className="blueTeam">
+                                                <div className={this.props.currentTeam === 'B' ? "blueTeam-selected" : "blueTeam"}>
                                                     <div>
                                                         <h6 className="teamTitle">Blue Team</h6>
                                                         <h6 className="teamScore">{this.props.bluePoints}</h6>
