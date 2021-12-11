@@ -503,37 +503,37 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
                 <div className="waitingScreen" >
                     <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
                     <div className="gameScores">
-                        <div className="redTeam">
+                        <div className="waitingTeam">
                             <div>
-                                <h6 className="teamTitle">Red Team</h6>
+                                <h6 className="waitingTeamTitle">Red Team</h6>
                             </div>
                             <br />
                             <br />
-                            <h6 className="teamContent"> Spymaster:</h6>
+                            <h6 className="waitingTeamContent"> Spymaster:</h6>
                             {this.state.showredSpymasters.map((player, index) => (
-                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                                <li className="waitingBulletContent" key={index}>{player.operative_screen_name}</li>
                             ))}
                             {this.showRedSpymasters}
 
-                            <h6 className="teamContent"> Operatives:</h6>
+                            <h6 className="waitingTeamContent"> Operatives:</h6>
                             {this.state.showredOperatives.map((player, index) => (
-                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                                <li className="waitingBulletContent" key={index}>{player.operative_screen_name}</li>
                             ))}
                         </div>
                         <br />
-                        <div className="blueTeam">
+                        <div className="waitingTeam">
                             <div>
-                                <h6 className="teamTitle">Blue Team</h6>
+                                <h6 className="waitingTeamTitle">Blue Team</h6>
                             </div>
                             <br />
                             <br />
-                            <h6 className="teamContent"> Spymaster:</h6>
+                            <h6 className="waitingTeamContent"> Spymaster:</h6>
                             {this.state.showblueSpymasters.map((player, index) => (
-                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                                <li className="waitingBulletContent" key={index}>{player.operative_screen_name}</li>
                             ))}
-                            <h6 className="teamContent"> Operatives:</h6>
+                            <h6 className="waitingTeamContent"> Operatives:</h6>
                             {this.state.showblueOperatives.map((player, index) => (
-                                <li className="bulletContent" key={index}>{player.operative_screen_name}</li>
+                                <li className="waitingBulletContent" key={index}>{player.operative_screen_name}</li>
                             ))}
                         </div>
                     </div>

@@ -242,6 +242,38 @@ html, body{ /* Add this to fill out the page without using px */
 
 
 /*-----------------------------WAITING SCREEN CODE*-----------------------------------------*/
+
+.waitingTeam{
+    background: black; /* Copied rbg values from UserInfo page */
+    width: 210px;
+    height: fit-content;
+    border-radius: 15px;
+    padding: 0.5%;
+}
+.waitingTeamTitle{
+    margin-left: 10px;
+    margin-top: 10px;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    font-family: "FreeMono", monospace; /* Changed from Prosto One */
+    float: left;
+}
+.waitingTeamContent{
+    margin-left: 10px;
+    margin-top: 5px;
+    color: white;
+    font-size: 14px;
+    font-family: "FreeMono", monospace;
+}
+.waitingBulletContent{
+    margin-left: 15px;
+    margin-top: 2px;
+    color: white;
+    font-size: 14px;
+    font-family: "FreeMono", monospace;
+}
+
 .waitingScreen{
     /* background-image: url(../../../Images/game.png);
     display: table; 
