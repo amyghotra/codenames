@@ -74,7 +74,14 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                 }
             })
         }
-        else { // Finally, send regularly
+        else if (clueword.indexOf(' ') >= 0) {
+            this.setState(prevState => {
+                return {
+                    spymasterClueWord: "ONE WORD AT A TIME" // No cheating!
+                }
+            })
+        }
+        else { //  Finally, send regularly
             this.setState(prevState => {
                 return {
                     sentFlag: 1 // Signal that clue has already been sent
@@ -84,6 +91,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                 "count": this.state.spymasterClueCount,
                 "clue": clueword
             }
+            
             this.state.ws.send(JSON.stringify(data)) // send to channel
             // console.log(data)
         }
@@ -613,7 +621,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                     Waiting for players
                                     <span class="one">.</span><span class="two">.</span><span class="three">.</span>
                                 </h4>
-                                <button className="waitingButton" onClick={this.props.setDoubleAgent}>I want first</button>
+                                <button className="waitingButton" onClick={this.props.setDoubleAgent}>START GAME</button>
                             </div>
                         </div>
                     </div>
