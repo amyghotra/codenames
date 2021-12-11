@@ -27,6 +27,10 @@ class Card extends Component{
     }
 
     socketSend = () => {
+        // Do nothing if socket hasn't connected yet
+        if (this.state.ws === null) {
+            return
+        }
         var data = {
             "number": this.props.number, // used props instead of state, states not setting
             "checked": true //this.state.checked // Hard coded to true, it'll never be false ?

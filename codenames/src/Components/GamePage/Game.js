@@ -50,7 +50,7 @@ class Game extends Component {
             assassinGuessed: false,
             
             //WebSocket Double Agent
-            doubleAgentWS: '',
+            doubleAgentWS: null,
 
             // WebSocket turns
             ws_turn: null,
@@ -282,7 +282,10 @@ class Game extends Component {
     }
     
     setDoubleAgent = () => {
-
+        // Don't set DA if websocket hasn't connected yet
+        if (this.state.doubleAgentWS === null) {
+            return
+        }
         let doubleAgent = { ...this.state.doubleAgent}; 
         doubleAgent.category = this.state.team;
         let agentClicked = this.state.agentClicked;
@@ -900,7 +903,7 @@ class Game extends Component {
                         gameWords: gameWords
                     }
                 })
-                // Update number of cards I guess
+                // Update number of cards
                 if(doubleAgent.category === 'R'){
                     this.setState(prevState => {
                         return {
