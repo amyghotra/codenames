@@ -422,7 +422,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             <div>
                 {(this.state.showredOperatives.length >= 1 && this.state.showblueOperatives.length >=1 && 
                   this.state.showredSpymasters.length === 1 && this.state.showblueSpymasters.length === 1) && 
-                  (this.props.agentClicked === true || this.props.gameWords[this.props.doubleAgentIndex].category !== 'D') ?
+                  (this.props.agentClicked === true) ?
                     <div className="game" >
                         <br />
                         <h6>SPYMASTER</h6>
@@ -626,7 +626,11 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                     Waiting for players
                                     <span class="one">.</span><span class="two">.</span><span class="three">.</span>
                                 </h4>
-                                <button className="waitingButton" onClick={this.props.setDoubleAgent}>START GAME</button>
+                                <button className="waitingButton" 
+                                onClick={this.props.setDoubleAgent}
+                                disabled={!((this.state.showredOperatives.length >= 1 && this.state.showblueOperatives.length >=1 && 
+                                        this.state.showredSpymasters.length === 1 && this.state.showblueSpymasters.length === 1))}>
+                                START GAME</button>
                             </div>
                         </div>
                     </div>
