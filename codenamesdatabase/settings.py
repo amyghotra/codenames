@@ -17,10 +17,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 1
-ALLOWED_HOSTS=['*']
+ALLOWED_HOSTS=['codenames21-backend.herokuapp.com', '127.0.0.1']
 CORS_ORIGIN_ALLOW_ALL = True
 
 
