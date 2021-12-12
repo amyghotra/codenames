@@ -90,10 +90,14 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd6ui4htvnl0dgh',                     
+        'HOST': 'ec2-3-230-219-251.compute-1.amazonaws.com',
+        'PORT': 5432,
+        'USER': 'kksrqutpomdjnf',
+        'PASSWORD': 'dce08712ab6df671d154231a141376afe126244bcc7e2a66e90ebe7269ca3acf'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
