@@ -32,7 +32,7 @@ class Landing extends Component {
     }
 
     componentDidMount = () => {
-        axios.get('https://codenames21-backend.herokuapp.com/codenames/').then(res => {
+        axios.get('https://codenames21-backend.herokuapp.com/').then(res => {
             this.setState({ data: res.data })
         })
     }
