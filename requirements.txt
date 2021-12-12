@@ -21,6 +21,7 @@ dj-database-url==0.5.0
 dj-static==0.0.6
 Django==3.2.8
 django-cors-headers==3.10.0
+djangorestframework==3.12.4
 django-heroku==0.3.1
 django-toolbelt==0.0.1
 gunicorn @ git+https://github.com/benoitc/gunicorn.git@ff58e0c6da83d5520916bc4cc109a529258d76e1
