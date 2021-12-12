@@ -426,9 +426,10 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     <div className="game" >
                         <br />
                         <h6>SPYMASTER</h6>
-                        <div>
-                            {this.props.currentPlayer ? <h6 style={{color: "white", fontSize: "30px"}}>{this.props.currentPlayer.operative_screen_name} can go after receiving a clue</h6> : null}
-                            <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                        <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                        <div className="currentPlayer">
+                            {this.props.currentPlayer ? <h6> <strong>Current Player:</strong> {this.props.currentPlayer.operative_screen_name}</h6> : null}
+
                         </div>
                         <div className="container-fluid">
                             <div className="row">
@@ -436,7 +437,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                     <div className="row">
                                         <div className="col-md-4">
                                             <div className="gameScores">
-                                                <div className="redTeam">
+                                                <div className={this.props.currentTeam === 'R' ? "redTeam-selected" : "redTeam"}>
                                                     <div>
                                                 
                                                         <h6 className="teamTitle">Red Team</h6>
@@ -456,7 +457,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                         ))}
                                                 </div>
                                                 <br />
-                                                <div className="blueTeam">
+                                                <div className={this.props.currentTeam === 'B' ? "blueTeam-selected" : "blueTeam"}>
                                                     <div>
                                                         <h6 className="teamTitle">Blue Team</h6>
                                                         <h6 className="teamScore">{this.props.bluePoints}</h6>
@@ -526,7 +527,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     
                                                     </div>
                                                 </div>
-                                                <div className="row">
+                                                {/* <div className="row"> */}
                                                     <div className="col-md-12">
                                                         {!this.props.winningScreenIsOpen ? 
                                                         <form>
@@ -535,6 +536,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                                 <div className= "clueInput">
                                                                 <input
                                                                     type="text"
+                                                                    id="clueTextBox"
                                                                     value={this.state.spymasterClueWord}
                                                                     name="spymasterClueWord" // Must be same name as state!
                                                                     placeholder="Type clue here"
@@ -549,7 +551,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                                 </div>
     
                                                                 {/* <input type="button" onClick={this.socketSend}>Submit Clue</input> */}
-                                                                <input className="clueContainer" type="button" onClick={this.socketSend} value="Submit"/>
+                                                                <input id="clueSubmissionButton" className="clueContainer" type="button" onClick={this.socketSend} value="Submit"/>
     
                                                             </div>}
                                                         </form>
@@ -569,7 +571,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                         </div>
                                                         }
                                                     </div>
-                                                </div>
+                                                {/* </div> */}
                                             </div> {/* Changed back to div from a form */}
                                         </div>
                                     </div>

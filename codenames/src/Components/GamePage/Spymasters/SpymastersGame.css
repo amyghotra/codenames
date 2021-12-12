@@ -10,7 +10,7 @@
 
 }
 .game{
-    background-image: url(../../../Images/game.png);
+    background-image: url(../../../Images/triangle.jpeg);
     display: table;
     background-repeat: no-repeat;
     background-size: cover;
@@ -55,12 +55,29 @@ html, body{ /* Add this to fill out the page without using px */
     border-radius: 15px;
     padding: 0.5%;
 }
+.redTeam-selected{
+    background: rgb(253, 63, 63); /* Copied rbg values from UserInfo page */
+    width: 210px;
+    height: fit-content;
+    border-radius: 15px;
+    padding: 0.5%;
+    border: 1.3px solid white;
+}
+
 .blueTeam{
     background: rgb(87, 143, 248); /* Copied rbg values from UserInfo page */
     width: 210px;
     height: fit-content;
     border-radius: 15px;
     padding: 0.5%;
+}
+.blueTeam-selected{
+    background: rgb(87, 143, 248); /* Copied rbg values from UserInfo page */
+    width: 210px;
+    height: fit-content;
+    border-radius: 15px;
+    padding: 0.5%;
+    border: 1.3px solid white;
 }
 
 .teamTitle{
@@ -100,7 +117,7 @@ html, body{ /* Add this to fill out the page without using px */
 }
 
 .clueBody{
-    background-color: white;
+    background-color: transparent;
     width:fit-content;
     border-radius: 5px;
     margin-bottom: 25px;
@@ -111,22 +128,21 @@ html, body{ /* Add this to fill out the page without using px */
     color: black;
 }
 
-.spymasterClue{
-    width: 80%;
+.col-md-12 form{
+    width: 62%;
     height: 100%;
     margin-bottom:10px;
-    background:transparent;
+    background: transparent;
 }
 
-
 .spymasterClue input {
-    float: left;
+    /* float: left; */
     width: 80%;
     height: 100%;
     position: relative;
     padding: 0px 16px;
     border-radius: 5px;
-    color: white;
+    color: black;
     font-size: 18px;
     font-weight: 400;
     line-height: normal;
@@ -134,25 +150,44 @@ html, body{ /* Add this to fill out the page without using px */
     transform: translateY(8px);
 }
 
+#clueTextBox {
+    background-color: rgba(255,255,255,0.75);
+    height: 40px;
+    width: 400px
+}
+
+#clueSubmissionButton {
+    color: white;
+    height: 50px;
+    width: 520px;
+    margin-left: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: rgb(204, 202, 80);;
+} 
+
+#clueSubmissionButton:hover {
+    background-color: rgba(204, 202, 80, 0.7);
+    transition-duration: 0.7s;
+}
+
 .clueInput{
     margin: 5px;
 }
 .clueContainer{
-    background-color: yellow;
+    background-color: transparent;
     border-radius: 5px;
     border-style: solid;
     border-width: 1px;
     position: relative;
-    /* transform:translateX(650px); */
     font-size:18px;
     transform:translate(610px, -20px)
 }
 
-
-
 .counter{
-    background-color: rgba(128, 128, 128, 0.813);
-    /* float: right; */
+    /* margin: 20px; */
+    margin-top: 8px;
+    background-color: rgba(255,255,255,0.75);
     width: 20%;
     height: 40px;
     transform:translateX(5%);
@@ -169,7 +204,7 @@ html, body{ /* Add this to fill out the page without using px */
     /* text-align: center; */
 }
 .counter button{
-    float: right;
+    /* float: right; */
     width: 25px;
     margin: 5px;
 
@@ -242,38 +277,6 @@ html, body{ /* Add this to fill out the page without using px */
 
 
 /*-----------------------------WAITING SCREEN CODE*-----------------------------------------*/
-
-.waitingTeam{
-    background: black; /* Copied rbg values from UserInfo page */
-    width: 210px;
-    height: fit-content;
-    border-radius: 15px;
-    padding: 0.5%;
-}
-.waitingTeamTitle{
-    margin-left: 10px;
-    margin-top: 10px;
-    color: white;
-    font-size: 22px;
-    font-weight: bold;
-    font-family: "FreeMono", monospace; /* Changed from Prosto One */
-    float: left;
-}
-.waitingTeamContent{
-    margin-left: 10px;
-    margin-top: 5px;
-    color: white;
-    font-size: 14px;
-    font-family: "FreeMono", monospace;
-}
-.waitingBulletContent{
-    margin-left: 15px;
-    margin-top: 2px;
-    color: white;
-    font-size: 14px;
-    font-family: "FreeMono", monospace;
-}
-
 .waitingScreen{
     /* background-image: url(../../../Images/game.png);
     display: table; 
@@ -283,6 +286,19 @@ html, body{ /* Add this to fill out the page without using px */
     width: 100vw;
     height: 100vh;
     background: #000000;
+}
+
+.currentPlayer {
+    border: 5px;
+    border-color: #ffffff;
+    border-style: solid;
+    border-radius: 15px;
+    height: fit-content;
+    color: white;
+    width: 210px;
+    margin-left: 10px;
+    margin-bottom: 22px;
+    padding: 0.5%;
 }
 
 .waitingContainer{
