@@ -267,7 +267,7 @@ class UserInfo extends Component {
      */
      connectUserInfo = () => {
          // Using roomid instead of game id because that doesn't exist yet
-        var ws = new WebSocket(`ws://codenames21.herokuapp.com/userinfo/userinfo/` + this.props.location.state.roomid + '/');
+        var ws = new WebSocket(`ws://codenames21-backend.herokuapp.com/userinfo/userinfo/` + this.props.location.state.roomid + '/');
         let that = this; // cache the this
         var connectInterval;
 

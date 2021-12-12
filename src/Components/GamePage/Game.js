@@ -217,7 +217,7 @@ class Game extends Component {
     }
 
     connectTurns = () => {
-        var ws_turn = new WebSocket(`ws://codenames21.herokuapp.com/turns/turns/` + this.state.gameid + '/');
+        var ws_turn = new WebSocket(`ws://codenames21-backend.herokuapp.com/turns/turns/` + this.state.gameid + '/');
         let that = this; //cache the this
         var connectInterval;
 
@@ -579,7 +579,7 @@ class Game extends Component {
     }
 
     connectTeamPoints = () => {
-        var wstp = new WebSocket(`ws://codenames21.herokuapp.com/teampoints/teampoints/` + this.state.gameid + '/');
+        var wstp = new WebSocket(`ws://codenames21-backend.herokuapp.com/teampoints/teampoints/` + this.state.gameid + '/');
         let that = this; //cache the this
         var connectInterval;
 
@@ -723,7 +723,7 @@ class Game extends Component {
     }
 
     connectPlayers = () => {
-        var wsp = new WebSocket(`ws://codenames21.herokuapp.com/players/players/` + this.state.gameid + '/');
+        var wsp = new WebSocket(`ws://codenames21-backend.herokuapp.com/players/players/` + this.state.gameid + '/');
         let that = this;
         var connectInterval;
 
@@ -787,7 +787,7 @@ class Game extends Component {
 
     // ATTEMPT WS FOR WIN/LOSE PROMPT 
     connectWinLose = () => {
-        var wswl = new WebSocket(`ws://codenames21.herokuapp.com/winlose/winlose/` + this.state.gameid + '/');
+        var wswl = new WebSocket(`ws://codenames21-backend.herokuapp.com/winlose/winlose/` + this.state.gameid + '/');
         let that = this;
         var connectInterval;
         wswl.onopen = () => {
@@ -846,7 +846,7 @@ class Game extends Component {
     }
 
     connectDoubleAgent = () => {
-        var ws = new WebSocket(`ws://codenames21.herokuapp.com/doubleagent/doubleagent/` + this.state.gameid + '/');
+        var ws = new WebSocket(`ws://codenames21-backend.herokuapp.com/doubleagent/doubleagent/` + this.state.gameid + '/');
         let that = this; // cache the this
         var connectInterval;
 
