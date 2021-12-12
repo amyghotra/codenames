@@ -88,16 +88,7 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'codenames_database',                     
-        'USER': 'codenames_admin',
-        'PASSWORD': 'fall2021',
-        'HOST': '127.0.0.1',                      
-        'PORT': '3306',
-    }
-}
+DATABASES = {}
 
 
 # Password validation
