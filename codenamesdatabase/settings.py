@@ -25,7 +25,7 @@ SECRET_KEY = 'k@)rec)_yu&0z2hmey#8j^rs-3-0pd=nc%zg7=z#ra9q5(6+if'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS=['codenames21.herokuapp.com']
+ALLOWED_HOSTS=['codenames21-backend.herokuapp.com','127.0.0.1']
 CORS_ORIGIN_ALLOW_ALL = True
 
 DATABASES = {
