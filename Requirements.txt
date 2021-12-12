@@ -18,9 +18,11 @@ constantly==15.1.0
 cryptography==35.0.0
 daphne==3.0.2
 dj-database-url==0.5.0
+dj-static==0.0.6
 Django==3.2.8
 django-cors-headers==3.10.0
 django-heroku==0.3.1
+django-toolbelt==0.0.1
 gunicorn==20.1.0
 hiredis==2.0.0
 hyperlink==21.0.0
@@ -43,6 +45,7 @@ requests==2.26.0
 service-identity==21.1.0
 six @ file:///AppleInternal/BuildRoot/Library/Caches/com.apple.xbs/Sources/python3/python3-103/six-1.15.0-py2.py3-none-any.whl
 sqlparse==0.4.2
+static3==0.7.0
 stream-chat==3.13.1
 Twisted==21.7.0
 txaio==21.2.1
