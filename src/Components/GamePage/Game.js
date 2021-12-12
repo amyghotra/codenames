@@ -217,7 +217,7 @@ class Game extends Component {
     }
 
     connectTurns = () => {
-        var ws_turn = new WebSocket('ws://localhost:8000/turns/turns/' + this.state.gameid + '/');
+        var ws_turn = new WebSocket(`ws://${window.location.origin}/turns/turns/` + this.state.gameid + '/');
         let that = this; //cache the this
         var connectInterval;
 
@@ -579,7 +579,7 @@ class Game extends Component {
     }
 
     connectTeamPoints = () => {
-        var wstp = new WebSocket('ws://localhost:8000/teampoints/teampoints/' + this.state.gameid + '/');
+        var wstp = new WebSocket(`ws://${window.location.origin}/teampoints/teampoints/` + this.state.gameid + '/');
         let that = this; //cache the this
         var connectInterval;
 
@@ -723,7 +723,7 @@ class Game extends Component {
     }
 
     connectPlayers = () => {
-        var wsp = new WebSocket('ws://localhost:8000/players/players/' + this.state.gameid + '/');
+        var wsp = new WebSocket(`ws://${window.location.origin}/players/players/` + this.state.gameid + '/');
         let that = this;
         var connectInterval;
 
@@ -787,7 +787,7 @@ class Game extends Component {
 
     // ATTEMPT WS FOR WIN/LOSE PROMPT 
     connectWinLose = () => {
-        var wswl = new WebSocket('ws://localhost:8000/winlose/winlose/' + this.state.gameid + '/');
+        var wswl = new WebSocket(`ws://${window.location.origin}/winlose/winlose/` + this.state.gameid + '/');
         let that = this;
         var connectInterval;
         wswl.onopen = () => {
@@ -846,7 +846,7 @@ class Game extends Component {
     }
 
     connectDoubleAgent = () => {
-        var ws = new WebSocket('ws://localhost:8000/doubleagent/doubleagent/' + this.state.gameid + '/');
+        var ws = new WebSocket(`ws://${window.location.origin}/doubleagent/doubleagent/` + this.state.gameid + '/');
         let that = this; // cache the this
         var connectInterval;
 

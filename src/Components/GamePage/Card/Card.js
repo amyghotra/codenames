@@ -74,7 +74,7 @@ class Card extends Component{
      * constant reconnection if connection closes
     */
     connect = () => {
-        var ws = new WebSocket('ws://localhost:8000/checkbox/checkbox/' 
+        var ws = new WebSocket(`ws://${window.location.origin}/checkbox/checkbox/` 
                                 + this.props.number + '/' + this.props.gameid + '/'); 
         let that = this; // cache the this
         var connectInterval;

@@ -267,7 +267,7 @@ class UserInfo extends Component {
      */
      connectUserInfo = () => {
          // Using roomid instead of game id because that doesn't exist yet
-        var ws = new WebSocket('ws://localhost:8000/userinfo/userinfo/' + this.props.location.state.roomid + '/');
+        var ws = new WebSocket(`ws://${window.location.origin}/userinfo/userinfo/` + this.props.location.state.roomid + '/');
         let that = this; // cache the this
         var connectInterval;
 
