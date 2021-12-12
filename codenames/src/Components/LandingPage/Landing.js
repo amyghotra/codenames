@@ -112,7 +112,8 @@ class Landing extends Component {
     
         return (
             <div className="Landing" >
-                <h4 className="game-title">CODENAMES</h4>
+            <h4 className="game-title">CODENAMES</h4>
+            <div id="initial-info">
                 {!this.state.howToIsOpen ? 
                         <div className="box">
                             {this.renderRedirect()}
@@ -129,7 +130,7 @@ class Landing extends Component {
                                 value={this.state.inputValue} 
                                 onChange={this.handleChange}/>
                                 <div className="input-group-append">
-                                    <button className="btn btn-outline-secondary" type="button" onClick={this.submitInput}>Button</button>
+                                    <button className="btn btn-outline-secondary" type="button" onClick={this.submitInput}>Join</button>
                                 </div>
                             </div>
 
@@ -159,6 +160,7 @@ class Landing extends Component {
                             </h6>
                         </div>
                 }
+            </div>
             </div>
         )
     }

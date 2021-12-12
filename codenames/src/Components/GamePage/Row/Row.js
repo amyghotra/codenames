@@ -7,16 +7,34 @@ class Row extends Component{
         super(props)
         this.state = {
             task: '',
+            rowWords: '',
+            redteamid: '',
+            blueteamid: '',
+            cardNumbers: '',
+            gameid: '',
         }
     }
     
     componentDidMount = () => {
-        this.setState({
-            task: this.props.task
-            
+        this.setState(prevState => {
+            return {
+                task: this.props.task,
+                rowWords: this.props.rowWords,
+                cardNumbers: this.props.cardNumbers,
+                gameid: this.props.gameid
+            }
         })
-        console.log(this.props.task)
+      
        
+    }
+    componentDidUpdate = (event) => {
+        if (event.rowWords !== this.props.rowWords) {
+            this.setState(prevState => {
+                return {
+                    rowWords: this.props.rowWords
+                }
+            })
+        }
     }
     
     render(){
@@ -28,14 +46,28 @@ class Row extends Component{
                         <div className="col">
                         <div className="card-deck">
                         <div className="card-style"> 
-                            <Card task={this.props.task}/>
+                            <Card task={this.props.task} word={this.state.rowWords[0]}
+                            increaseTeamPoints = {this.props.increaseTeamPoints} 
+                            gameid={this.props.gameid}
+                            number={this.state.cardNumbers[0]}
+                            thisPlayer = {this.props.thisPlayer}
+                            currentAllowedPlayer = {this.props.currentAllowedPlayer}
+                            spymasterClueCount = {this.props.spymasterClueCount}
+                            spymasterClueWord = {this.props.spymasterClueWord}/>
                         </div></div>
                     </div>
 
                         <div className="col">
                         <div className="card-deck">
                         <div className="card-style"> 
-                            <Card task={this.props.task}/>
+                            <Card task={this.props.task} word={this.state.rowWords[1]}
+                            increaseTeamPoints = {this.props.increaseTeamPoints}
+                            gameid={this.props.gameid}
+                            number={this.state.cardNumbers[1]}
+                            thisPlayer = {this.props.thisPlayer}
+                            currentAllowedPlayer = {this.props.currentAllowedPlayer}
+                            spymasterClueCount = {this.props.spymasterClueCount}
+                            spymasterClueWord = {this.props.spymasterClueWord}/>
                         </div></div>
                     </div>
 
@@ -43,7 +75,14 @@ class Row extends Component{
                         <div className="col">
                         <div className="card-deck">
                         <div className="card-style"> 
-                            <Card task={this.props.task}/>
+                            <Card task={this.props.task} word={this.state.rowWords[2]}
+                            increaseTeamPoints = {this.props.increaseTeamPoints}
+                            gameid={this.props.gameid}
+                            number={this.state.cardNumbers[2]}
+                            thisPlayer = {this.props.thisPlayer}
+                            currentAllowedPlayer = {this.props.currentAllowedPlayer}
+                            spymasterClueCount = {this.props.spymasterClueCount}
+                            spymasterClueWord = {this.props.spymasterClueWord}/>
                         </div></div> 
                     </div>
 
@@ -51,7 +90,14 @@ class Row extends Component{
                         <div className="col">
                         <div className="card-deck">
                         <div className="card-style"> 
-                            <Card task={this.props.task}/>
+                            <Card task={this.props.task} word={this.state.rowWords[3]}
+                            increaseTeamPoints = {this.props.increaseTeamPoints}
+                            gameid={this.props.gameid}
+                            number={this.state.cardNumbers[3]}
+                            thisPlayer = {this.props.thisPlayer}
+                            currentAllowedPlayer = {this.props.currentAllowedPlayer}
+                            spymasterClueCount = {this.props.spymasterClueCount}
+                            spymasterClueWord = {this.props.spymasterClueWord}/>
                         </div></div>
                     </div>
 
@@ -59,7 +105,14 @@ class Row extends Component{
                         <div className="col">
                         <div className="card-deck">
                         <div className="card-style"> 
-                            <Card task={this.props.task}/>
+                            <Card task={this.props.task} word={this.state.rowWords[4]}
+                            increaseTeamPoints = {this.props.increaseTeamPoints}
+                            gameid={this.props.gameid}
+                            number={this.state.cardNumbers[4]}
+                            thisPlayer = {this.props.thisPlayer}
+                            currentAllowedPlayer = {this.props.currentAllowedPlayer}
+                            spymasterClueCount = {this.props.spymasterClueCount}
+                            spymasterClueWord = {this.props.spymasterClueWord}/>
                         </div></div>
                     </div>
                     </div>

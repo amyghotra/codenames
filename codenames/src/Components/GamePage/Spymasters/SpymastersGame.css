@@ -1,17 +1,29 @@
+:root {
+    --color-red: #ec1840;
+    --color-purple: #7a18ec;
+    --color-white: #fff;
+    --color-black-1: #111;
+    --color-black-2: #222;
+    --color-black-3: #444;
+    --speed-normal: 0.5s;
+    --speed-fast: 0.8s;
+
+}
 .game{
-    background-image: url(../../../Images/game.png);
+    background-image: url(../../../Images/triangle.jpeg);
     display: table;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    height: 100%;
-    width: 100%;
+    width: 100vw;
+    height: 100vh;
     
 }
 html, body{ /* Add this to fill out the page without using px */
     margin: 0;
     height: 100%; 
 }
+
 
 .checkboxStructure{
     float: right; /* Get checkbox all the way to the right of the card */
@@ -43,12 +55,29 @@ html, body{ /* Add this to fill out the page without using px */
     border-radius: 15px;
     padding: 0.5%;
 }
+.redTeam-selected{
+    background: rgb(253, 63, 63); /* Copied rbg values from UserInfo page */
+    width: 210px;
+    height: fit-content;
+    border-radius: 15px;
+    padding: 0.5%;
+    border: 1.3px solid white;
+}
+
 .blueTeam{
     background: rgb(87, 143, 248); /* Copied rbg values from UserInfo page */
     width: 210px;
     height: fit-content;
     border-radius: 15px;
     padding: 0.5%;
+}
+.blueTeam-selected{
+    background: rgb(87, 143, 248); /* Copied rbg values from UserInfo page */
+    width: 210px;
+    height: fit-content;
+    border-radius: 15px;
+    padding: 0.5%;
+    border: 1.3px solid white;
 }
 
 .teamTitle{
@@ -88,7 +117,7 @@ html, body{ /* Add this to fill out the page without using px */
 }
 
 .clueBody{
-    background-color: white;
+    background-color: transparent;
     width:fit-content;
     border-radius: 5px;
     margin-bottom: 25px;
@@ -99,69 +128,365 @@ html, body{ /* Add this to fill out the page without using px */
     color: black;
 }
 
-.spymasterClue{
-    width: 80%;
+.col-md-12 form{
+    width: 62%;
     height: 100%;
-    border: 15px black;
-    position: relative;
-    background-color: rgba(255,255,255);
+    margin-bottom:10px;
+    background: transparent;
 }
 
 .spymasterClue input {
-    float: left;
+    /* float: left; */
     width: 80%;
     height: 100%;
     position: relative;
     padding: 0px 16px;
     border-radius: 5px;
     color: black;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 400;
     line-height: normal;
     background-color: transparent;
+    transform: translateY(8px);
+}
+
+#clueTextBox {
+    background-color: rgba(255,255,255,0.75);
+    height: 40px;
+    width: 400px
+}
+
+#clueSubmissionButton {
+    color: white;
+    height: 50px;
+    width: 520px;
+    margin-left: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: rgb(204, 202, 80);;
+} 
+
+#clueSubmissionButton:hover {
+    background-color: rgba(204, 202, 80, 0.7);
+    transition-duration: 0.7s;
+}
+
+.clueInput{
+    margin: 5px;
+}
+.clueContainer{
+    background-color: transparent;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    position: relative;
+    font-size:18px;
+    transform:translate(610px, -20px)
 }
 
 .counter{
-    background-color: gray;
-    float: right;
+    /* margin: 20px; */
+    margin-top: 8px;
+    background-color: rgba(255,255,255,0.75);
     width: 20%;
-    height: 100%;
+    height: 40px;
+    transform:translateX(5%);
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px
 }
 
 .counter h6{
-    font-size: 20px;
-    text-align: left;
+    font-size: 25px;
+    position: absolute;
+    transform: translateX(20px);
+    margin-top: 5px;
+    /* text-align: center; */
 }
 .counter button{
-    float: right;
+    /* float: right; */
+    width: 25px;
+    margin: 5px;
+
 }
 
-/*Cards Styling*/
-
-/*.card-style{ /* Not used yet still in progress, trying to get that stylish inner border like in figma 
-    position: relative;
-    background: rgba(255, 255, 255, .0);
-    border: 3px solid rgb(186, 196, 129);
-    border-radius: 12px;
-    height: 30%;
-    width: 80%;
-    margin: 10%;
-} */
-
-.card-deck{
-    height: 90%;
-    background-color: rgb(228, 235, 190);
-    border-radius: 10px;
-    width: 105%;
-}
-
-.card-text{
-    text-align: left;
-    font-family: "FreeMono", monospace;
-}
 
 .btn{
     background-color: rgb(196, 205, 117);
     color:black;
     border: 4px solid rgb(228, 235, 190);
+}
+
+
+
+
+/*-----------------------------STATUS BOX-----------------------------------------*/
+.winBox{
+    background: black;
+    font-family: "FreeMono", monospace;
+    border-radius: 25px;
+    align-items: center;
+    /* border: 4px solid rgb(255, 255, 255); */
+    padding: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-20%, -20%);
+
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(var(--bs-gutter-y) * -1);
+    margin-right: calc(var(--bs-gutter-x) * -.5);
+    margin-left: calc(var(--bs-gutter-x) * -.5);
+
+    height: 50%;
+
+    
+}
+
+.Status {
+    position: relative;
+    font-family: "FreeMono", monospace;
+    text-transform: uppercase;
+    font-size: 2em;
+    font-weight: 600;
+    letter-spacing: 4px;
+    -webkit-text-stroke: 2px rgb(0, 0, 0);
+
+
+    overflow: hidden;
+    background: linear-gradient(90deg, #000, #fff, #000);
+    background-repeat: no-repeat;
+    background-size: 80%;
+    animation: animate 3s linear infinite;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0);
+  }
+  
+  @keyframes animate {
+    0% {
+      background-position: -500%;
+    }
+    100% {
+      background-position: 500%;
+    }
+  }
+
+
+/*-----------------------------WAITING SCREEN CODE*-----------------------------------------*/
+
+.waitingTeam{
+    background: black; /* Copied rbg values from UserInfo page */
+    width: 210px;
+    height: fit-content;
+    border-radius: 15px;
+    padding: 0.5%;
+}
+.waitingTeamTitle{
+    margin-left: 10px;
+    margin-top: 10px;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    font-family: "FreeMono", monospace; /* Changed from Prosto One */
+    float: left;
+}
+.waitingTeamContent{
+    margin-left: 10px;
+    margin-top: 5px;
+    color: white;
+    font-size: 14px;
+    font-family: "FreeMono", monospace;
+}
+.waitingBulletContent{
+    margin-left: 15px;
+    margin-top: 2px;
+    color: white;
+    font-size: 14px;
+    font-family: "FreeMono", monospace;
+}
+
+.waitingScreen{
+    /* background-image: url(../../../Images/game.png);
+    display: table; 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center; */
+    width: 100vw;
+    height: 100vh;
+    background: #000000;
+}
+
+.currentPlayer {
+    border: 5px;
+    border-color: #ffffff;
+    border-style: solid;
+    border-radius: 15px;
+    height: fit-content;
+    color: white;
+    width: 210px;
+    margin-left: 10px;
+    margin-bottom: 22px;
+    padding: 0.5%;
+}
+
+.waitingContainer{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+}
+.spinner {
+    position: relative;
+    margin: auto;
+    box-sizing: border-box;
+    background-clip: padding-box;
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    -webkit-mask: linear-gradient(rgba(0, 0, 0, 0.1), #000000 90%);
+    mask:linear-gradient(rgba(0, 0, 0, 0.1), #000000 90%);;
+    transform-origin: 50% 60%;
+    transform: perspective(200px) rotateX(66deg);
+    animation: spinner-wiggle 1.2s infinite;
+  }
+  .spinner:before,
+  .spinner:after {
+    content: "";
+    position: absolute;
+    margin: -4px;
+    box-sizing: inherit;
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    opacity: .05;
+    border: inherit;
+    border-color: transparent;
+    animation: spinner-spin 1.2s cubic-bezier(0.6, 0.2, 0, 0.8) infinite, spinner-fade 1.2s linear infinite;
+  }
+  
+  .spinner:before {
+    border-top-color: #2E67F8;
+  }
+  
+  .spinner:after {
+    border-top-color: #EB212E;
+    animation-delay: 0.3s;
+  }
+  
+  @keyframes spinner-spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes spinner-fade {
+    20% {
+      opacity: .1;
+    }
+    40% {
+      opacity: 1;
+    }
+    60% {
+      opacity: .1;
+    }
+  }
+
+.waitingText{
+    margin-top:20px;
+    font-family: "FreeMono", monospace;
+    /* color: #fff; */
+    color: #121212;
+    text-transform: uppercase;
+    font-size: 2.5em;
+    font-weight: 600;
+    -webkit-text-stroke: 2px rgb(255, 255, 255);
+    text-align: center;
+}
+
+.one {
+    opacity: 0;
+    -webkit-animation: dot 2s infinite;
+    -webkit-animation-delay: 0.0s;
+    animation: dot 2s infinite;
+    animation-delay: 0.0s;
+}
+
+.two {
+    opacity: 0;
+    -webkit-animation: dot 2s infinite;
+    -webkit-animation-delay: 0.5s;
+    animation: dot 2s infinite;
+    animation-delay: 0.5s;
+}
+
+.three {
+    opacity: 0;
+    -webkit-animation: dot 2s infinite;
+    -webkit-animation-delay: 1s;
+    animation: dot 2s infinite;
+    animation-delay: 1s;
+}
+
+@-webkit-keyframes dot {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes dot {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+/*Waiting Button messes with the game starting so we took it out for now*/
+
+.waitingButton{
+    text-transform: uppercase;
+    margin-top:8%;
+    width: 200px;
+    height: 50px;
+    font-size: 18px;
+    font-family: "FreeMono", monospace;
+    border: 4px solid;
+    border-color: #d3b8be;
+    background:transparent;
+    color:white;
+    text-align: center;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    letter-spacing: 2.5px;
+    box-shadow: 6px 6px 0px #afeaee;
+    outline: transparent;
+  }
+ 
+.waitingButton:active {
+    top: 1px;
+  } 
+  
+.waitingButton:hover {
+    transition-duration: 0.1s;
+    color:rgba(255, 255, 255, 0.459);
+  
 }
