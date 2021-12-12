@@ -1,5 +1,5 @@
 .game{
-    background-image: url(../../../Images/game.png);
+    background-image: url(../../../Images/triangle.jpeg);
     display: table; 
     background-repeat: no-repeat;
     background-size: cover;
@@ -11,6 +11,19 @@
 html, body{ /* Add this to fill out the page without using px */
     margin: 0;
     height: 100%; 
+}
+
+.currentPlayer {
+    border: 5px;
+    border-color: #ffffff;
+    border-style: solid;
+    border-radius: 15px;
+    height: fit-content;
+    color: white;
+    width: 210px;
+    margin-left: 10px;
+    margin-bottom: 22px;
+    padding: 0.5%;
 }
 
 .checkboxStructure{
@@ -43,12 +56,29 @@ html, body{ /* Add this to fill out the page without using px */
     border-radius: 15px;
     padding: 0.5%;
 }
+.redTeam-selected{
+    background: rgb(253, 63, 63); /* Copied rbg values from UserInfo page */
+    width: 210px;
+    height: fit-content;
+    border-radius: 15px;
+    padding: 0.5%;
+    border: 2px solid white;
+}
+
 .blueTeam{
     background: rgb(87, 143, 248); /* Copied rbg values from UserInfo page */
     width: 210px;
     height: fit-content;
     border-radius: 15px;
     padding: 0.5%;
+}
+.blueTeam-selected{
+    background: rgb(87, 143, 248); /* Copied rbg values from UserInfo page */
+    width: 210px;
+    height: fit-content;
+    border-radius: 15px;
+    padding: 0.5%;
+    border: 2px solid white;
 }
 
 .teamTitle{
@@ -88,6 +118,7 @@ html, body{ /* Add this to fill out the page without using px */
 }
 
 .clueBody{
+    margin-top: -50px;
     background-color: white;
     width:fit-content;
     border-radius: 5px;
@@ -95,8 +126,10 @@ html, body{ /* Add this to fill out the page without using px */
 }
 
 .clue{
+    background-color: white;
     padding: 20px;
     color: black;
+    border-radius: 10px;
 }
 
 
