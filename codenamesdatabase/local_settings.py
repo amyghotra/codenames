@@ -1,9 +1,16 @@
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'k@)rec)_yu&0z2hmey#8j^rs-3-0pd=nc%zg7=z#ra9q5(6+if'
+from settings import PROJECT_ROOT, SITE_ROOT
+import os
 
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+DEBUG = True
+TEMPLATE_DEBUG = True
 
 DATABASES = {
-    
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        'NAME': 'codenames_database',                     
+        'USER': 'codenames_admin',
+        'PASSWORD': 'fall2021',
+        'HOST': '127.0.0.1',                      
+        'PORT': '3306',
+    }
 }

@@ -13,17 +13,26 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+import dj_database_url
 
+DATABASES = { 'default' : dj_database_url.config()}
+
+SECRET_KEY = 'k@)rec)_yu&0z2hmey#8j^rs-3-0pd=nc%zg7=z#ra9q5(6+if'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS=['*']
+ALLOWED_HOSTS=['codenames21.herokuapp.com']
 CORS_ORIGIN_ALLOW_ALL = True
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+    }
+}
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -135,6 +144,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 try: 
     from codenamesdatabase.local_settings import *
