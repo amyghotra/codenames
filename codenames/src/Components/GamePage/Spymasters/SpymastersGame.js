@@ -35,7 +35,8 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             showblueSpymasters: [],
 
             //Websocket
-            ws: null
+            ws: null, 
+            sentFlag: 0
         }
         // Need these statements since they set state - or use xxx = () => {}
         this.incrementClueCount = this.incrementClueCount.bind(this);
@@ -48,6 +49,11 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
     } // Don't add this.connect()
 
     socketSend = () => {
+        // Do nothing if socket hasn't connected yet
+        // Also do nothing if a clue was already sent
+        if (this.state.ws === null || this.state.sentFlag) {
+            return
+        }
         let clueword = this.state.spymasterClueWord
         let cheater_flag = 0
         if (clueword.length > 16) { // Restrict the amount of chars sent
@@ -68,11 +74,24 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                 }
             })
         }
-        else { // Finally, send regularly
+        else if (clueword.indexOf(' ') >= 0) {
+            this.setState(prevState => {
+                return {
+                    spymasterClueWord: "ONE WORD AT A TIME" // No cheating!
+                }
+            })
+        }
+        else { //  Finally, send regularly
+            this.setState(prevState => {
+                return {
+                    sentFlag: 1 // Signal that clue has already been sent
+                }
+            })
             var data = {
                 "count": this.state.spymasterClueCount,
                 "clue": clueword
             }
+            
             this.state.ws.send(JSON.stringify(data)) // send to channel
             // console.log(data)
         }
@@ -94,7 +113,7 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
             this.setState({ ws: ws });
 
             that.timeout = 250; // reset timer to 250 on open of websocket connection 
-            // clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+            clearTimeout(connectInterval); // clear Interval on on open of websocket connection
         };
 
         // websocket onclose event listener
@@ -135,6 +154,13 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     spymasterClueWord: clue
                 }
             })
+            if (count === 0 && clue === 'WAITING FOR CLUE...') {
+                this.setState(prevState => {
+                    return {
+                        sentFlag: 0
+                    }
+                })
+            }
         };
         this.setState(prevState => {
             return {
@@ -399,9 +425,9 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                   (this.props.agentClicked === true || this.props.gameWords[this.props.doubleAgentIndex].category !== 'D') ?
                     <div className="game" >
                         <br />
-                        <h6>SPYMASTERS</h6>
+                        <h6>SPYMASTER</h6>
                         <div>
-                            {this.props.currentPlayer ? <h6 style={{color: "white", fontSize: "48px"}}>{this.props.currentPlayer.operative_screen_name} can go after receiving a clue</h6> : null}
+                            {this.props.currentPlayer ? <h6 style={{color: "white", fontSize: "30px"}}>{this.props.currentPlayer.operative_screen_name} can go after receiving a clue</h6> : null}
                             <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
                         </div>
                         <div className="container-fluid">
@@ -544,13 +570,49 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                     :
                     <div>
                         <div className="waitingScreen">
+                            <h6 className="gameCode"> Game Code: {this.props.room_key} </h6>
+                            <div className="gameScores">
+                                <div className="waitingTeam">
+                                    <div>
+                                        <h6 className="waitingTeamTitle">Red Team</h6>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <h6 className="waitingTeamContent"> Spymaster:</h6>
+                                    {this.state.showredSpymasters.map((player, index) => (
+                                        <li className="waitingBulletContent" key={index}>{player.operative_screen_name}</li>
+                                    ))}
+                                    {this.showRedSpymasters}
+
+                                    <h6 className="waitingTeamContent"> Operatives:</h6>
+                                    {this.state.showredOperatives.map((player, index) => (
+                                        <li className="waitingBulletContent" key={index}>{player.operative_screen_name}</li>
+                                    ))}
+                                </div>
+                                <br />
+                                <div className="waitingTeam">
+                                    <div>
+                                        <h6 className="waitingTeamTitle">Blue Team</h6>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <h6 className="waitingTeamContent"> Spymaster:</h6>
+                                    {this.state.showblueSpymasters.map((player, index) => (
+                                        <li className="waitingBulletContent" key={index}>{player.operative_screen_name}</li>
+                                    ))}
+                                    <h6 className="waitingTeamContent"> Operatives:</h6>
+                                    {this.state.showblueOperatives.map((player, index) => (
+                                        <li className="waitingBulletContent" key={index}>{player.operative_screen_name}</li>
+                                    ))}
+                                </div>
+                            </div>
                             <div className= "waitingContainer">
                                 <div class="spinner"></div>
                                 <h4 className="waitingText">
                                     Waiting for players
                                     <span class="one">.</span><span class="two">.</span><span class="three">.</span>
                                 </h4>
-                                <button className="waitingButton" onClick={this.props.setDoubleAgent}>I want first</button>
+                                <button className="waitingButton" onClick={this.props.setDoubleAgent}>START GAME</button>
                             </div>
                         </div>
                     </div>

@@ -277,7 +277,7 @@ class UserInfo extends Component {
             this.setState({ userinfoWS: ws });
 
             that.timeout = 250; // reset timer to 250 on open of websocket connection 
-            // clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+            clearTimeout(connectInterval); // clear Interval on on open of websocket connection
         };
 
         // websocket onclose event listener
