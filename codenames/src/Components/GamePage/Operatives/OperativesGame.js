@@ -340,7 +340,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
             <div>
                 {(this.state.showredOperatives.length >= 1 && this.state.showblueOperatives.length >=1 && 
                   this.state.showredSpymasters.length === 1 && this.state.showblueSpymasters.length === 1) && 
-                  (this.props.agentClicked === true || this.props.gameWords[this.props.doubleAgentIndex].category !== 'D') ? // Causing a bug???
+                  (this.props.agentClicked === true) ?
                 <div className="game">
                         <br />
                         <h6>OPERATIVE</h6>
