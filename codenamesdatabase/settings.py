@@ -47,10 +47,6 @@ INSTALLED_APPS = [
     'codenames',
     'channels'
 ]
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-    'http://localhost:8000'
-)
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -88,7 +84,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [('127.0.0.1', 6379), ('https://codenames21.herokuapp.com/', 6379)],
         },
     },
 }
