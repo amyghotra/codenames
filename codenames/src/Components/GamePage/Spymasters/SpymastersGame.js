@@ -534,19 +534,19 @@ class SpymastersGame extends Component{ // Still not 100% sure whether to change
                                                             {this.props.myTeam === this.props.currentTeam &&
                                                             <div className="spymasterClue">
                                                                 <div className= "clueInput">
-                                                                <input
-                                                                    type="text"
-                                                                    id="clueTextBox"
-                                                                    value={this.state.spymasterClueWord}
-                                                                    name="spymasterClueWord" // Must be same name as state!
-                                                                    placeholder="Type clue here"
-                                                                    onChange={this.handleChange}
-                                                                />
+                                                                    <input
+                                                                        type="text"
+                                                                        id="clueTextBox"
+                                                                        value={this.state.spymasterClueWord}
+                                                                        name="spymasterClueWord" // Must be same name as state!
+                                                                        placeholder="Type clue here"
+                                                                        onChange={this.handleChange}
+                                                                    />
                                                                 </div>
-                                                                <div className="counter">
+                                                                <div className="counter1">
                                                                     <h6>{this.state.spymasterClueCount}</h6>
                                                                 </div>
-                                                                <div className="counter">
+                                                                <div className="counter2">
                                                                     {/* type = "button" to NOT make it submit the form */}
                                                                     <button type="button" onClick={this.incrementClueCount}>+</button>
                                                                     {/* <h6>{this.state.spymasterClueCount}</h6> */}

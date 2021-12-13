@@ -54,13 +54,13 @@ class Game extends Component {
 
             // WebSocket turns
             ws_turn: null,
-            currentTeam: 'R',
+            currentTeam: null,
             currentPlayer: null,
 
             redOperatives: [],
             blueOperatives: [],
 
-            wantedFirst: 'R',
+            wantedFirst: null,
 
             //Ready state for turns
             turnsReadyState: false,
@@ -324,7 +324,7 @@ class Game extends Component {
             })
         }
     
-        this.updateRoundPlayer(this.state.wantedFirst)
+        this.updateRoundPlayer(this.state.team)
     }
 
     updateGameWords = (gameid) => {

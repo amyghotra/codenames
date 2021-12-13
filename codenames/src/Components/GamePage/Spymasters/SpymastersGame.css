@@ -134,91 +134,64 @@ html, body{ /* Add this to fill out the page without using px */
     margin-bottom:10px;
     background: transparent;
 }
-
-.spymasterClue input {
-    /* float: left; */
-    width: 80%;
-    height: 100%;
-    position: relative;
-    padding: 0px 16px;
-    border-radius: 5px;
-    color: black;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: normal;
+/* ------------------------------------- CLUE BOX ------------------------------------------- */
+.spymasterClue {
+    /* border: 5px solid cyan; */
     background-color: transparent;
-    transform: translateY(8px);
+    display: flex;
+    width: 100%;
+}
+
+.clueInput {
+    flex: 10;
+    width: 100%;
 }
 
 #clueTextBox {
+    width: 100%;
     background-color: rgba(255,255,255,0.75);
-    height: 40px;
-    width: 400px
+}
+
+.counter1 {
+    border: 1px solid black;
+    position: relative;
+    margin: 1%;
+    background-color: rgba(255,255,255,0.75);
+    flex: 2;
+}
+
+.counter1 h6 {
+    /* border: 5px solid green; */
+    font-family: "FreeMono", monospace;
+    font-size: 25px;
+    margin: auto;
+    padding: 5%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.counter2 {
+    /* border: 5px solid pink; */
+    flex: 3;
+    margin: auto;
+    height: auto;
+    display: flex;
+}
+
+.counter2 button {
+    flex: 1;
+    margin: 6%;
 }
 
 #clueSubmissionButton {
-    color: white;
-    height: 50px;
-    width: 520px;
-    margin-left: 8px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    background-color: rgb(204, 202, 80);;
-} 
-
-#clueSubmissionButton:hover {
-    background-color: rgba(204, 202, 80, 0.7);
-    transition-duration: 0.7s;
-}
-
-.clueInput{
-    margin: 5px;
-}
-.clueContainer{
     background-color: transparent;
-    border-radius: 5px;
-    border-style: solid;
-    border-width: 1px;
-    position: relative;
-    font-size:18px;
-    transform:translate(610px, -20px)
-}
-
-.counter{
-    /* margin: 20px; */
-    margin-top: 8px;
-    background-color: rgba(255,255,255,0.75);
-    width: 20%;
-    height: 40px;
-    transform:translateX(5%);
-    border-radius: 5px;
-    border-style: solid;
-    border-width: 1px
-}
-
-.counter h6{
-    font-size: 25px;
-    position: absolute;
-    transform: translateX(20px);
-    margin-top: 5px;
-    /* text-align: center; */
-}
-.counter button{
-    /* float: right; */
-    width: 25px;
-    margin: 5px;
-
-}
-
-
-.btn{
+    /* border: 5px solid grey; */
+    flex: 4;
+    margin: auto;
     background-color: rgb(196, 205, 117);
-    color:black;
-    border: 4px solid rgb(228, 235, 190);
+    font-size: 20px;
+    padding: 1%;
 }
-
-
-
 
 /*-----------------------------STATUS BOX-----------------------------------------*/
 .winBox{
