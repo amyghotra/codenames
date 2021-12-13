@@ -82,7 +82,7 @@ class Game extends Component {
         }
         this.setTotalCards(); 
 
-        await axios.get('http://127.0.0.1:8000/codenames/players').then(res => {
+        await axios.get('https://codenames21-backend.herokuapp.com/codenames/players').then(res => {
             this.setState({
                 playersdata: res.data
             })
@@ -94,7 +94,7 @@ class Game extends Component {
             }
 
             if(playerExist === false) {
-                axios.post('http://127.0.0.1:8000/codenames/players', {
+                axios.post('https://codenames21-backend.herokuapp.com/codenames/players', {
                     operative_screen_name: this.props.location.state.nickname,
                     team: this.props.location.state.team,
                     role: this.props.location.state.task,
@@ -138,13 +138,13 @@ class Game extends Component {
 
         this.updateGameWords(this.props.location.state.gameid)
 
-        await axios.get(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`)
+        await axios.get(`https://codenames21-backend.herokuapp.com/codenames/redTeam/${this.state.redteamid}`)
         .then(response => {
             this.setState({
                 red_score:response.data.red_team_score
             })
         })
-        await axios.get(`http://127.0.0.1:8000/codenames/blueTeam/${this.state.blueteamid}`)
+        await axios.get(`https://codenames21-backend.herokuapp.com/codenames/blueTeam/${this.state.blueteamid}`)
         .then(response => {
             this.setState({
                 blue_score:response.data.blue_team_score
@@ -217,7 +217,7 @@ class Game extends Component {
     }
 
     connectTurns = () => {
-        var ws_turn = new WebSocket(`ws://codenames21-backend.herokuapp.com/turns/turns/` + this.state.gameid + '/');
+        var ws_turn = new WebSocket(`wss://codenames21-backend.herokuapp.com/turns/turns/` + this.state.gameid + '/');
         let that = this; //cache the this
         var connectInterval;
 
@@ -298,7 +298,7 @@ class Game extends Component {
         // localStorage.setItem(this.state.gameid, agentClicked)
         
 
-        axios.put(`http://127.0.0.1:8000/codenames/games/word/${this.state.doubleAgent.word_id}`, doubleAgent)
+        axios.put(`https://codenames21-backend.herokuapp.com/codenames/games/word/${this.state.doubleAgent.word_id}`, doubleAgent)
             .then(res => {
                 console.log(res)
                 this.updateGameWords(this.state.gameid)
@@ -328,7 +328,7 @@ class Game extends Component {
     }
 
     updateGameWords = (gameid) => {
-        axios.get(`http://127.0.0.1:8000/codenames/games/${gameid}`).then(res => {
+        axios.get(`https://codenames21-backend.herokuapp.com/codenames/games/${gameid}`).then(res => {
             this.setState({ 
                 gameWords: res.data.gameWords 
             })
@@ -357,10 +357,10 @@ class Game extends Component {
     
                 localStorage.setItem(this.state.redteamid, JSON.stringify(redPoints));
 
-                axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
+                axios.patch(`https://codenames21-backend.herokuapp.com/codenames/games/word/${word}`, {guessed:true}).then(response => {
                     console.log(response.data)
                 })
-                axios.patch(`http://127.0.0.1:8000/codenames/redTeam/${this.state.redteamid}`, {red_team_score: redPoints}).then(response => {
+                axios.patch(`https://codenames21-backend.herokuapp.com/codenames/redTeam/${this.state.redteamid}`, {red_team_score: redPoints}).then(response => {
                     console.log(response.data)
                 })
             }
@@ -380,10 +380,10 @@ class Game extends Component {
 
                 localStorage.setItem(this.state.blueteamid, JSON.stringify(bluePoints));
 
-                axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
+                axios.patch(`https://codenames21-backend.herokuapp.com/codenames/games/word/${word}`, {guessed:true}).then(response => {
                     console.log(response.data)
                 })
-                axios.patch(`http://127.0.0.1:8000/codenames/blueTeam/${this.state.blueteamid}`, {blue_team_score: bluePoints}).then(response => {
+                axios.patch(`https://codenames21-backend.herokuapp.com/codenames/blueTeam/${this.state.blueteamid}`, {blue_team_score: bluePoints}).then(response => {
                     console.log(response.data)
                 })
 
@@ -428,7 +428,7 @@ class Game extends Component {
 
                 // localStorage.setItem(this.state.blueteamid, JSON.stringify(bluePoints));
 
-                axios.patch(`http://127.0.0.1:8000/codenames/games/word/${word}`, {guessed:true}).then(response => {
+                axios.patch(`https://codenames21-backend.herokuapp.com/codenames/games/word/${word}`, {guessed:true}).then(response => {
                     console.log(response.data)
                 })
             }
@@ -579,7 +579,7 @@ class Game extends Component {
     }
 
     connectTeamPoints = () => {
-        var wstp = new WebSocket(`ws://codenames21-backend.herokuapp.com/teampoints/teampoints/` + this.state.gameid + '/');
+        var wstp = new WebSocket(`wss://codenames21-backend.herokuapp.com/teampoints/teampoints/` + this.state.gameid + '/');
         let that = this; //cache the this
         var connectInterval;
 
@@ -723,7 +723,7 @@ class Game extends Component {
     }
 
     connectPlayers = () => {
-        var wsp = new WebSocket(`ws://codenames21-backend.herokuapp.com/players/players/` + this.state.gameid + '/');
+        var wsp = new WebSocket(`wss://codenames21-backend.herokuapp.com/players/players/` + this.state.gameid + '/');
         let that = this;
         var connectInterval;
 
@@ -787,7 +787,7 @@ class Game extends Component {
 
     // ATTEMPT WS FOR WIN/LOSE PROMPT 
     connectWinLose = () => {
-        var wswl = new WebSocket(`ws://codenames21-backend.herokuapp.com/winlose/winlose/` + this.state.gameid + '/');
+        var wswl = new WebSocket(`wss://codenames21-backend.herokuapp.com/winlose/winlose/` + this.state.gameid + '/');
         let that = this;
         var connectInterval;
         wswl.onopen = () => {
@@ -846,7 +846,7 @@ class Game extends Component {
     }
 
     connectDoubleAgent = () => {
-        var ws = new WebSocket(`ws://codenames21-backend.herokuapp.com/doubleagent/doubleagent/` + this.state.gameid + '/');
+        var ws = new WebSocket(`wss://codenames21-backend.herokuapp.com/doubleagent/doubleagent/` + this.state.gameid + '/');
         let that = this; // cache the this
         var connectInterval;
 
