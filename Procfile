@@ -1,1 +1,1 @@
-web: daphne -b 0.0.0.0 -p 5432 codenamesdatabase.asgi:application
+web: gunicorn codenamesdatabase.wsgi --log-file -
