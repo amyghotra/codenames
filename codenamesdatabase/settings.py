@@ -27,9 +27,9 @@ ALLOWED_HOSTS = ['127.0.0.1','localhost','codenames21-backend.herokuapp.com']
 CORS_ORIGIN_ALLOW_ALL=False
 
 CORS_ORIGIN_WHITELIST = (
-    'https://codenames21.herokuapp.com/',
-    'https://codenames21-backend.herokuapp.com/',
-    '127.0.0.1',
+    'https://codenames21.herokuapp.com',
+    'https://codenames21-backend.herokuapp.com',
+    'http://127.0.0.1',
     'localhost',
 )
 
