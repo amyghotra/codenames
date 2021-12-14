@@ -16,6 +16,10 @@ Weekly Reports [here](https://docs.google.com/presentation/d/1jvQTl43Up2FzqWHJHW
 4. Kevin Xie
 5. Amy Ghotra
 
+## Codenames URLs
+1. Frontend (actual game): [https://codenames21.herokuapp.com](https://codenames21.herokuapp.com)
+2. Backend / API: [https://codenames21-backend.herokuapp.com](https://codenames21-backend.herokuapp.com)
+
 ## Running Codenames Locally
 ### Frontend
 - Navigate into the codenames folder in your directory
