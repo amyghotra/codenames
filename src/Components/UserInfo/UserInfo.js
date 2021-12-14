@@ -58,9 +58,10 @@ class UserInfo extends Component {
             for(let i = 0; i < res.data.length; i++) {
                 if(res.data[i].connected_room_key === roomid) {
                     roomidexist = true;
+                    var words = res.data[i].gameWords.sort(function(a, b){return 0.5 - Math.random()});
                     this.setState({
                         gameid: res.data[i].game_id,
-                        gameWords: res.data[i].gameWords
+                        gameWords: words
                     })
                     this.renderTeamId(res.data[i].game_id)
                 }
@@ -70,10 +71,11 @@ class UserInfo extends Component {
                     connected_room_key: roomid
                 }).then(res => {
                     // console.log('this is the game data: ', res.data);
+                    var words = res.data.gameWords.sort(function(a, b){return 0.5 - Math.random()});
                     this.setState({
                         gameid: res.data.game_id,
                         gameData: res.data,
-                        gameWords: res.data.gameWords,
+                        gameWords: words,
                         connected_room_key: res.data.connected_room_key
                     })
                     // console.log('WE JUST MADE THIS GAME ID: ', res.data.game_id);
