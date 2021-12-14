@@ -73,23 +73,23 @@ class GameSerializer(serializers.ModelSerializer):
             classfication = random.choice(options)
             
             if classfication == 'R' and redTotal > 0:
-                GameWords.objects.create(game_id=game, word=gameWords[total], category='R')
+                GameWords.objects.create(game_id=game, word=words_data[total], category='R')
                 redTotal -= 1
                 total += 1
             elif classfication == 'B' and blueTotal > 0:
-                GameWords.objects.create(game_id=game, word=gameWords[total], category='B')
+                GameWords.objects.create(game_id=game, word=words_data[total], category='B')
                 blueTotal -= 1
                 total += 1
             elif classfication == 'C' and civTotal > 0:
-                GameWords.objects.create(game_id=game, word=gameWords[total], category='C')
+                GameWords.objects.create(game_id=game, word=words_data[total], category='C')
                 civTotal -= 1
                 total += 1
             elif classfication == 'D' and doubleTotal > 0:
-                GameWords.objects.create(game_id=game, word=gameWords[total], category='D')
+                GameWords.objects.create(game_id=game, word=words_data[total], category='D')
                 doubleTotal -= 1
                 total += 1
             elif classfication == 'A' and assassinTotal > 0:
-                GameWords.objects.create(game_id=game, word=gameWords[total], category='A')
+                GameWords.objects.create(game_id=game, word=words_data[total], category='A')
                 assassinTotal -= 1
                 total += 1
 
