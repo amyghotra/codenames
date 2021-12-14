@@ -38,7 +38,7 @@ class UserInfo extends Component {
         })
 
         //set all the existing games to state
-        axios.get('http://127.0.0.1:8000/codenames/games').then(res => {
+        axios.get('https://codenames21-backend.herokuapp.com/codenames/games').then(res => {
             this.setState({
                 gamesData: res.data
             })
@@ -54,7 +54,7 @@ class UserInfo extends Component {
 
         let roomidexist = false;
 
-        axios.get('http://127.0.0.1:8000/codenames/games').then(res => {
+        axios.get('https://codenames21-backend.herokuapp.com/codenames/games').then(res => {
             for(let i = 0; i < res.data.length; i++) {
                 if(res.data[i].connected_room_key === roomid) {
                     roomidexist = true;
@@ -66,7 +66,7 @@ class UserInfo extends Component {
                 }
             }
             if(roomidexist === false) {
-                axios.post('http://127.0.0.1:8000/codenames/games', {
+                axios.post('https://codenames21-backend.herokuapp.com/codenames/games', {
                     connected_room_key: roomid
                 }).then(res => {
                     // console.log('this is the game data: ', res.data);
@@ -80,7 +80,7 @@ class UserInfo extends Component {
                     this.renderTeamId(res.data.game_id)
                 })
             }
-            axios.get('http://127.0.0.1:8000/codenames/players').then(response => {
+            axios.get('https://codenames21-backend.herokuapp.com/codenames/players').then(response => {
                 for(let i = 0; i < response.data.length; i++) {
                     if(response.data[i].game_id === this.state.gameid) {
                         console.log(response.data[i]);
@@ -99,7 +99,7 @@ class UserInfo extends Component {
     renderTeamId = (gameid) => {
         // console.log('double checking ', gameid);
 
-        axios.get('http://127.0.0.1:8000/codenames/redTeam').then(res => {
+        axios.get('https://codenames21-backend.herokuapp.com/codenames/redTeam').then(res => {
             for(let i = 0; i < res.data.length; i++) {
                 if(res.data[i].game_id === gameid) {
                     // console.log(res.data[i].game_id, ' COMPARED TO ', gameid)
@@ -112,7 +112,7 @@ class UserInfo extends Component {
             }
         })
 
-        axios.get('http://127.0.0.1:8000/codenames/blueTeam').then(res => {
+        axios.get('https://codenames21-backend.herokuapp.com/codenames/blueTeam').then(res => {
             for(let i = 0; i < res.data.length; i++) {
                 if(res.data[i].game_id === gameid) {
                     this.setState({
@@ -171,7 +171,7 @@ class UserInfo extends Component {
                     this.state.userinfoWS.send(JSON.stringify(data)) // send to channel
                     // console.log(data)
                 }
-                axios.post('http://127.0.0.1:8000/codenames/userInfo', {
+                axios.post('https://codenames21-backend.herokuapp.com/codenames/userInfo', {
                     connected_room_key:this.props.location.state.room_key,
                     nickname: this.state.nickname, 
                     team: this.state.team,
@@ -193,7 +193,7 @@ class UserInfo extends Component {
 
     createGame = async () => {
         if (this.state.redTeamExist === false) {
-            await axios.post('http://127.0.0.1:8000/codenames/redTeam', {
+            await axios.post('https://codenames21-backend.herokuapp.com/codenames/redTeam', {
                 game_id: this.state.gameid,
                 connected_room_key: this.state.roomid
             }).then(response => {
@@ -207,7 +207,7 @@ class UserInfo extends Component {
             }) 
         }
         if (this.state.blueTeamExist === false) {
-            await axios.post('http://127.0.0.1:8000/codenames/blueTeam', {
+            await axios.post('https://codenames21-backend.herokuapp.com/codenames/blueTeam', {
                 game_id: this.state.gameid,
                 connected_room_key: this.state.roomid
             }).then(response => {
@@ -267,7 +267,7 @@ class UserInfo extends Component {
      */
      connectUserInfo = () => {
          // Using roomid instead of game id because that doesn't exist yet
-        var ws = new WebSocket('ws://localhost:8000/userinfo/userinfo/' + this.props.location.state.roomid + '/');
+        var ws = new WebSocket('wss://codenames21-backend.herokuapp.com/userinfo/userinfo/' + this.props.location.state.roomid + '/');
         let that = this; // cache the this
         var connectInterval;
 

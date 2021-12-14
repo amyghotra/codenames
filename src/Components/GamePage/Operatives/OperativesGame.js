@@ -46,7 +46,7 @@ class OperativesGame extends Component { // Still not 100% sure whether to chang
      * constant reconnection if connection closes
      */
      connect = () => {
-        var ws = new WebSocket('ws://localhost:8000/cluebox/cluebox/' + this.props.gameid + '/');
+        var ws = new WebSocket('wss://codenames21-backend.herokuapp.com/cluebox/cluebox/' + this.props.gameid + '/');
         let that = this; // cache the this
         var connectInterval;
 

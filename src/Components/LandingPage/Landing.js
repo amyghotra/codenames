@@ -32,7 +32,7 @@ class Landing extends Component {
     }
 
     componentDidMount = () => {
-        axios.get('http://127.0.0.1:8000/codenames/').then(res => {
+        axios.get('https://codenames21-backend.herokuapp.com/codenames/').then(res => {
             this.setState({ data: res.data })
         })
     }
@@ -58,7 +58,7 @@ class Landing extends Component {
     }
 
     submitRoomKey = (randomRoomKey) => {
-        axios.post('http://127.0.0.1:8000/codenames/', {room_key: randomRoomKey}    )
+        axios.post('https://codenames21-backend.herokuapp.com/codenames/', {room_key: randomRoomKey}    )
             .then(response => {
                 this.setState({
                     roomMatched: true,
