@@ -22,7 +22,7 @@ SECRET_KEY = 'django-insecure-0o7bj=d71$qh$ecnxo_r8uhc&0bw#4ef6(z07xvaj4w1(a39*j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','codenames21-backend.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1','localhost','.herokuapp.com']
 
 CORS_ORIGIN_ALLOW_ALL=False
 
@@ -84,7 +84,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [os.environ.get('redis://:p93c85a51d7e28e8bfe81b9717fa661e94ddc5c39f61cdb55824c04dbedcb622e@ec2-54-152-2-171.compute-1.amazonaws.com:18019')],
+            "hosts": [os.environ.get( 'REDIS_URL', 'redis://:p93c85a51d7e28e8bfe81b9717fa661e94ddc5c39f61cdb55824c04dbedcb622e@ec2-54-152-2-171.compute-1.amazonaws.com:18019')],
         },
     },
 }
