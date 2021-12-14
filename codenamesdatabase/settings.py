@@ -24,6 +24,15 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1','localhost','codenames21-backend.herokuapp.com']
 
+CORS_ORIGIN_ALLOW_ALL=False
+
+CORS_ORIGIN_WHITELIST = (
+    'https://codenames21.herokuapp.com/',
+    'https://codenames21-backend.herokuapp.com/',
+    '127.0.0.1',
+    'localhost',
+)
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,10 +48,6 @@ INSTALLED_APPS = [
     'codenames',
     'channels'
 ]
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-    'http://localhost:8000'
-)
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -80,7 +85,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [os.environ.get('redis://:p93c85a51d7e28e8bfe81b9717fa661e94ddc5c39f61cdb55824c04dbedcb622e@ec2-54-152-2-171.compute-1.amazonaws.com:18019')],
         },
     },
 }
