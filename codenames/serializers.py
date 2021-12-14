@@ -60,23 +60,40 @@ class GameSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         words_data = getGameWords()
         game = Game.objects.create(**validated_data)
-
-        for word in words_data[0:8]:
-            GameWords.objects.create(game_id=game, word=word, category='R')
-
-        for word in words_data[8:16]:
-            GameWords.objects.create(game_id=game, word=word, category='B')
-
-        GameWords.objects.create(game_id=game, word=words_data[16], category='D')
-
-        for word in words_data[17:24]:
-            GameWords.objects.create(game_id=game, word=word, category='C')
-
-        GameWords.objects.create(game_id=game, word=words_data[24], category='A')
+        
+        options = ['R','B','C','D','A']
+        redTotal = 8
+        blueTotal = 8
+        civTotal = 7
+        doubleTotal = 1
+        assassinTotal = 1
+        total = 0
+        
+        while total < 25:
+            classfication = random.choice(options)
+            
+            if classfication == 'R' && redTotal > 0:
+                GameWords.objects.create(game_id=game, word=gameWords[total], category='R')
+                redTotal -= 1
+                total += 1
+            elif classfication == 'B' && blueTotal > 0:
+                GameWords.objects.create(game_id=game, word=gameWords[total], category='B')
+                blueTotal -= 1
+                total += 1
+            elif classfication == 'C' && civTotal > 0:
+                GameWords.objects.create(game_id=game, word=gameWords[total], category='C')
+                civTotal -= 1
+                total += 1
+            elif classfication == 'D' && doubleTotal > 0:
+                GameWords.objects.create(game_id=game, word=gameWords[total], category='D')
+                doubleTotal -= 1
+                total += 1
+            elif classfication == 'A' && assassinTotal > 0:
+                GameWords.objects.create(game_id=game, word=gameWords[total], category='A')
+                assassinTotal -= 1
+                total += 1
 
         return game
-    
-    random.shuffle(gameWords)
 
     class Meta:
         model = Game
