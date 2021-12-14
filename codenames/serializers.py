@@ -73,6 +73,8 @@ class GameSerializer(serializers.ModelSerializer):
             GameWords.objects.create(game_id=game, word=word, category='C')
 
         GameWords.objects.create(game_id=game, word=words_data[24], category='A')
+        
+        random.shuffle(gameWords)
 
         return game
 
